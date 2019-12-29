@@ -34,16 +34,7 @@ function init(){
     
 }
 
-const main = func => {
-	let time = new Date().getTime(); 
-    const recurse = t => {
-        const dt = (new Date().getTime()-time) * 1e-3;
-		time = new Date().getTime();
-		func(dt, time * 1e-3)
-        requestAnimationFrame(recurse)
-    }
-	requestAnimationFrame(recurse)
-}
+
 
 //Main---------------
 init()
@@ -56,9 +47,12 @@ main((dt,time)=>{
     time=time%1000
 })*/
 
+var objects = []
+//functions-----------------------------
 function createElement(type) {
     return document.createElement(type)
 }
+
 function createCircle(x, y, radius, color, id) {
     var circle = createElement("div")
     if (id != "" || id != null) {
@@ -67,64 +61,96 @@ function createCircle(x, y, radius, color, id) {
     circle.setAttribute("style", `left:${x};top:${y};width:${radius};height:${radius};background-color:${color};position:absolute;border-radius:50%`)
     return circle
 }
-function createSmile(x,y,radius,color,id){
-    var circle=createElement("div")
-    circle.setAttribute("style",`left:${x};top:${y};width:${radius};height:${radius};border:solid 8px ${color};border-color:transparent transparent ${color} transparent;border-radius:50%;position:absolute;`)
-    circle.setAttribute("id",id)
-    
+
+function createSmile(x, y, radius, color, id) {
+    var circle = createElement("div")
+    circle.setAttribute("style", `left:${x};top:${y};width:${radius};height:${radius};border:solid 8px ${color};border-color:transparent transparent ${color} transparent;border-radius:50%;position:absolute;`)
+    circle.setAttribute("id", id)
+
     return circle
-    
+
 }
-function createHotDog(x,y,width,height,color,id){
-    var square=createElement("div")
-    square.setAttribute("style",`left:${x};top:${y};width:${width};height:${height};background-color:${color};position:absolute;border-radius:25px`)
+
+function createHotDog(x, y, width, height, color, id) {
+    var square = createElement("div")
+    square.setAttribute("style", `left:${x};top:${y};width:${width};height:${height};background-color:${color};position:absolute;border-radius:25px`)
     if (id != "" || id != null) {
         square.setAttribute("id", id)
     }
-    
+
     return square
 }
-function createSquare(x,y,width,height,color,id){
-    var square=createElement("div")
-    square.setAttribute("style",`left:${x};top:${y};width:${width};height:${height};background-color:${color};position:absolute;z-index:100`)
+
+function createSquare(x, y, width, height, color, id) {
+    var square = createElement("div")
+    square.setAttribute("style", `left:${x};top:${y};width:${width};height:${height};background-color:${color};position:absolute;z-index:100`)
     if (id != "" || id != null) {
         square.setAttribute("id", id)
     }
-    
+
     return square
 }
-function createTriangle(x,y,leftw,rightw,height,color,id){
-    var triangle=createElement("div")
-    triangle.setAttribute("style",`left:${x};top:${y};width:0px;height:0px;position:absolute;border-left: ${leftw} solid transparent;border-right:${rightw} solid transparent;border-bottom:${height} solid ${color}`)
+
+function createTriangle(x, y, leftw, rightw, height, color, id) {
+    var triangle = createElement("div")
+    triangle.setAttribute("style", `left:${x};top:${y};width:0px;height:0px;position:absolute;border-left: ${leftw} solid transparent;border-right:${rightw} solid transparent;border-bottom:${height} solid ${color}`)
     if (id != "" || id != null) {
         triangle.setAttribute("id", id)
     }
-    
+
     return triangle
 }
 
-function moveObj(obj,x,y){
-    obj.style.left=x
-    obj.style.top=y
-    
+function moveObj(obj, x, y) {
+    obj.style.left = x
+    obj.style.top = y
+
 }
-function stretchObj(obj,width,height){
-  
-    obj.style.width=width
-    obj.style.height=height
+
+function stretchObj(obj, width, height) {
+
+    obj.style.width = width
+    obj.style.height = height
 }
-function changeColorInterpolation(){
-    
+
+function changeColorInterpolation() {
+
 }
-function sin(x){
+
+function sin(x) {
     return Math.sin(x)
 }
-function cos(x){
+
+function cos(x) {
     return Math.cos(x)
 }
 
 
 
-var x=new Object()
-x.append(createCircle("10%","10%","100px","rgb(0,0,255)")).appendChild(createCircle("20%","20%","20px","rgb(255,255,0)")).appendChild(createCircle("60%","20%","20px","rgb(255,255,0)")).appendChild(createSmile("15%","20%","50px","rgb(255,0,0)")).show()
-x.appendChild(createTriangle("45%","45%","5px","5px","10px","rgb(255,30,170)"))
+
+
+const main = func => {
+    let time = new Date().getTime();
+    const recurse = t => {
+        const dt = (new Date().getTime() - time) * 1e-3;
+        time = new Date().getTime();
+        func(dt, time * 1e-3)
+        requestAnimationFrame(recurse)
+    }
+    requestAnimationFrame(recurse)
+}
+function init() {
+    var x = new Object()
+    x.append(createCircle("10%", "10%", "100px", "rgb(0,0,255)")).appendChild(createCircle("20%", "20%", "20px", "rgb(255,255,0)")).appendChild(createCircle("60%", "20%", "20px", "rgb(255,255,0)")).appendChild(createSmile("15%", "20%", "50px", "rgb(255,0,0)")).show()
+    x.appendChild(createTriangle("45%", "45%", "5px", "5px", "10px", "rgb(255,30,170)"))
+    objects.push(x)
+    x.appendAnimation(()=>{x.moveObj(0,0,500,200,1,1)})
+}
+//main------------------------------
+init()
+main((dt,time)=>{
+    var height=window.innerHeight
+    var width=window.innerWidth
+    objects[0].Play(time)
+    time=time%9999999999
+})
