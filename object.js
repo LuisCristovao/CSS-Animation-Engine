@@ -22,5 +22,8 @@ class Object {
         this.shape=element
         return this
     }
+    destroy(){
+        this.shape.parentNode.removeChild(this.shape);
+    }
     
 }

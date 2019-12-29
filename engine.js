@@ -71,24 +71,38 @@ function createSmile(x,y,radius,color,id){
     var circle=createElement("div")
     circle.setAttribute("style",`left:${x};top:${y};width:${radius};height:${radius};border:solid 8px ${color};border-color:transparent transparent ${color} transparent;border-radius:50%;position:absolute;`)
     circle.setAttribute("id",id)
-    addIntem(circle)
+    
     return circle
     
 }
 function createHotDog(x,y,width,height,color,id){
     var square=createElement("div")
     square.setAttribute("style",`left:${x};top:${y};width:${width};height:${height};background-color:${color};position:absolute;border-radius:25px`)
-    square.setAttribute("id",id)
-    addIntem(square)
+    if (id != "" || id != null) {
+        square.setAttribute("id", id)
+    }
+    
     return square
 }
 function createSquare(x,y,width,height,color,id){
     var square=createElement("div")
     square.setAttribute("style",`left:${x};top:${y};width:${width};height:${height};background-color:${color};position:absolute;z-index:100`)
-    square.setAttribute("id",id)
-    addIntem(square)
+    if (id != "" || id != null) {
+        square.setAttribute("id", id)
+    }
+    
     return square
 }
+function createTriangle(x,y,leftw,rightw,height,color,id){
+    var triangle=createElement("div")
+    triangle.setAttribute("style",`left:${x};top:${y};width:0px;height:0px;position:absolute;border-left: ${leftw} solid transparent;border-right:${rightw} solid transparent;border-bottom:${height} solid ${color}`)
+    if (id != "" || id != null) {
+        triangle.setAttribute("id", id)
+    }
+    
+    return triangle
+}
+
 function moveObj(obj,x,y){
     obj.style.left=x
     obj.style.top=y
@@ -108,3 +122,9 @@ function sin(x){
 function cos(x){
     return Math.cos(x)
 }
+
+
+
+var x=new Object()
+x.append(createCircle("10%","10%","100px","rgb(0,0,255)")).appendChild(createCircle("20%","20%","20px","rgb(255,255,0)")).appendChild(createCircle("60%","20%","20px","rgb(255,255,0)")).appendChild(createSmile("15%","20%","50px","rgb(255,0,0)")).show()
+x.appendChild(createTriangle("45%","45%","5px","5px","10px","rgb(255,30,170)"))
