@@ -102,7 +102,7 @@ function init() {
     //x.appendChild(createTriangle("45%", "45%", "5px", "5px", "10px", "rgb(255,30,170)"))
     ninja.append(createSquare("300px", "100px","100","200","rgb(220,100,0)","ninja")).show()
     ninja
-    .appendChild(createSquare("10","30","30","30","green","left eye"))
+    .appendChild(createSquare("60","30","30","30","green","left eye"))
     
     
 }
@@ -150,12 +150,12 @@ function release(e){
     dodge = false
   } */
 }
-function rect(t){
+function rect(t,placement,size){
     
-    if(t<=0 || t>2){
-        return 0
-    }else{
+    if(t>=placement && t<=placement+size){
         return 1
+    }else{
+        return 0
     }
 }
 function inverse(num){
@@ -166,13 +166,15 @@ function inverse(num){
     }
 }
 init()
+let real_time=0
+
+let left_eye=getElement("left eye")
 main((dt,time)=>{
-   let ninja = getElement("ninja")
-   let left_eye=getElement("left eye")
+    let ninja = getElement("ninja")
    let x=parseInt(ninja.style.left.replace("xp",''))
    let y=parseInt(ninja.style.top.replace("xp",''))
    let speed=(dodge)?50:10
-   
+   real_time+=dt
     if (up){
         y = y - speed
     }
@@ -185,15 +187,17 @@ main((dt,time)=>{
   if (left){
     x = x - speed
   }
-  left_eye.style.height=Math.ceil((Math.abs(30*Math.abs(Math.sin(2*time)))+30*Math.abs(Math.sin(2*time)))/2)
-  //left_eye.style.height=30*inverse(rect((2*time)%3))*Math.sin(time)
-  left_eye.style.top=30+5*Math.abs(Math.cos(2*time))
-  console.log(rect((2*time)%3))
-  if(x>0  && x+110<getElement("html").offsetWidth ){
+  //left_eye.style.height=Math.ceil((Math.abs(30*Math.abs(Math.sin(2*time)))+30*Math.abs(Math.sin(2*time)))/2)
+  //left_eye.style.height=30*(rect(real_time%3,0,2))+(rect(real_time%3,2,0.5)*(30-((30*2)*((real_time-2)%3))))+(rect(real_time%3,2.5,0.5)*(30-((30*2)*((real_time-2.5)%3))))
+  left_eye.style.height=30*(rect(real_time%3,0,2))+(rect(real_time%3,2,0.25)*(30-((30*4)*((real_time-2)%3))))+(rect(real_time%3,2.25,0.25)*(((30*4)*((real_time-2.25)%3))))+(rect(real_time%3,2.5,0.25)*(30-((30*4)*((real_time-2.5)%3))))+(rect(real_time%3,2.75,0.25)*(((30*4)*((real_time-2.75)%3))))
+  left_eye.style.top=30+5*Math.abs(Math.cos(2*real_time))
+  ninja.style.left=((300+(200/3)*(real_time%6))*rect(real_time%6,0,3))+((500-(200/3)*((real_time%6)-3))*rect(real_time%6,3,3))
+  console.log(ninja.style.left)
+  /*if(x>0  && x+110<getElement("html").offsetWidth ){
 
       ninja.style.left = x
   }
   if(y>0  && y+230<getElement("html").offsetHeight){
     ninja.style.top = y
-    }  
+    }  */
 })
