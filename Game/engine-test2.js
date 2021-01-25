@@ -81,7 +81,9 @@ function cos(x) {
     return Math.cos(x)
 }
 
-
+function linear_motion(starty,finaly,duration){
+  return ((finaly-starty)/duration)
+}
 
 
 
@@ -191,7 +193,8 @@ main((dt,time)=>{
   //left_eye.style.height=30*(rect(real_time%3,0,2))+(rect(real_time%3,2,0.5)*(30-((30*2)*((real_time-2)%3))))+(rect(real_time%3,2.5,0.5)*(30-((30*2)*((real_time-2.5)%3))))
   left_eye.style.height=30*(rect(real_time%3,0,2))+(rect(real_time%3,2,0.25)*(30-((30*4)*((real_time-2)%3))))+(rect(real_time%3,2.25,0.25)*(((30*4)*((real_time-2.25)%3))))+(rect(real_time%3,2.5,0.25)*(30-((30*4)*((real_time-2.5)%3))))+(rect(real_time%3,2.75,0.25)*(((30*4)*((real_time-2.75)%3))))
   left_eye.style.top=30+5*Math.abs(Math.cos(2*real_time))
-  ninja.style.left=((300+(200/3)*(real_time%6))*rect(real_time%6,0,3))+((500-(200/3)*((real_time%6)-3))*rect(real_time%6,3,3))
+  ninja.style.left=((300+linear_motion(300,500,3)*(real_time%6))*rect(real_time%6,0,3))+((500+linear_motion(500,300,3)*((real_time%6)-3))*rect(real_time%6,3,3))
+  ninja.style.top=((100+linear_motion(100,500,3)*(real_time%6))*rect(real_time%6,0,3))+((500+linear_motion(500,100,3)*((real_time%6)-3))*rect(real_time%6,3,3))
   console.log(ninja.style.left)
   /*if(x>0  && x+110<getElement("html").offsetWidth ){
 
