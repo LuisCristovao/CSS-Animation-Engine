@@ -11,10 +11,15 @@ class Object {
         this.animation_seq = []
         this.animatiom_index=0
         //this.shape=createElement("div")
+        //this.x=style.left
+        //this.y=style.top
     }
-
+    getElement(){
+        return this.shape
+    }
     show() {
         document.body.appendChild(this.shape)
+        return this
     }
     appendChild(element) {
         this.shape.appendChild(element)
@@ -22,6 +27,8 @@ class Object {
     }
     append(element) {
         this.shape = element
+        this.x=parseInt(element.style.left)
+        this.y=parseInt(element.style.top)
         return this
     }
     destroy() {
