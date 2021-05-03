@@ -99,13 +99,15 @@ const main = func => {
 }
 function init() {
     let ninja = new Object()
+    let ninja2 = new Object()
     let x=new Object
     x.append(createCircle("10%", "10%", "100px", "rgb(0,0,255)")).appendChild(createCircle("20%", "20%", "20px", "rgb(255,255,0)")).appendChild(createCircle("60%", "20%", "20px", "rgb(255,255,0)")).appendChild(createSmile("15%", "20%", "50px", "rgb(255,0,0)")).show()
     //x.appendChild(createTriangle("45%", "45%", "5px", "5px", "10px", "rgb(255,30,170)"))
     ninja.append(createSquare("300px", "100px","100","200","rgb(220,100,0)","ninja")).show()
     ninja
     .appendChild(createSquare("60","30","30","30","green","left eye"))
-    
+    ninja2.append(createSquare("300px", "500px","100","200","rgb(220,100,100)","ninja2")).show()
+    .appendChild(createSquare("60","30","30","30","yellow","left eye2"))
     
 }
 //main------------------------------
@@ -171,8 +173,10 @@ init()
 let real_time=0
 
 let left_eye=getElement("left eye")
+let left_eye2=getElement("left eye2")
 main((dt,time)=>{
-    let ninja = getElement("ninja")
+   let ninja = getElement("ninja")
+    let ninja2 = getElement("ninja2")
    let x=parseInt(ninja.style.left.replace("xp",''))
    let y=parseInt(ninja.style.top.replace("xp",''))
    let speed=(dodge)?50:10
@@ -195,6 +199,8 @@ main((dt,time)=>{
   left_eye.style.top=30+5*Math.abs(Math.cos(2*real_time))
   ninja.style.left=((300+linear_motion(300,500,3)*(real_time%6))*rect(real_time%6,0,3))+((500+linear_motion(500,300,3)*((real_time%6)-3))*rect(real_time%6,3,3))
   ninja.style.top=((100+linear_motion(100,500,3)*(real_time%6))*rect(real_time%6,0,3))+((500+linear_motion(500,100,3)*((real_time%6)-3))*rect(real_time%6,3,3))
+  left_eye2.style.height=30*(rect(real_time%3,0,2))+(rect(real_time%3,2,0.25)*(30-((30*4)*((real_time-2)%3))))+(rect(real_time%3,2.25,0.25)*(((30*4)*((real_time-2.25)%3))))+(rect(real_time%3,2.5,0.25)*(30-((30*4)*((real_time-2.5)%3))))+(rect(real_time%3,2.75,0.25)*(((30*4)*((real_time-2.75)%3))))
+  left_eye2.style.top=30+5*Math.abs(Math.cos(2*real_time))
   console.log(ninja.style.left)
   /*if(x>0  && x+110<getElement("html").offsetWidth ){
 
