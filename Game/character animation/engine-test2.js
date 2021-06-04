@@ -236,7 +236,11 @@ main((dt, time) => {
     rect(real_time % 3, 2.5, 0.25) * (30 - 30 * 4 * ((real_time - 2.5) % 3)) +
     rect(real_time % 3, 2.75, 0.25) * (30 * 4 * ((real_time - 2.75) % 3));
   left_eye2.style.top = 30 + 5 * Math.abs(Math.cos(2 * real_time));
-  console.log(ninja.style.left);
+  ninja2.style.background=`rgb(${
+    rect(real_time % 10, 0, 5)*((real_time % 10)*linear_motion(0,255,5)) +
+    rect(real_time % 10, 5, 5)*(((real_time % 10) - 5)*linear_motion(255,0,5)+255)
+  },100,100)`
+  console.log(ninja2.style.background);
   /*if(x>0  && x+110<getElement("html").offsetWidth ){
 
       ninja.style.left = x
