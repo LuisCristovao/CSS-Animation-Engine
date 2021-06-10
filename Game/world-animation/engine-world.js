@@ -106,7 +106,7 @@ function init() {
     ground.append(createSquare("-10px", "500px","2000","2000","rgb(0,255,0)","ground")).show()
     sky.append(createSquare("-10px", "-1500px","1000","3000","linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,229,251,1) 56%, rgba(245,248,249,1) 100%)","sky")).show()
     for(let i=0;i<200;i++){
-      flores.push(new Object().append(createCircle(`${Math.random() * (2000 - 100) + 100}px`, `${Math.random() * (2000 - 500) + 500}px`,"20",`rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`)).show())  
+      flores.push(new Object().append(createCircle(`${10+10*i}px`, `${500+(Math.random()*10+i%25)}px`,"20",`rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`)).show())  
     }
     //flores.push(new Object().append(createCircle("100px", "600px","20","rgb(255,0,0)")).show())
     //flores.push(new Object().append(createCircle("200px", "600px","20","rgb(255,0,0)")).show())
@@ -187,7 +187,9 @@ let real_time=0
 
 main((dt,time)=>{
   real_time+=dt
-  flores.forEach(flor=>{flor.shape.style.left=flor.x+10*Math.cos(2*real_time)})
+  flores.forEach((flor,i)=>{
+    flor.shape.style.left=flor.x+10*Math.cos(2*(real_time-i*0.2))
+  })
   //flores[0].getElement().style.left=5*Math.cos(2*real_time) 
   //left_eye.style.height=Math.ceil((Math.abs(30*Math.abs(Math.sin(2*time)))+30*Math.abs(Math.sin(2*time)))/2)
   //left_eye.style.height=30*(rect(real_time%3,0,2))+(rect(real_time%3,2,0.5)*(30-((30*2)*((real_time-2)%3))))+(rect(real_time%3,2.5,0.5)*(30-((30*2)*((real_time-2.5)%3))))
