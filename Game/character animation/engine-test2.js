@@ -232,6 +232,7 @@ main((dt, time) => {
       rect(real_time % 6, 0, 3) +
     (500 + linear_motion(500, 300, 3) * ((real_time % 6) - 3)) *
       rect(real_time % 6, 3, 3);
+  ninja.style.top=(20*Math.sin(10*real_time)) 
   /*ninja.style.top =
     (100 + linear_motion(100, 500, 3) * (real_time % 6)) *
       rect(real_time % 6, 0, 3) +
@@ -258,7 +259,7 @@ main((dt, time) => {
   }`
   power.style.height=`${
     rect(real_time % 10,0,2)*(real_time % 10)*linear_motion(0,50,2)+
-    rect(real_time % 10,2,8)*50
+    rect(real_time % 10,2,8)*(50)+rect(real_time % 10,3,7)*(10*Math.sin(100*real_time))
   }`
   console.log(power.style.width);
   /*if(x>0  && x+110<getElement("html").offsetWidth ){
