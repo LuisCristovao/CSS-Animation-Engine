@@ -115,8 +115,8 @@ function init() {
       
     ground.append(createSquare("-10px", "500px","2000","2000","rgb(0,255,0)","ground")).show()
     street.append(createSquare("-10px", "550px","2000","100","rgb(230,200,88)","street")).show()
-    clouds.push(new Object().append(createSquare("200px", "100px","200","200","rgb(100,100,200,.5)")).show())
-    clouds.push(new Object().append(createSquare("400px", "100px","200","200","rgb(100,100,200,.5)")).show())
+    clouds.push(new Object().append(createSquare("200px", "100px","200","200","rgb(100,100,255,.5)")).show())
+    clouds.push(new Object().append(createSquare("400px", "100px","200","200","rgb(100,100,255,.5)")).show())
     clouds.push(new Object().append(createSquare("200px", "550px","200","200","rgb(100,100,200,.5)")).show())
     clouds.push(new Object().append(createSquare("400px", "550px","200","200","rgb(100,100,200,.5)")).show())
     sky.append(createSquare("-10px", "-1500px","1000","3000","linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,229,251,1) 56%, rgba(245,248,249,1) 100%)","sky")).show()
