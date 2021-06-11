@@ -98,6 +98,7 @@ const main = func => {
     requestAnimationFrame(recurse)
 }
 var flores=[]
+var clouds=[]
 function init() {
     let ninja = new Object()
     let ground=new Object()
@@ -114,6 +115,10 @@ function init() {
       
     ground.append(createSquare("-10px", "500px","2000","2000","rgb(0,255,0)","ground")).show()
     street.append(createSquare("-10px", "550px","2000","100","rgb(230,200,88)","street")).show()
+    clouds.push(new Object().append(createSquare("200px", "100px","200","200","rgb(100,100,200,.5)")).show())
+    clouds.push(new Object().append(createSquare("400px", "100px","200","200","rgb(100,100,200,.5)")).show())
+    clouds.push(new Object().append(createSquare("200px", "550px","200","200","rgb(100,100,200,.5)")).show())
+    clouds.push(new Object().append(createSquare("400px", "550px","200","200","rgb(100,100,200,.5)")).show())
     sky.append(createSquare("-10px", "-1500px","1000","3000","linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,229,251,1) 56%, rgba(245,248,249,1) 100%)","sky")).show()
     points.forEach((point,i)=>{
       let color_=[Math.random()*255,Math.random()*255,Math.random()*255]
@@ -205,6 +210,9 @@ main((dt,time)=>{
   real_time+=dt
   flores.forEach((flor,i)=>{
     flor.shape.style.left=flor.x+5*Math.cos(2*(real_time-i*0.2))
+  })
+  clouds.forEach((cloud,i)=>{
+    cloud.shape.style.left=cloud.x+300*Math.cos((real_time/10))
   })
   //flores[0].getElement().style.left=5*Math.cos(2*real_time) 
   //left_eye.style.height=Math.ceil((Math.abs(30*Math.abs(Math.sin(2*time)))+30*Math.abs(Math.sin(2*time)))/2)
