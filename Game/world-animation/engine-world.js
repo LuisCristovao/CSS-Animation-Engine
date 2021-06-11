@@ -101,13 +101,29 @@ var flores=[]
 function init() {
     let ninja = new Object()
     let ground=new Object()
+    let street=new Object()
     let sky=new Object()
-    
-    ground.append(createSquare("-10px", "500px","2000","2000","rgb(0,255,0)","ground")).show()
-    sky.append(createSquare("-10px", "-1500px","1000","3000","linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,229,251,1) 56%, rgba(245,248,249,1) 100%)","sky")).show()
-    for(let i=0;i<200;i++){
-      flores.push(new Object().append(createCircle(`${10+10*(i%100)}px`, `${500+((10*i)%150)}px`,"20",`rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`)).show())  
+
+    let points=[]
+    for(let i=0;i<30;i++){
+      points.push([i*100,500])
+    } 
+    for(let i=0;i<30;i++){
+      points.push([i*100,650])
     }
+      
+    ground.append(createSquare("-10px", "500px","2000","2000","rgb(0,255,0)","ground")).show()
+    street.append(createSquare("-10px", "550px","2000","100","rgb(230,200,88)","street")).show()
+    sky.append(createSquare("-10px", "-1500px","1000","3000","linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,229,251,1) 56%, rgba(245,248,249,1) 100%)","sky")).show()
+    points.forEach((point,i)=>{
+      let color_=[Math.random()*255,Math.random()*255,Math.random()*255]
+      flores.push(new Object().append(createCircle(`${point[0]}px`, `${point[1]}px`,"20",color_)).show())  
+      for(let j=0;j<10;j++){
+        flores.push(new Object().append(createCircle(`${point[0]+Math.random()*(20-(-20))-20}px`, `${point[1]+Math.random()*(20-(-20))-20}px`,"20",`rgb(${color_[0]+Math.random()*(20-(-20))-20},${color_[1]+Math.random()*(20-(-20))-20},${color_[2]+Math.random()*(20-(-20))-20})`)).show())  
+      }
+    })
+      
+      
     //flores.push(new Object().append(createCircle("100px", "600px","20","rgb(255,0,0)")).show())
     //flores.push(new Object().append(createCircle("200px", "600px","20","rgb(255,0,0)")).show())
     //flores.push(new Object().append(createCircle("300px", "600px","20","rgb(255,0,0)")).show())
@@ -188,7 +204,7 @@ let real_time=0
 main((dt,time)=>{
   real_time+=dt
   flores.forEach((flor,i)=>{
-    flor.shape.style.left=flor.x+25*Math.cos(2*(real_time-i*0.2))
+    flor.shape.style.left=flor.x+5*Math.cos(2*(real_time-i*0.2))
   })
   //flores[0].getElement().style.left=5*Math.cos(2*real_time) 
   //left_eye.style.height=Math.ceil((Math.abs(30*Math.abs(Math.sin(2*time)))+30*Math.abs(Math.sin(2*time)))/2)
