@@ -94,7 +94,7 @@ class Object {
         this.shape.style.top = y
 
     }
-    moveObj(xi,yi,xf,yf,speed,real_time,animation_time){
+    move(xi,yi,xf,yf,speed,real_time,animation_time){
         var deltax=Math.abs(xf-xi)*speed
         var deltay=Math.abs(yf-yi)*speed
         if(real_time%animation_time==0){
