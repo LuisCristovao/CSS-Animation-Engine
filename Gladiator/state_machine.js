@@ -3,10 +3,15 @@ class StateMachine {
   constructor(state_machine, initial_state) {
     this.state = initial_state;
     this.state_machine = state_machine;
+    this.time= new Date().getTime() ;
+    this.real_time=0
   }
   execute = (state) => {
+    this.dt = (new Date().getTime() - this.time) * 1e-3;
+    this.real_time+=this.dt
     state_machine[state].play();
     this.state = state_machine[state].next();
+    this.time= new Date().getTime()  
   };
   start = () => {
     requestAnimationFrame(this.run);

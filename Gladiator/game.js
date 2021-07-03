@@ -5,8 +5,8 @@ let state_machine = {
   "start game": new State(
     "start game",
     () => {
-      console.log("Game sStarts!!!!\n Qait 3 sec");
-      ball.mo
+      console.log("Game sStarts!!!!\n Qait 3 sec\nrealtime="+game.real_time);
+      
     },
     () => {
       setTimeout(() => {
@@ -18,7 +18,7 @@ let state_machine = {
   2: new State(
     "2",
     () => {
-      console.log("STATE 222222222 !!!!\n Wait 3 sec");
+      console.log("STATE 222222222 !!!!\n Wait 3 sec\nrealtime="+game.real_time);
     },
     () => {
       setTimeout(() => {
