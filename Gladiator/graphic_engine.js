@@ -88,22 +88,20 @@ class Object {
     destroy() {
         this.shape.parentNode.removeChild(this.shape);
     }
-
+    linear_motion(starty,finaly,duration){
+        return ((finaly-starty)/duration)
+    }
     moveObjXY(x, y) {
         this.shape.style.left = x
         this.shape.style.top = y
 
     }
-    move(xi,yi,xf,yf,speed,real_time,animation_time){
-        var deltax=Math.abs(xf-xi)*speed
-        var deltay=Math.abs(yf-yi)*speed
-        if(real_time%animation_time==0){
-            moveObjXY(`${deltax}px`,`${deltay}px`)
-            return true
-        }else{
-            return false
-        }
-        return this
+    move(xi,yi,xf,yf,real_time,animation_time){
+        var deltax=(xf-xi)/animation_time
+        var deltay=(yf-yi)/animation_time
+        let new_x=deltax*(real_time%animation_time)+xi
+        let new_y=deltay*(real_time%animation_time)+yi
+        this.moveObjXY(new_x,new_y)
     }
     appendAnimation(animation){
         this.animation=animation
