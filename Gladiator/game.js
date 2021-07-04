@@ -1,63 +1,97 @@
 let state="start game"
 let ninja1 = new Object();
 let ninja2 = new Object();
+let power=new Object()
+power.append(createSquare("400px","135px","100","100","red","power"))
 ninja1.append(
       createSquare("300px", "100px", "100", "200", "rgb(12,100,200)", "ninja")
     ).show()
-    .appendChild(createSquare("60", "30", "30", "30", "lightgreen", "left eye"));
+    .appendChild(createSquare("60", "30", "30", "30", "lightgreen", "eye1"));
 ninja2
 .append(
   createSquare("300px", "500px", "100", "200", "rgb(220,100,100)", "ninja2")
 ).show()
-.appendChild(createSquare("60", "30", "30", "30", "yellow", "left eye2"));
+.appendChild(createSquare("60", "30", "30", "30", "yellow", "eye2"));
 let state_machine = {
   "start game": new State(
     "start game",
     () => {
-      console.log("Game sStarts!!!!\n Qait 3 sec\nrealtime="+game.real_time);
-     ninja1.shape.style.height=`${
+      state="start game"
+      console.log(state);
+     ninja1.shape.style.height=
        step(game.real_time % 3, 0, 1.5)*linear_motion(200,190,game.real_time,1.5)
       +step(game.real_time % 3, 1.5, 3)*linear_motion(190,200,game.real_time,1.5)
-    }px`
+    
     ninja1.shape.style.top=`${
       step(game.real_time % 3, 0, 1.5)*linear_motion(100,110,game.real_time,1.5)
      +step(game.real_time % 3, 1.5, 3)*linear_motion(110,100,game.real_time,1.5)
    }px`
+  
+  /* eye1.style.height=step(game.real_time % 3,0,1)*30 +
+  step(game.real_time % 3,1,1.25)*linear_motion(30,0,game.real_time,3) +
+  step(game.real_time % 3,1.25,1.5)*linear_motion(0,30,game.real_time,3)+
+  step(game.real_time % 3,1.5,3)*30 */
 
-   
+
 
   ninja2.shape.style.height=`${
-    step(game.real_time % 3, 0, 1.5)*linear_motion(200,180,game.real_time,1.5)
-   +step(game.real_time % 3, 1.5, 3)*linear_motion(180,200,game.real_time,1.5)
+    step(game.real_time % 3, 0, 1.5)*linear_motion(200,190,game.real_time,1.5)
+   +step(game.real_time % 3, 1.5, 3)*linear_motion(190,200,game.real_time,1.5)
   }px`
  ninja2.shape.style.top=`${
-   step(game.real_time % 3, 0, 1.5)*linear_motion(500,520,game.real_time,1.5)
-  +step(game.real_time % 3, 1.5, 3)*linear_motion(520,500,game.real_time,1.5)
+   step(game.real_time % 3, 0, 1.5)*linear_motion(500,510,game.real_time,1.5)
+  +step(game.real_time % 3, 1.5, 3)*linear_motion(510,500,game.real_time,1.5)
   }px`
     },
     () => {
       setTimeout(() => {
         state="2";
-      }, 6000);
+      }, 3000);
       return "wait";
     }
   ),
   2: new State(
     "2",
     () => {
-      console.log("STATE 222222222 !!!!\n Wait 3 sec\nrealtime="+game.real_time);
+      state="2"
+      console.log(state);
+      power.destroy()
+      power.append(createSquare("400px","135px","100","100","red","power")).show()
+      //power.shape.style.border="darkblue solid 10px"
       
     },
     () => {
-      setTimeout(() => {
-        state="start game";
-      }, 3000);
-      return "wait";
+      state="3"
+      return "3"
     }
   ),
   3: new State(
     "3",
     () => {
+      state=3
+      console.log(state);
+      ninja1.shape.style.height=
+       step(game.real_time % 3, 0, 1.5)*linear_motion(200,190,game.real_time,1.5)
+      +step(game.real_time % 3, 1.5, 3)*linear_motion(190,200,game.real_time,1.5)
+    
+    ninja1.shape.style.top=
+      step(game.real_time % 3, 0, 1.5)*linear_motion(100,110,game.real_time,1.5)
+     +step(game.real_time % 3, 1.5, 3)*linear_motion(110,100,game.real_time,1.5)
+
+     ninja2.shape.style.height=
+      step(game.real_time % 3, 0, 1.5)*linear_motion(200,190,game.real_time,1.5)
+     +step(game.real_time % 3, 1.5, 3)*linear_motion(190,200,game.real_time,1.5)
+    
+   ninja2.shape.style.top=
+     step(game.real_time % 3, 0, 1.5)*linear_motion(500,510,game.real_time,1.5)
+    +step(game.real_time % 3, 1.5, 3)*linear_motion(510,500,game.real_time,1.5)
+    
+      power.rotateVel(0,1080,game.real_time,3)
+      power.shape.style.left=step(game.real_time % 3, 0, 1)*400+
+      step(game.real_time % 3, 1, 3)*linear_motion(400,900,game.real_time,2)
+
+      power.shape.style.top=step(game.real_time % 3, 0, 1)*135+
+      step(game.real_time % 3, 1, 3)*linear_motion(135,700,game.real_time,2)
     },
     () => {
       setTimeout(() => {
@@ -69,13 +103,14 @@ let state_machine = {
   4: new State(
     "4",
     () => {
-     
+      state="4"
+      console.log(state);
+     power.destroy()
     },
     () => {
-      setTimeout(() => {
-        state="start game";
-      }, 3000);
-      return "wait";
+      
+      state="start game";
+      return "start game";
     }
   ),
   wait: new State(

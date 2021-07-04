@@ -59,9 +59,9 @@ function createTriangle(x, y, leftw, rightw, height, color, id) {
 
     return triangle
 }
-function linear_motion(starty,finaly,real_time,duration){
-    let delta =((finaly-starty)/duration)
-    return delta *(real_time%duration)+starty
+function linear_motion(start_pos,final_pos,real_time,duration){
+    let delta =((final_pos-start_pos)/duration)
+    return delta *(real_time%duration)+start_pos
 }
 function step(t,placement,size){
 
@@ -104,7 +104,7 @@ class Object {
         return this
     }
     destroy() {
-        this.shape.parentNode.removeChild(this.shape);
+        this.shape.remove()
     }
     
     move(x, y) {
@@ -130,7 +130,8 @@ class Object {
     velocityMove(xi,yi,xf,yf,real_time,animation_time){
         let new_x=this.velocity(xf,xi,real_time,animation_time)
         let new_y=this.velocity(yf,yi,real_time,animation_time)
-        this.move(new_x,new_y)
+        //this.move(new_x,new_y)
+        return {"x":new_x,"y":new_y}
     }
     rotateVel(init_angle,final_angle,real_time,animation_time){
         
