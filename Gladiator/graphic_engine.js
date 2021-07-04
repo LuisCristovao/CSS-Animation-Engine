@@ -91,17 +91,32 @@ class Object {
     linear_motion(starty,finaly,duration){
         return ((finaly-starty)/duration)
     }
-    moveObjXY(x, y) {
+    step(t,placement,size){
+    
+        if(t>=placement && t<=placement+size){
+            return 1
+        }else{
+            return 0
+        }
+    }
+    move(x, y) {
         this.shape.style.left = x
         this.shape.style.top = y
 
     }
-    move(xi,yi,xf,yf,real_time,animation_time){
-        var deltax=(xf-xi)/animation_time
-        var deltay=(yf-yi)/animation_time
+    velocity(xi,yi,xf,yf,real_time,animation_time){
+        var deltax=((xf-xi)/animation_time)
+        var deltay=((yf-yi)/animation_time)
         let new_x=deltax*(real_time%animation_time)+xi
         let new_y=deltay*(real_time%animation_time)+yi
-        this.moveObjXY(new_x,new_y)
+        this.move(new_x,new_y)
+    }
+    accelaration(xf,yf,real_time,animation_time){
+        var deltax=((xf-parseInt(this.shape.style.left))/animation_time)
+        var deltay=((yf-parseInt(this.shape.style.top))/animation_time)
+        let new_x=deltax*(real_time%animation_time)+parseInt(this.shape.style.left)
+        let new_y=deltay*(real_time%animation_time)+parseInt(this.shape.style.top)
+        this.move(new_x,new_y)
     }
     appendAnimation(animation){
         this.animation=animation
