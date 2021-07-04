@@ -1,6 +1,6 @@
 let state="start game"
 let ball=new Object()
-ball.append(createCircle("100px","100px","100px","rgb(50,50,50)")).show()
+ball.append(createText("Ola Tiago!","position:absolute;left:100px;top:100px;font-size:2em")).show()
 
 let state_machine = {
   "start game": new State(

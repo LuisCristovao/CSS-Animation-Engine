@@ -6,7 +6,12 @@ function getElement(id){
 function createElement(type) {
     return document.createElement(type)
 }
-
+function createText(text_in="",style=""){
+    var text=createElement("p")
+    text.innerText=text_in
+    text.setAttribute("style",style)
+    return text
+}
 function createCircle(x, y, radius, color, id) {
     var circle = createElement("div")
     if (id != "" || id != null) {
