@@ -109,12 +109,23 @@ class Object {
         this.shape.style.top = y
 
     }
+    rotate(angle){
+        this.shape.style.transform=`rotate(${angle}deg)`
+    }
     velocity(xi,yi,xf,yf,real_time,animation_time){
         var deltax=((xf-xi)/animation_time)
         var deltay=((yf-yi)/animation_time)
         let new_x=deltax*(real_time%animation_time)+xi
         let new_y=deltay*(real_time%animation_time)+yi
         this.move(new_x,new_y)
+    }
+    rotateVel(init_angle,final_angle,real_time,animation_time){
+        var delta=((final_angle-init_angle)/animation_time)
+        let new_angle=delta*(real_time%animation_time)+init_angle
+        this.rotate(new_angle)
+    }
+    rotateAcc(angle){
+
     }
     accelaration(xf,yf,real_time,animation_time){
         var deltax=((xf-parseInt(this.shape.style.left))/animation_time)
