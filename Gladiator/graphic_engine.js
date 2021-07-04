@@ -117,12 +117,23 @@ class Object {
     getAngle(){
         return this.angle
     }
+    accelaration(xf,yf,real_time,animation_time){
+        var deltax=((xf-parseInt(this.shape.style.left))/animation_time)
+        var deltay=((yf-parseInt(this.shape.style.top))/animation_time)
+        let new_x=deltax*(real_time%animation_time)+parseInt(this.shape.style.left)
+        let new_y=deltay*(real_time%animation_time)+parseInt(this.shape.style.top)
+        return {"x":new_x,"y":new_y}
+    }
     velocity(xi,yi,xf,yf,real_time,animation_time){
         var deltax=((xf-xi)/animation_time)
         var deltay=((yf-yi)/animation_time)
         let new_x=deltax*(real_time%animation_time)+xi
         let new_y=deltay*(real_time%animation_time)+yi
-        this.move(new_x,new_y)
+        return {"x":new_x,"y":new_y}
+    }
+    velocityMove(xi,yi,xf,yf,real_time,animation_time){
+        let velocity=this.velocity(xi,yi,xf,yf,real_time,animation_time)
+        this.move(velocity.x,velocity.y)
     }
     rotateVel(init_angle,final_angle,real_time,animation_time){
         var delta=((final_angle-init_angle)/animation_time)
@@ -134,12 +145,9 @@ class Object {
         let new_angle=delta*(real_time%animation_time)+this.angle
         this.rotate(new_angle)
     }
-    accelaration(xf,yf,real_time,animation_time){
-        var deltax=((xf-parseInt(this.shape.style.left))/animation_time)
-        var deltay=((yf-parseInt(this.shape.style.top))/animation_time)
-        let new_x=deltax*(real_time%animation_time)+parseInt(this.shape.style.left)
-        let new_y=deltay*(real_time%animation_time)+parseInt(this.shape.style.top)
-        this.move(new_x,new_y)
+    accelarationMove(xf,yf,real_time,animation_time){
+        let acc=this.accelaration(xf,yf,real_time,animation_time)
+        this.move(acc.x,acc.y)
     }
     appendAnimation(animation){
         this.animation=animation
