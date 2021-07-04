@@ -1,6 +1,6 @@
 let state="start game"
 let ball=new Object()
-ball.append(createSquare(100, 100, 200, 100, "rgb(100,255,100)","x")).show()
+ball.append(createSquare(100, 100, 200, 200, "rgb(100,255,100)","x")).show()
 let ball2=new Object()
 ball2.append(createText("Ola Pedro!","position:absolute;left:100px;top:100px;font-size:2em;color:rgb(0,0,255)")).show()
 let state_machine = {
@@ -8,11 +8,14 @@ let state_machine = {
     "start game",
     () => {
       console.log("Game sStarts!!!!\n Qait 3 sec\nrealtime="+game.real_time);
-      ball.velocityMove(100,100,1000,300,game.real_time,3)
-     //ball.accelarationMove(1000,100,game.real_time,3)
+     let new_width=ball.velocity(600,parseInt(ball.shape.style.width),game.real_time,3) 
+     let new_height=ball.velocity(600,parseInt(ball.shape.style.height),game.real_time,3) 
+     ball.shape.style.width=new_width
+     ball.shape.style.height=new_height
      ball.rotateAcc(180,game.real_time,3)
-     ball2.accelarationMove(1000,200,game.real_time,3)
-     
+     ball2.accelarationMove(900,100,game.real_time,3)
+     let new_size=ball2.velocity(2,parseInt(ball2.shape.style["font-size"].split("em")[0]),game.real_time,3)
+      ball2.shape.style["font-size"]=`${new_size}em`
     },
     () => {
       setTimeout(() => {
@@ -25,13 +28,17 @@ let state_machine = {
     "2",
     () => {
       console.log("STATE 222222222 !!!!\n Wait 3 sec\nrealtime="+game.real_time);
-      ball.velocityMove(1000,300,100,100,game.real_time,3)
-      //ball.accelarationMove(500,400,game.real_time,3)
-      ball2.rotateVel(0,180,game.real_time,3)
+      let new_width=ball.velocity(200,parseInt(ball.shape.style.width),game.real_time,3) 
+      let new_height=ball.velocity(200,parseInt(ball.shape.style.width),game.real_time,3) 
+      ball.shape.style.width=new_width
+      ball.shape.style.height=new_height
+      ball.rotateAcc(0,game.real_time,3)
+      let new_size=ball2.velocity(6,parseInt(ball2.shape.style["font-size"].split("em")[0]),game.real_time,3)
+      ball2.shape.style["font-size"]=`${new_size}em`
     },
     () => {
       setTimeout(() => {
-        state="3";
+        state="start game";
       }, 3000);
       return "wait";
     }
@@ -39,9 +46,6 @@ let state_machine = {
   3: new State(
     "3",
     () => {
-      ball.accelarationMove(100,700,game.real_time,3)
-      ball.rotateAcc(0,game.real_time,3)
-      ball2.accelarationMove(100,800,game.real_time,3)
     },
     () => {
       setTimeout(() => {
@@ -53,8 +57,7 @@ let state_machine = {
   4: new State(
     "4",
     () => {
-      ball.accelarationMove(900,700,game.real_time,3)
-      ball2.accelarationMove(100,100,game.real_time,3)
+     
     },
     () => {
       setTimeout(() => {
