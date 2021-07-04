@@ -1,7 +1,8 @@
 let state="start game"
 let ball=new Object()
 ball.append(createText("Ola Tiago!","position:absolute;left:100px;top:100px;font-size:2em")).show()
-
+let ball2=new Object()
+ball2.append(createText("Ola Pedro!","position:absolute;left:100px;top:100px;font-size:2em;color:rgb(0,0,255)")).show()
 let state_machine = {
   "start game": new State(
     "start game",
@@ -9,6 +10,8 @@ let state_machine = {
       console.log("Game sStarts!!!!\n Qait 3 sec\nrealtime="+game.real_time);
       //ball.velocity(100,100,1000,300,game.real_time,3)
      ball.accelaration(1000,100,game.real_time,3)
+     ball2.accelaration(1000,200,game.real_time,3)
+     
     },
     () => {
       setTimeout(() => {
@@ -23,6 +26,7 @@ let state_machine = {
       console.log("STATE 222222222 !!!!\n Wait 3 sec\nrealtime="+game.real_time);
       //ball.velocity(1000,300,100,100,game.real_time,3)
       ball.accelaration(100,100,game.real_time,3)
+      ball2.accelaration(1000,800,game.real_time,3)
     },
     () => {
       setTimeout(() => {
@@ -35,6 +39,7 @@ let state_machine = {
     "3",
     () => {
       ball.accelaration(100,700,game.real_time,3)
+      ball2.accelaration(100,800,game.real_time,3)
     },
     () => {
       setTimeout(() => {
@@ -47,6 +52,7 @@ let state_machine = {
     "4",
     () => {
       ball.accelaration(900,700,game.real_time,3)
+      ball2.accelaration(100,100,game.real_time,3)
     },
     () => {
       setTimeout(() => {
