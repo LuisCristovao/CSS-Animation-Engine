@@ -1,26 +1,44 @@
 let state="start game"
-let ball=new Object()
-ball.append(createSquare(100, 100, 200, 200, "rgb(100,255,100)","x")).show()
-let ball2=new Object()
-ball2.append(createText("Ola Pedro!","position:absolute;left:100px;top:100px;font-size:2em;color:rgb(0,0,255)")).show()
+let ninja1 = new Object();
+let ninja2 = new Object();
+ninja1.append(
+      createSquare("300px", "100px", "100", "200", "rgb(12,100,200)", "ninja")
+    ).show()
+    .appendChild(createSquare("60", "30", "30", "30", "lightgreen", "left eye"));
+ninja2
+.append(
+  createSquare("300px", "500px", "100", "200", "rgb(220,100,100)", "ninja2")
+).show()
+.appendChild(createSquare("60", "30", "30", "30", "yellow", "left eye2"));
 let state_machine = {
   "start game": new State(
     "start game",
     () => {
       console.log("Game sStarts!!!!\n Qait 3 sec\nrealtime="+game.real_time);
-     let new_width=ball.velocity(600,parseInt(ball.shape.style.width),game.real_time,3) 
-     let new_height=ball.velocity(600,parseInt(ball.shape.style.height),game.real_time,3) 
-     ball.shape.style.width=new_width
-     ball.shape.style.height=new_height
-     ball.rotateAcc(180,game.real_time,3)
-     ball2.accelarationMove(900,100,game.real_time,3)
-     let new_size=ball2.velocity(2,parseInt(ball2.shape.style["font-size"].split("em")[0]),game.real_time,3)
-      ball2.shape.style["font-size"]=`${new_size}em`
+     ninja1.shape.style.height=`${
+       step(game.real_time % 3, 0, 1.5)*linear_motion(200,190,game.real_time,1.5)
+      +step(game.real_time % 3, 1.5, 3)*linear_motion(190,200,game.real_time,1.5)
+    }px`
+    ninja1.shape.style.top=`${
+      step(game.real_time % 3, 0, 1.5)*linear_motion(100,110,game.real_time,1.5)
+     +step(game.real_time % 3, 1.5, 3)*linear_motion(110,100,game.real_time,1.5)
+   }px`
+
+   
+
+  ninja2.shape.style.height=`${
+    step(game.real_time % 3, 0, 1.5)*linear_motion(200,180,game.real_time,1.5)
+   +step(game.real_time % 3, 1.5, 3)*linear_motion(180,200,game.real_time,1.5)
+  }px`
+ ninja2.shape.style.top=`${
+   step(game.real_time % 3, 0, 1.5)*linear_motion(500,520,game.real_time,1.5)
+  +step(game.real_time % 3, 1.5, 3)*linear_motion(520,500,game.real_time,1.5)
+  }px`
     },
     () => {
       setTimeout(() => {
         state="2";
-      }, 3000);
+      }, 6000);
       return "wait";
     }
   ),
@@ -28,13 +46,7 @@ let state_machine = {
     "2",
     () => {
       console.log("STATE 222222222 !!!!\n Wait 3 sec\nrealtime="+game.real_time);
-      let new_width=ball.velocity(200,parseInt(ball.shape.style.width),game.real_time,3) 
-      let new_height=ball.velocity(200,parseInt(ball.shape.style.width),game.real_time,3) 
-      ball.shape.style.width=new_width
-      ball.shape.style.height=new_height
-      ball.rotateAcc(0,game.real_time,3)
-      let new_size=ball2.velocity(6,parseInt(ball2.shape.style["font-size"].split("em")[0]),game.real_time,3)
-      ball2.shape.style["font-size"]=`${new_size}em`
+      
     },
     () => {
       setTimeout(() => {

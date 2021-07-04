@@ -59,6 +59,18 @@ function createTriangle(x, y, leftw, rightw, height, color, id) {
 
     return triangle
 }
+function linear_motion(starty,finaly,real_time,duration){
+    let delta =((finaly-starty)/duration)
+    return delta *(real_time%duration)+starty
+}
+function step(t,placement,size){
+
+    if(t>=placement && t<=placement+size){
+        return 1
+    }else{
+        return 0
+    }
+}
 class Object {
     /*
     This object has two elements
@@ -94,21 +106,12 @@ class Object {
     destroy() {
         this.shape.parentNode.removeChild(this.shape);
     }
-    linear_motion(starty,finaly,duration){
-        return ((finaly-starty)/duration)
-    }
-    step(t,placement,size){
     
-        if(t>=placement && t<=placement+size){
-            return 1
-        }else{
-            return 0
-        }
-    }
     move(x, y) {
         this.shape.style.left = x
         this.shape.style.top = y
-
+        this.x=x
+        this.y=y
     }
     rotate(angle){
         this.shape.style.transform=`rotate(${angle}deg)`
