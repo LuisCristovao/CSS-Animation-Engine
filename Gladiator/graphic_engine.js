@@ -72,6 +72,7 @@ class Object {
         //this.animation=some_lambda
         //this.x=style.left
         //this.y=style.top
+        this.angle=0
     }
     getElement(){
         return this.shape
@@ -111,6 +112,10 @@ class Object {
     }
     rotate(angle){
         this.shape.style.transform=`rotate(${angle}deg)`
+        this.angle=angle
+    }
+    getAngle(){
+        return this.angle
     }
     velocity(xi,yi,xf,yf,real_time,animation_time){
         var deltax=((xf-xi)/animation_time)
@@ -124,8 +129,10 @@ class Object {
         let new_angle=delta*(real_time%animation_time)+init_angle
         this.rotate(new_angle)
     }
-    rotateAcc(angle){
-
+    rotateAcc(final_angle,real_time,animation_time){
+        var delta=((final_angle-this.angle)/animation_time)
+        let new_angle=delta*(real_time%animation_time)+this.angle
+        this.rotate(new_angle)
     }
     accelaration(xf,yf,real_time,animation_time){
         var deltax=((xf-parseInt(this.shape.style.left))/animation_time)

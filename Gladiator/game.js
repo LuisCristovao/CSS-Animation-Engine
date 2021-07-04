@@ -10,7 +10,7 @@ let state_machine = {
       console.log("Game sStarts!!!!\n Qait 3 sec\nrealtime="+game.real_time);
       //ball.velocity(100,100,1000,300,game.real_time,3)
      //ball.accelaration(1000,100,game.real_time,3)
-     ball.rotateVel(0,180,game.real_time,3)
+     ball.rotateAcc(180,game.real_time,3)
      ball2.accelaration(1000,200,game.real_time,3)
      
     },
@@ -40,6 +40,7 @@ let state_machine = {
     "3",
     () => {
       ball.accelaration(100,700,game.real_time,3)
+      ball.rotateAcc(0,game.real_time,3)
       ball2.accelaration(100,800,game.real_time,3)
     },
     () => {
