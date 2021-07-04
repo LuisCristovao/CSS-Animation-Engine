@@ -117,37 +117,31 @@ class Object {
     getAngle(){
         return this.angle
     }
-    accelaration(xf,yf,real_time,animation_time){
-        var deltax=((xf-parseInt(this.shape.style.left))/animation_time)
-        var deltay=((yf-parseInt(this.shape.style.top))/animation_time)
-        let new_x=deltax*(real_time%animation_time)+parseInt(this.shape.style.left)
-        let new_y=deltay*(real_time%animation_time)+parseInt(this.shape.style.top)
-        return {"x":new_x,"y":new_y}
+    velocity(end_value,actual_value,real_time,animation_time){
+        var delta=((end_value-actual_value)/animation_time)
+        let new_pos=delta*(real_time%animation_time)+actual_value
+        
+        return new_pos
     }
-    velocity(xi,yi,xf,yf,real_time,animation_time){
-        var deltax=((xf-xi)/animation_time)
-        var deltay=((yf-yi)/animation_time)
-        let new_x=deltax*(real_time%animation_time)+xi
-        let new_y=deltay*(real_time%animation_time)+yi
-        return {"x":new_x,"y":new_y}
-    }
+    
     velocityMove(xi,yi,xf,yf,real_time,animation_time){
-        let velocity=this.velocity(xi,yi,xf,yf,real_time,animation_time)
-        this.move(velocity.x,velocity.y)
+        let new_x=this.velocity(xf,xi,real_time,animation_time)
+        let new_y=this.velocity(yf,yi,real_time,animation_time)
+        this.move(new_x,new_y)
     }
     rotateVel(init_angle,final_angle,real_time,animation_time){
-        var delta=((final_angle-init_angle)/animation_time)
-        let new_angle=delta*(real_time%animation_time)+init_angle
+        
+        let new_angle=this.velocity(final_angle,init_angle,real_time,animation_time)
         this.rotate(new_angle)
     }
     rotateAcc(final_angle,real_time,animation_time){
-        var delta=((final_angle-this.angle)/animation_time)
-        let new_angle=delta*(real_time%animation_time)+this.angle
+        let new_angle=this.velocity(final_angle,this.angle,real_time,animation_time)
         this.rotate(new_angle)
     }
     accelarationMove(xf,yf,real_time,animation_time){
-        let acc=this.accelaration(xf,yf,real_time,animation_time)
-        this.move(acc.x,acc.y)
+        let new_x=this.velocity(xf,parseInt(this.shape.style.left),real_time,animation_time)
+        let new_y=this.velocity(yf,parseInt(this.shape.style.top),real_time,animation_time)
+        this.move(new_x,new_y)
     }
     appendAnimation(animation){
         this.animation=animation
