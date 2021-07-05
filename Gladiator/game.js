@@ -2,6 +2,7 @@ let state="start game"
 let ninja1 = new Object();
 let ninja2 = new Object();
 let power=new Object()
+let timer_id;
 power.append(createSquare("400px","135px","100","100","red","power"))
 ninja1.append(
       createSquare("300px", "100px", "100", "200", "rgb(12,100,200)", "ninja")
@@ -17,6 +18,7 @@ let state_machine = {
     "start game",
     () => {
       state="start game"
+      //clearTimeout(timer_id)
       console.log(state);
      ninja1.shape.style.height=
        step(game.real_time % 3, 0, 1.5)*linear_motion(200,190,game.real_time,1.5)
@@ -44,7 +46,7 @@ let state_machine = {
   }px`
     },
     () => {
-      setTimeout(() => {
+      timer_id=setTimeout(() => {
         state="2";
       }, 3000);
       return "wait";
@@ -57,6 +59,7 @@ let state_machine = {
       console.log(state);
       power.destroy()
       power.append(createSquare("400px","135px","100","100","red","power")).show()
+      //clearTimeout(timer_id)
       //power.shape.style.border="darkblue solid 10px"
       
     },
@@ -94,7 +97,7 @@ let state_machine = {
       step(game.real_time % 3, 1, 3)*linear_motion(135,700,game.real_time,2)
     },
     () => {
-      setTimeout(() => {
+      timer_id=setTimeout(() => {
         state="4";
       }, 3000);
       return "wait";
@@ -104,8 +107,9 @@ let state_machine = {
     "4",
     () => {
       state="4"
+      clearTimeout(timer_id)
       console.log(state);
-     power.destroy()
+      power.destroy()
     },
     () => {
       
