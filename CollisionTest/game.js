@@ -105,23 +105,23 @@ function collisionDetection(speed){
     player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
   }
   //just top left with object on the left
-  if(top_left_corner && player.x+1 >floor.x+floor.width && !bot_left_corner && !top_right_corner){
+  if(top_left_corner && player.x+1 >=floor.x+floor.width && !bot_left_corner && !top_right_corner){
     player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
   }
-  //just top right and going up
-  if(top_right_corner && up && !top_left_corner && !bot_right_corner){
+  //just top right and  object is above
+  if(top_right_corner && player.y+1>=floor.y+floor.height && !top_left_corner && !bot_right_corner){
     player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
   }
   //just top right and going right
-  if(top_right_corner && right && !bot_right_corner && !top_left_corner){
+  if(top_right_corner && player.x+player.width-1 <=floor.x && !bot_right_corner && !top_left_corner){
     player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
   }
   //just bot right and object is under 
-  if(bot_right_corner && player.y+player.height-1<floor.y   && !top_right_corner && !bot_left_corner){
+  if(bot_right_corner && player.y+player.height-1<=floor.y   && !top_right_corner && !bot_left_corner){
     player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
   }
   //just bot right and object is right 
-  if(bot_right_corner && player.x+player.width-1<floor.x  && !bot_left_corner && !top_right_corner){
+  if(bot_right_corner && player.x+player.width-1<=floor.x  && !bot_left_corner && !top_right_corner){
     player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
   }
   //just bot left and going down
