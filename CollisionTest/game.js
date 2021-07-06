@@ -71,27 +71,30 @@ function collisionDetection(speed){
 
   }
   //top right
-  if(player.x+player.width>=floor.x && player.x<=floor.x +floor.width && player.y<=floor.y + floor.height && player.y>=floor.y){
+  if(player.x+player.width>=floor.x && player.x+player.width<=floor.x +floor.width && player.y<=floor.y + floor.height && player.y>=floor.y){
     top_right_corner=true
   }
   //bottom left
-  if(player.y+player.height>=floor.y && player.y+player.height<=floor.y+floor.height && player.x<=floor.x + floor.width ){
+  if(player.y+player.height>=floor.y && player.y+player.height<=floor.y+floor.height && player.x<=floor.x + floor.width && player.x>=floor.x  ){
     bot_left_corner=true
   }
   //bottom right
-  if(player.y+player.height>=floor.y && player.x+player.width>=floor.x){
+  if(player.y+player.height>=floor.y && player.y+player.height<=floor.y+floor.height && player.x+player.width>=floor.x && player.x+player.width<=floor.x +floor.width ){
     bot_right_corner=true
   }
-  
+  //both left
   if(top_left_corner && bot_left_corner){
     player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
   }
+  //both right
   if(top_right_corner && bot_right_corner){
     player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
   }
+  //top corners
   if(top_right_corner && top_left_corner){
     player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
   }
+  //bottom corners
   if(bot_left_corner && bot_right_corner){
     player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
   }
