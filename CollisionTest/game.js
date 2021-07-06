@@ -106,6 +106,16 @@ function collisionDetection(speed){
   if(top_left_corner && left && !bot_left_corner && !top_right_corner){
     player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
   }
+  //just top right and going up
+  if(top_right_corner && up && !top_left_corner && !bot_right_corner){
+    player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
+  }
+  //just top left and going right
+  if(top_right_corner && right && !bot_right_corner && !top_left_corner){
+    player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
+  }
+
+
 }
 function init(){
     player.append(createSquare("300px","300px","50","70","rgb(255,0,0)","player")).show()
