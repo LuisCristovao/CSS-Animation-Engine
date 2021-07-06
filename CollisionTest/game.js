@@ -47,35 +47,66 @@ function release(e) {
   } */
 }
 function move_player(speed){
-    if(up && !collisionDetection()){
+    if(up ){
        player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed) 
     }
-    if(down && !collisionDetection()){
+    if(down ){
         player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
     }
-    if(left && !collisionDetection()){
+    if(left ){
         player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
     }
-    if(right && !collisionDetection()){
+    if(right){
         player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
     }
 }
-function collisionDetection(){
-    if(player.y+player.height>=floor.y && (player.x>=floor.x && player.x<=floor.x+floor.width) ){
-        player.move(player.x,player.y-1)
-        return true
-    }
+function collisionDetection(speed){
+  let top_left_corner=false
+  let top_right_corner=false
+  let bot_right_corner=false
+  let bot_left_corner=false
+  //top left corner collision
+  if(player.y<=floor.y + floor.height && player.x<=floor.x + floor.width && player.x>=floor.x && player.y>=floor.y ){
+    top_left_corner=true
+
+  }
+  //top right
+  if(player.x+player.width>=floor.x && player.x<=floor.x +floor.width && player.y<=floor.y + floor.height && player.y>=floor.y){
+    top_right_corner=true
+  }
+  //bottom left
+  if(player.y+player.height>=floor.y && player.y+player.height<=floor.y+floor.height && player.x<=floor.x + floor.width ){
+    bot_left_corner=true
+  }
+  //bottom right
+  if(player.y+player.height>=floor.y && player.x+player.width>=floor.x){
+    bot_right_corner=true
+  }
+  
+  if(top_left_corner && bot_left_corner){
+    player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
+  }
+  if(top_right_corner && bot_right_corner){
+    player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
+  }
+  if(top_right_corner && top_left_corner){
+    player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
+  }
+  if(bot_left_corner && bot_right_corner){
+    player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
+  }
 }
 function init(){
     player.append(createSquare("300px","300px","50","70","rgb(255,0,0)","player")).show()
-    floor.append(createSquare("0px","500px","1500","300","rgb(100,100,100)","floor")).show()
+    floor.append(createSquare("300px","500px","300","300","rgb(100,100,100)","floor")).show()
 }
 function main(){
     let dt = (new Date().getTime() - time) * 1e-3;
     time= new Date().getTime() 
     real_time+=dt
     //code here
-    move_player(20)
+    move_player(2)
+    collisionDetection(2)
     requestAnimationFrame(main)
 }
 //Main ---
