@@ -114,6 +114,22 @@ function collisionDetection(speed){
   if(top_right_corner && right && !bot_right_corner && !top_left_corner){
     player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
   }
+  //just bot right and going down
+  if(bot_right_corner && down && !top_right_corner && !bot_left_corner){
+    player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
+  }
+  //just bot right and going right
+  if(bot_right_corner && right && !bot_left_corner && !top_right_corner){
+    player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
+  }
+  //just bot left and going down
+  if(bot_left_corner && down && !top_left_corner && !bot_right_corner){
+    player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
+  }
+  //just bot left and going left
+  if(bot_left_corner && left && !bot_right_corner && !top_left_corner){
+    player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
+  }
 
 
 }
