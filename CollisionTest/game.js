@@ -159,7 +159,7 @@ function init(){
 }
 
 function main(){
-    let speed=5
+    let speed=2
     let dt = (new Date().getTime() - time) * 1e-3;
     time= new Date().getTime() 
     real_time+=dt

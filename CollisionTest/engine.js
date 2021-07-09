@@ -118,6 +118,7 @@ class Object {
   rotate(angle){
       this.shape.style.transform=`rotate(${angle}deg)`
       this.angle=angle
+      return this
   }
   getAngle(){
       return this.angle
