@@ -124,12 +124,12 @@ function collisionDetection(speed){
   if(bot_right_corner && player.x+player.width-1<=floor.x  && !bot_left_corner && !top_right_corner){
     player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
   }
-  //just bot left and going down
-  if(bot_left_corner && down && !top_left_corner && !bot_right_corner){
+  //just bot left with object is under
+  if(bot_left_corner && player.y+player.height-1<=floor.y && !top_left_corner && !bot_right_corner){
     player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
   }
-  //just bot left and going left
-  if(bot_left_corner && left && !bot_right_corner && !top_left_corner){
+  //just bot left with object is left
+  if(bot_left_corner && player.x+1>=floor.x+floor.width && !bot_right_corner && !top_left_corner){
     player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
   }
 
