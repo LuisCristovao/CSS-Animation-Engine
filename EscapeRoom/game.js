@@ -1,7 +1,28 @@
 var time= new Date().getTime() ;
 var real_time=0
-var player=new Object()
+
 var objects=[] 
+class Level{
+  constructor(identity,object=null){
+    this.object=object
+    this.identity=identity
+  }
+
+}
+class Player{
+  constructor(object){
+    this.object=object
+  }
+  move(finalx,finaly){
+    this.object.shape.style.left=parseInt(this.object.shape.style.width)*finalx
+    this.object.shape.style.top=parseInt(this.object.shape.style.height)*finaly
+  }
+}
+var player=new Player(new Object().append(createSquare(0,0,90,90,"rgb(0,255,0)","player")).show())
+player.object.shape.style["z-index"]=500
+const matrix_size=100
+//const level = new Array(matrix_size).fill(0).map(() => new Array(matrix_size).fill(0));
+const level_objects = new Array(matrix_size).fill(0).map(() => new Array(matrix_size).fill(0));
 var up = false,
   right = false,
   down = false,
@@ -147,12 +168,40 @@ function collisionDetection(speed){
 
 
 }
+function createLevel(){
+  for(let row=0;row<level_objects.length;row++){
+    for(let col=0;col<level_objects[row].length;col++){
+      if(Math.random()>0.5){
+        level_objects[row][col]=new Level("1")
+      }else{
+        level_objects[row][col]=new Level("0")
+      }
+    }
+  }
+}
+function showLevel(){
+  let square_size=90
+  for(let row=0;row<level_objects.length;row++){
+    for(let col=0;col<level_objects[row].length;col++){
+      if(level_objects[row][col].identity=="1"){
+        level_objects[row][col].object=new Object()
+        .append(createSquare(row*square_size, col*square_size, square_size, square_size, "rgb(0,0,0)"))
+        .show()
+        .shape.onclick=()=>{player.move(row,col)}
+      }
+      else{
+        level_objects[row][col].object=new Object()
+        .append(createSquare(row*square_size, col*square_size, square_size, square_size, "rgb(255,255,255)"))
+        .show()
+        .shape.onclick=()=>{player.move(row,col)}
+      }
+    }
+  }
+}
 function init(){
-    player.append(createSquare("300px","300px","50","70","rgb(255,0,0)","player")).show()
-    objects.push(new Object().append(createSquare("300px","500px","300","300","rgb(100,100,100)","floor")).show())
-    objects.push(new Object().append(createSquare("100px","600px","100","300","rgb(100,100,100)")).show())
-    /*objects.push(new Object().append(createSquare("2500px","300px","100","300","rgb(100,100,100)")).show())
-    objects.push(new Object().append(createSquare("2800px","300px","300","300","rgb(100,100,100)")).show()) */
+    createLevel()
+
+    showLevel()
     document.body.style.width=3000
     document.body.style.height=3000
 
@@ -164,8 +213,7 @@ function main(){
     time= new Date().getTime() 
     real_time+=dt
     //code here
-    move_player(speed)
-    collisionDetection(speed)
+    
     requestAnimationFrame(main)
 }
 //Main ---
