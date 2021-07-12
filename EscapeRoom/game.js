@@ -13,9 +13,20 @@ class Player{
   constructor(object){
     this.object=object
   }
-  move(finalx,finaly){
-    this.object.shape.style.left=parseInt(this.object.shape.style.width)*finalx
-    this.object.shape.style.top=parseInt(this.object.shape.style.height)*finaly
+  setDestiny(x,y){
+    this.nextx=x
+    this.nexty=y
+  }
+  move(delta_time){
+    let x=parseFloat(this.object.shape.style.left)
+    let y=parseFloat(this.object.shape.style.top)
+    let deltax=Math.abs(x-this.nextx)
+    let deltay=Math.abs(y-this.nexty)
+    
+    let speed=20
+    this.object.shape.style.left=speed*delta_time*deltax +x //parseInt(this.object.shape.style.width)*(this.nextx)
+    this.object.shape.style.top=speed*delta_time*deltay+y//parseInt(this.object.shape.style.height)*(this.nexty)
+    
   }
 }
 var player=new Player(new Object().append(createSquare(0,0,90,90,"rgb(0,255,0)","player")).show())
@@ -187,13 +198,13 @@ function showLevel(){
         level_objects[row][col].object=new Object()
         .append(createSquare(row*square_size, col*square_size, square_size, square_size, "rgb(0,0,0)"))
         .show()
-        .shape.onclick=()=>{player.move(row,col)}
+        .shape.onclick=()=>{player.setDestiny(row,col)}
       }
       else{
         level_objects[row][col].object=new Object()
         .append(createSquare(row*square_size, col*square_size, square_size, square_size, "rgb(255,255,255)"))
         .show()
-        .shape.onclick=()=>{player.move(row,col)}
+        .shape.onclick=()=>{player.setDestiny(row,col)}
       }
     }
   }
@@ -213,7 +224,7 @@ function main(){
     time= new Date().getTime() 
     real_time+=dt
     //code here
-    
+    player.move(dt)
     requestAnimationFrame(main)
 }
 //Main ---
