@@ -1,6 +1,8 @@
 var time= new Date().getTime() ;
 var real_time=0
-
+var square_size=100
+const matrix_size=100
+let step_time=false
 var objects=[] 
 class Level{
   constructor(identity,object=null){
@@ -12,26 +14,38 @@ class Level{
 class Player{
   constructor(object){
     this.object=object
+    this.nextx=0
+    this.nexty=0
+    
   }
   setDestiny(x,y){
     this.nextx=x
     this.nexty=y
   }
-  move(delta_time){
-    let x=parseFloat(this.object.shape.style.left)
-    let y=parseFloat(this.object.shape.style.top)
-    let deltax=Math.abs(x-this.nextx)
-    let deltay=Math.abs(y-this.nexty)
+  move(time){
+    let x=Math.round(parseFloat(this.object.shape.style.left)/matrix_size)
+    let y=Math.round(parseFloat(this.object.shape.style.top)/matrix_size)
+    let deltax=-(x-this.nextx)
+    let deltay=-(y-this.nexty)
     
-    let speed=20
-    this.object.shape.style.left=speed*delta_time*deltax +x //parseInt(this.object.shape.style.width)*(this.nextx)
-    this.object.shape.style.top=speed*delta_time*deltay+y//parseInt(this.object.shape.style.height)*(this.nexty)
+    let speed=1
+    if((Math.ceil(time))-(time)<0.02){
+      console.log(Math.ceil(time))
+      if(deltax!=0){
+        this.object.shape.style.left=(x*square_size)+((deltax>0)?square_size:-square_size) //parseInt(this.object.shape.style.width)*(this.nextx)
+      }
+      if(deltay!=0){
+        this.object.shape.style.top=(y*square_size)+((deltay>0)?square_size:-square_size)
+      }
+      //this.object.shape.style.top=speed*delta_time*deltay+y//parseInt(this.object.shape.style.height)*(this.nexty)
+      
+    }
     
   }
 }
-var player=new Player(new Object().append(createSquare(0,0,90,90,"rgb(0,255,0)","player")).show())
+var player=new Player(new Object().append(createSquare(0,0,square_size,square_size,"rgb(0,255,0)","player")).show())
 player.object.shape.style["z-index"]=500
-const matrix_size=100
+
 //const level = new Array(matrix_size).fill(0).map(() => new Array(matrix_size).fill(0));
 const level_objects = new Array(matrix_size).fill(0).map(() => new Array(matrix_size).fill(0));
 var up = false,
@@ -191,7 +205,7 @@ function createLevel(){
   }
 }
 function showLevel(){
-  let square_size=90
+  
   for(let row=0;row<level_objects.length;row++){
     for(let col=0;col<level_objects[row].length;col++){
       if(level_objects[row][col].identity=="1"){
@@ -224,7 +238,7 @@ function main(){
     time= new Date().getTime() 
     real_time+=dt
     //code here
-    player.move(dt)
+    player.move(real_time)
     requestAnimationFrame(main)
 }
 //Main ---
