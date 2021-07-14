@@ -25,12 +25,14 @@ class Player{
   move(time){
     let x=Math.round(parseFloat(this.object.shape.style.left)/matrix_size)
     let y=Math.round(parseFloat(this.object.shape.style.top)/matrix_size)
+    this.x=x
+    this.y=y
     let deltax=-(x-this.nextx)
     let deltay=-(y-this.nexty)
     
     let speed=1
     if((Math.ceil(time))-(time)<0.02){
-      console.log(Math.ceil(time))
+      console.log(time)
       if(deltax!=0){
         this.object.shape.style.left=(x*square_size)+((deltax>0)?square_size:-square_size) //parseInt(this.object.shape.style.width)*(this.nextx)
       }
@@ -40,7 +42,12 @@ class Player{
       //this.object.shape.style.top=speed*delta_time*deltay+y//parseInt(this.object.shape.style.height)*(this.nexty)
       
     }
-    
+    window.scroll({
+      top: (y*square_size)-300,
+      left: (x*square_size)-1000
+      
+
+    }); 
   }
 }
 var player=new Player(new Object().append(createSquare(0,0,square_size,square_size,"rgb(0,255,0)","player")).show())
