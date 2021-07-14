@@ -34,10 +34,22 @@ class Player{
     if((Math.ceil(time))-(time)<0.02){
       console.log(time)
       if(deltax!=0){
-        this.object.shape.style.left=(x*square_size)+((deltax>0)?square_size:-square_size) //parseInt(this.object.shape.style.width)*(this.nextx)
+        if(deltax>0){
+          if(level_objects[x+1][y].identity!="1")
+          this.object.shape.style.left=(x*square_size)+((deltax>0)?square_size:-square_size) //parseInt(this.object.shape.style.width)*(this.nextx)
+        }else{
+          if(level_objects[x-1][y].identity!="1")
+          this.object.shape.style.left=(x*square_size)+((deltax>0)?square_size:-square_size) //parseInt(this.object.shape.style.width)*(this.nextx)
+        }
       }
       if(deltay!=0){
-        this.object.shape.style.top=(y*square_size)+((deltay>0)?square_size:-square_size)
+        if(deltay>0){
+          if(level_objects[x][y+1].identity!="1")
+          this.object.shape.style.top=(y*square_size)+((deltay>0)?square_size:-square_size)
+        }else{
+          if(level_objects[x][y-1].identity!="1")
+          this.object.shape.style.top=(y*square_size)+((deltay>0)?square_size:-square_size)
+        }
       }
       //this.object.shape.style.top=speed*delta_time*deltay+y//parseInt(this.object.shape.style.height)*(this.nexty)
       
