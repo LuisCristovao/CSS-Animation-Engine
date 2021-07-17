@@ -37,18 +37,14 @@ class Player{
     let speed=1
     if((Math.ceil(time))-(time)<0.02){
       console.log(time)
-      if(level_objects[x+stepx][y+stepy].identity=="0"){
+      
+      if(level_objects[x+stepx][y].identity=="0"){
         this.object.shape.style.left=(x*square_size)+square_size*stepx 
+      }
+      if(level_objects[x][y+stepy].identity=="0"){
         this.object.shape.style.top=(y*square_size)+square_size*stepy
       }
-      else{
-          if(level_objects[x+stepx][y].identity=="0"){
-            this.object.shape.style.left=(x*square_size)+square_size*stepx 
-          }
-          if(level_objects[x][y+stepy].identity=="0"){
-            this.object.shape.style.top=(y*square_size)+square_size*stepy
-          }
-      }
+      
     }
     window.scroll({
       top: (y*square_size)-300,
