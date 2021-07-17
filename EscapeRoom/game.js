@@ -15,8 +15,8 @@ class Level{
 class Player{
   constructor(object){
     this.object=object
-    this.nextx=0
-    this.nexty=0
+    this.nextx=Math.round(parseFloat(this.object.shape.style.left)/matrix_size)
+    this.nexty=Math.round(parseFloat(this.object.shape.style.top)/matrix_size)
     
   }
   setDestiny(x,y){
@@ -61,7 +61,7 @@ class Player{
     }); 
   }
 }
-var player=new Player(new Object().append(createSquare(0,0,square_size,square_size,"rgb(0,255,0)","player")).show())
+var player=new Player(new Object().append(createSquare(50*square_size,50*square_size,square_size,square_size,"rgb(0,255,0)","player")).show())
 player.object.shape.style["z-index"]=500
 
 //const level = new Array(matrix_size).fill(0).map(() => new Array(matrix_size).fill(0));
@@ -110,107 +110,8 @@ function release(e) {
     dodge = false
   } */
 }
-function move_player(speed){
-  
-    if(up ){
-       player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed) 
-    }
-    if(down ){
-        player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
-    }
-    if(left ){
-        player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
-    }
-    if(right){
-        player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
-    }
-     window.scroll({
-      top: player.y-300,
-      left: player.x-300
-      
-
-    }); 
-}
-function collisionDetection(speed){
-  let top_left_corner=false
-  let top_right_corner=false
-  let bot_right_corner=false
-  let bot_left_corner=false
-
-  objects.forEach(object=>{
-
-    //top left corner collision
-    if(player.y<=object.y + object.height && player.x<=object.x + object.width && player.x>=object.x && player.y>=object.y ){
-      top_left_corner=true
-  
-    }
-    //top right
-    if(player.x+player.width>=object.x && player.x+player.width<=object.x +object.width && player.y<=object.y + object.height && player.y>=object.y){
-      top_right_corner=true
-    }
-    //bottom left
-    if(player.y+player.height>=object.y && player.y+player.height<=object.y+object.height && player.x<=object.x + object.width && player.x>=object.x  ){
-      bot_left_corner=true
-    }
-    //bottom right
-    if(player.y+player.height>=object.y && player.y+player.height<=object.y+object.height && player.x+player.width>=object.x && player.x+player.width<=object.x +object.width ){
-      bot_right_corner=true
-    }
-  
-    //both left
-    if(top_left_corner && bot_left_corner){
-      player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
-    }
-    //both right
-    if(top_right_corner && bot_right_corner){
-      player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
-    }
-    //top corners
-    if(top_right_corner && top_left_corner){
-      player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
-    }
-    //bottom corners
-    if(bot_left_corner && bot_right_corner){
-      player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
-    }
-  
-    /* //just top left and object is above
-    if(top_left_corner && player.y+1>=object.y+object.height && !top_right_corner && !bot_left_corner){
-      player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
-    }
-    //just top left with object on the left
-    if(top_left_corner && player.x+1 >=object.x+object.width && !bot_left_corner && !top_right_corner){
-      player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
-    }
-    //just top right and  object is above
-    if(top_right_corner && player.y+1>=object.y+object.height && !top_left_corner && !bot_right_corner){
-      player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
-    }
-    //just top right and going right
-    if(top_right_corner && player.x+player.width-1 <=object.x && !bot_right_corner && !top_left_corner){
-      player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
-    }
-    //just bot right and object is under 
-    if(bot_right_corner && player.y+player.height-1<=object.y   && !top_right_corner && !bot_left_corner){
-      player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
-    }
-    //just bot right and object is right 
-    if(bot_right_corner && player.x+player.width-1<=object.x  && !bot_left_corner && !top_right_corner){
-      player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
-    }
-    //just bot left with object is under
-    if(bot_left_corner && player.y+player.height-1<=object.y && !top_left_corner && !bot_right_corner){
-      player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
-    }
-    //just bot left with object is left
-    if(bot_left_corner && player.x+1>=object.x+object.width && !bot_right_corner && !top_left_corner){
-      player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
-    } */
-  })
 
 
-
-}
 function createLevel(){
   for(let row=0;row<level_objects.length;row++){
     for(let col=0;col<level_objects[row].length;col++){
@@ -243,7 +144,6 @@ function showLevel(){
 }
 function init(){
     createLevel()
-
     showLevel()
     document.body.style.width=3000
     document.body.style.height=3000
