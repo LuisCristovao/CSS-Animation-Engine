@@ -11,6 +11,7 @@ class Level{
   }
 
 }
+
 class Player{
   constructor(object){
     this.object=object
@@ -29,36 +30,29 @@ class Player{
     this.y=y
     let deltax=-(x-this.nextx)
     let deltay=-(y-this.nexty)
-    
+    let stepx=deltax/Math.abs(deltax)
+    let stepy=deltay/Math.abs(deltay)
+    stepx=isNaN(stepx)?0:stepx
+    stepy=isNaN(stepy)?0:stepy
     let speed=1
     if((Math.ceil(time))-(time)<0.02){
       console.log(time)
-      if(deltax!=0){
-        if(deltax>0){
-          if(level_objects[x+1][y].identity!="1")
-          this.object.shape.style.left=(x*square_size)+((deltax>0)?square_size:-square_size) //parseInt(this.object.shape.style.width)*(this.nextx)
-        }else{
-          if(level_objects[x-1][y].identity!="1")
-          this.object.shape.style.left=(x*square_size)+((deltax>0)?square_size:-square_size) //parseInt(this.object.shape.style.width)*(this.nextx)
-        }
+      if(level_objects[x+stepx][y+stepy].identity=="0"){
+        this.object.shape.style.left=(x*square_size)+square_size*stepx 
+        this.object.shape.style.top=(y*square_size)+square_size*stepy
       }
-      if(deltay!=0){
-        if(deltay>0){
-          if(level_objects[x][y+1].identity!="1")
-          this.object.shape.style.top=(y*square_size)+((deltay>0)?square_size:-square_size)
-        }else{
-          if(level_objects[x][y-1].identity!="1")
-          this.object.shape.style.top=(y*square_size)+((deltay>0)?square_size:-square_size)
-        }
+      else{
+          if(level_objects[x+stepx][y].identity=="0"){
+            this.object.shape.style.left=(x*square_size)+square_size*stepx 
+          }
+          if(level_objects[x][y+stepy].identity=="0"){
+            this.object.shape.style.top=(y*square_size)+square_size*stepy
+          }
       }
-      //this.object.shape.style.top=speed*delta_time*deltay+y//parseInt(this.object.shape.style.height)*(this.nexty)
-      
     }
     window.scroll({
       top: (y*square_size)-300,
-      left: (x*square_size)-1000
-      
-
+      left: (x*square_size)-1000   
     }); 
   }
 }
