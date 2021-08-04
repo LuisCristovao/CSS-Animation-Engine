@@ -122,45 +122,53 @@ function collisionDetection(speed){
     }
   
      //just top left and object is above
-    /*if(top_left_corner && player.y+1>=object.y+object.height && !top_right_corner && !bot_left_corner){
+    if(top_left_corner && player.y+1>=object.y+object.height && !top_right_corner && !bot_left_corner){
       block_up=true
+      player.shape.style.top=object.y+object.height
       //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
     }
     //just top left with object on the left
     if(top_left_corner && player.x+1 >=object.x+object.width && !bot_left_corner && !top_right_corner){
       block_left=true
+      player.shape.style.left=object.x+object.width
       //player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
     }
     //just top right and  object is above
     if(top_right_corner && player.y+1>=object.y+object.height && !top_left_corner && !bot_right_corner){
       block_up=true
+      player.shape.style.top=object.y+object.height
       //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
     }
     //just top right and going right
     if(top_right_corner && player.x+player.width-1 <=object.x && !bot_right_corner && !top_left_corner){
       block_right=true
+      player.shape.style.left=object.x-player.width
      // player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
     }
     //just bot right and object is under 
     if(bot_right_corner && player.y+player.height-1<=object.y   && !top_right_corner && !bot_left_corner){
       block_down=true
+      player.shape.style.top=object.y-player.height
       //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
     }
     //just bot right and object is right 
     if(bot_right_corner && player.x+player.width-1<=object.x  && !bot_left_corner && !top_right_corner){
       block_right=true
+      player.shape.style.left=object.x-player.width
       //player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
     }
     //just bot left with object is under
     if(bot_left_corner && player.y+player.height-1<=object.y && !top_left_corner && !bot_right_corner){
       block_down=true
+      player.shape.style.top=object.y-player.height
       //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
     }
     //just bot left with object is left
     if(bot_left_corner && player.x+1>=object.x+object.width && !bot_right_corner && !top_left_corner){
       block_left=true
+      player.shape.style.left=object.x+object.width
       //player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
-    } */
+    } 
   })
 
 
@@ -169,7 +177,7 @@ function collisionDetection(speed){
 function init(){
     player.append(createSquare("300px","300px","50","70","rgb(255,0,0)","player")).show()
     objects.push(new Object().append(createSquare("500px","500px","300","300","rgb(100,100,100)","floor")).show())
-    objects.push(new Object().append(createSquare("500px","600px","100","300","rgb(100,100,100)")).show())
+    objects.push(new Object().append(createSquare("345px","600px","100","300","rgb(100,100,100)")).show())
     objects.push(new Object().append(createSquare("2500px","300px","100","300","rgb(100,100,100)")).show())
     objects.push(new Object().append(createSquare("2800px","555px","300","300","rgb(100,100,100)")).show()) 
     document.body.style.width=3000
@@ -178,7 +186,7 @@ function init(){
 }
 
 function main(){
-    let speed=20
+    let speed=10
     let dt = (new Date().getTime() - time) * 1e-3;
     time= new Date().getTime() 
     real_time+=dt
