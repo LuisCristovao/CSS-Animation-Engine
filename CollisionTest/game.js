@@ -2,6 +2,7 @@ var time= new Date().getTime() ;
 var real_time=0
 var player=new Object()
 var objects=[] 
+var enemy=null
 var up = false,
   right = false,
   down = false,
@@ -132,7 +133,7 @@ function collisionDetection(speed){
       //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
     }
     //just top left with object on the left
-    if(top_left_corner && player.x+1 >=object.x+object.width && !bot_left_corner && !top_right_corner){
+    if(top_left_corner && player.x+player.width >=object.x+object.width && !bot_left_corner && !top_right_corner){
       block_left=true
       player.shape.style.left=object.x+object.width
       //player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
@@ -178,6 +179,10 @@ function collisionDetection(speed){
 
 
 }
+
+function moveEnemy(time){
+  enemy.move(1000+300*Math.cos(time),500)
+}
 function init(){
     player.append(createSquare("300px","300px","50","70","rgb(255,0,0)","player")).show()
     objects.push(new Object("bha").append(createSquare("500px","500px","300","300","rgb(100,100,100)","floor")).show())
@@ -185,6 +190,8 @@ function init(){
     objects.push(new Object().append(createSquare("2500px","300px","100","300","rgb(100,100,100)")).show())
     objects.push(new Object().append(createSquare("2800px","555px","300","300","rgb(100,100,100)")).show()) 
     objects.push(new Object().append(createSquare("0px","2000px","3500","300","rgb(100,100,100)")).show()) 
+    objects.push(new Object("enemy").append(createSquare("1000px","500px","100","100","rgb(200,100,100)")).show())
+    enemy=objects[5]
     document.body.style.width=3000
     document.body.style.height=3000
 
@@ -199,17 +206,21 @@ function main(){
     //code here
     player.x=parseInt(player.shape.style.left)
     player.y=parseInt(player.shape.style.top)
+
+    moveEnemy(real_time)
     move_player(speed)
     object_id=collisionDetection(speed)
     window.scroll({
       top: player.y-300,
       left: player.x-300
     }); 
+    
     if(object_id=="bha"){
       player.shape.style["background-color"]="rgb(0,255,0)"
     }else{
       player.shape.style["background-color"]="rgb(255,0,0)"
     }
+    
     requestAnimationFrame(main)
 }
 //Main ---
