@@ -144,8 +144,8 @@ function collisionDetection(speed){
       player.shape.style.top=object.y+object.height
       //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
     }
-    //just top right and going right
-    if(top_right_corner && player.x+player.width-1 <=object.x && !bot_right_corner && !top_left_corner){
+    //just top right and object on  right
+    if(top_right_corner && player.x <=object.x && !bot_right_corner && !top_left_corner){
       block_right=true
       player.shape.style.left=object.x-player.width
      // player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
@@ -157,7 +157,7 @@ function collisionDetection(speed){
       //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
     }
     //just bot right and object is right 
-    if(bot_right_corner && player.x+player.width-1<=object.x  && !bot_left_corner && !top_right_corner){
+    if(bot_right_corner && player.x<=object.x  && !bot_left_corner && !top_right_corner){
       block_right=true
       player.shape.style.left=object.x-player.width
       //player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
@@ -169,7 +169,7 @@ function collisionDetection(speed){
       //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
     }
     //just bot left with object is left
-    if(bot_left_corner && player.x+1>=object.x+object.width && !bot_right_corner && !top_left_corner){
+    if(bot_left_corner && player.x+player.width>=object.x+object.width && !bot_right_corner && !top_left_corner){
       block_left=true
       player.shape.style.left=object.x+object.width
       //player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
