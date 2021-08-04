@@ -84,6 +84,7 @@ class Object {
       //this.animation=some_lambda
       //this.x=style.left
       //this.y=style.top
+      this.id=id
       this.angle=0
   }
   getElement(){
