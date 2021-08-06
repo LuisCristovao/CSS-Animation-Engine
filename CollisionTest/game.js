@@ -127,13 +127,13 @@ function collisionDetection(speed){
     }
   
      //just top left and object is above
-    if(top_left_corner && player.y+1>=object.y+object.height && !top_right_corner && !bot_left_corner){
+    if(top_left_corner && player.y+1>=object.y+object.height && player.x-1<object.x+object.width && !top_right_corner && !bot_left_corner){
       block_up=true
       player.shape.style.top=object.y+object.height
       //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
     }
     //just top left with object on the left
-    if(top_left_corner && player.x+player.width >=object.x+object.width && !bot_left_corner && !top_right_corner){
+    if(top_left_corner && player.x-1 <=object.x+object.width && player.y<object.y+object.height && !bot_left_corner && !top_right_corner){
       block_left=true
       player.shape.style.left=object.x+object.width
       //player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
@@ -163,13 +163,13 @@ function collisionDetection(speed){
       //player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
     }
     //just bot left with object is under
-    if(bot_left_corner && player.y+player.height-1<=object.y && !top_left_corner && !bot_right_corner){
+    if(bot_left_corner &&  player.y+player.height-1<object.y && player.x-1<object.x+object.width && !top_left_corner && !bot_right_corner){
       block_down=true
       player.shape.style.top=object.y-player.height
       //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
     }
     //just bot left with object is left
-    if(bot_left_corner && player.x+player.width>=object.x+object.width && !bot_right_corner && !top_left_corner){
+    if(bot_left_corner && player.x-1<object.x+object.width && player.y+player.height>object.y && !bot_right_corner && !top_left_corner){
       block_left=true
       player.shape.style.left=object.x+object.width
       //player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
@@ -181,7 +181,7 @@ function collisionDetection(speed){
 }
 
 function moveEnemy(time){
-  enemy.move(1000+300*Math.cos(time),500)
+  enemy.move(1000,500+300*Math.cos(time))
 }
 function init(){
     player.append(createSquare("300px","300px","50","70","rgb(255,0,0)","player")).show()
@@ -198,7 +198,7 @@ function init(){
 }
 
 function main(){
-    let speed=20
+    let speed=2
     let object_id=null
     let dt = (new Date().getTime() - time) * 1e-3;
     time= new Date().getTime() 
