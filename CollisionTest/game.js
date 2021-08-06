@@ -216,7 +216,7 @@ function main(){
       left: player.x-300
     }); 
     
-    if(object_id=="bha"){
+    if(object_id=="bha" || object_id=="enemy"){
       player.shape.style["background-color"]="rgb(0,255,0)"
     }else{
       player.shape.style["background-color"]="rgb(255,0,0)"
