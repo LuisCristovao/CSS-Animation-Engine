@@ -74,6 +74,7 @@ function collisionDetection(speed){
   block_right=false,
   block_left=false;
   let object_id=null
+  
   objects.forEach(object=>{
     let top_left_corner=false
     let top_right_corner=false
@@ -139,25 +140,25 @@ function collisionDetection(speed){
       //player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
     }
     //just top right and  object is above
-    if(top_right_corner && player.y+1>=object.y+object.height && !top_left_corner && !bot_right_corner){
+    if(top_right_corner && player.y+1>object.y+object.height && player.x+player.width>object.x && !top_left_corner && !bot_right_corner){
       block_up=true
       player.shape.style.top=object.y+object.height
       //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
     }
     //just top right and object on  right
-    if(top_right_corner && player.x <=object.x && !bot_right_corner && !top_left_corner){
+    if(top_right_corner &&  player.y-1<object.y+object.height && player.x+player.width-1<=object.x && !bot_right_corner && !top_left_corner){
       block_right=true
       player.shape.style.left=object.x-player.width
      // player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
     }
     //just bot right and object is under 
-    if(bot_right_corner && player.y+player.height-1<=object.y   && !top_right_corner && !bot_left_corner){
+    if(bot_right_corner && player.y+player.height-1<=object.y && player.x+player.width+1>object.x   && !top_right_corner && !bot_left_corner){
       block_down=true
       player.shape.style.top=object.y-player.height
       //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
     }
     //just bot right and object is right 
-    if(bot_right_corner && player.x<=object.x  && !bot_left_corner && !top_right_corner){
+    if(bot_right_corner && player.x+player.width-1<object.x && player.y+player.height+1>object.y  && !bot_left_corner && !top_right_corner){
       block_right=true
       player.shape.style.left=object.x-player.width
       //player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
