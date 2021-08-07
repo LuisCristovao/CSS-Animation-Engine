@@ -111,7 +111,7 @@ function collisionDetection(speed){
       bot_right_corner=true
       object_id=object.id
     }
-    
+    //--------------------
     //top left up corner collision
     if(player.y<=object.y + object.height && player.x+step<=object.x + object.width && player.x+step>=object.x && player.y>=object.y ){
       top_left_corner_up=true
@@ -127,7 +127,11 @@ function collisionDetection(speed){
       top_right_corner_up=true
       object_id=object.id
     }
-
+    //top right right
+    if(player.x+player.width>=object.x && player.x+player.width<=object.x +object.width && player.y+step<=object.y + object.height && player.y+step>=object.y){
+      top_right_corner_right=true
+      object_id=object.id
+    }
     
     //bottom left down
     if(player.y+player.height>=object.y && player.y+player.height<=object.y+object.height && player.x+step<=object.x + object.width && player.x+step>=object.x  ){
@@ -139,6 +143,17 @@ function collisionDetection(speed){
       bot_left_corner_left=true
       object_id=object.id
     }
+     //bottom right down
+     if(player.y+player.height>=object.y && player.y+player.height<=object.y+object.height && player.x+player.width-step>=object.x && player.x+player.width-step<=object.x +object.width ){
+      bot_right_corner_down=true
+      object_id=object.id
+    }
+     //bottom right right
+     if(player.y+player.height-step>=object.y && player.y+player.height-step<=object.y+object.height && player.x+player.width>=object.x && player.x+player.width<=object.x +object.width ){
+      bot_right_corner_right=true
+      object_id=object.id
+    }
+    //----------------
 
 
     //both left
@@ -165,41 +180,56 @@ function collisionDetection(speed){
       player.shape.style.top=object.y-player.height
       //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
     }
-  
+  //----------------------
+
     //only top left up
-    if(top_left_corner_up && !top_right_corner ){
+    if(top_left_corner_up ){
       
       block_up=true
       player.shape.style.top=object.y+object.height
       //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
     }
     //only top left left
-    if(top_left_corner_left && !bot_left_corner){
+    if(top_left_corner_left ){
       block_left=true
       player.shape.style.left=object.x+object.width
       //player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
     }
     //only bottom left down
-    if(bot_left_corner_down && !bot_right_corner){
+    if(bot_left_corner_down ){
       block_down=true
       player.shape.style.top=object.y-player.height
       //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
     }
     //only bottom left left
-    if( bot_left_corner_left && !top_left_corner ){
+    if( bot_left_corner_left ){
       block_left=true
       player.shape.style.left=object.x+object.width
       //player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
     }
-
     //only top right up
-    if(top_right_corner_up && !top_left_corner){
+    if(top_right_corner_up ){
       
       block_up=true
       player.shape.style.top=object.y+object.height
       //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
     }
-
+    //only top right right
+    if(top_right_corner_right && !bot_right_corner && !bot_right_corner_right){
+      block_right=true
+      player.shape.style.left=object.x-player.width
+    }
+    //only bottom right down
+    if(bot_right_corner_down  ){
+      block_down=true
+      player.shape.style.top=object.y-player.height
+      //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
+    }
+    //only bottom right right
+    if(bot_right_corner_right  ){
+      block_right=true
+      player.shape.style.left=object.x-player.width
+    }
   })
   return object_id
 
