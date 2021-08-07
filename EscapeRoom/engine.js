@@ -85,6 +85,7 @@ class Object {
       //this.x=style.left
       //this.y=style.top
       this.angle=0
+      this.id=id
   }
   getElement(){
       return this.shape

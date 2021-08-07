@@ -2,6 +2,13 @@
 var square_size=100
 var left_down=false
 var right_down=false
+var global_block_type="1"
+var global_block_color_map={
+  "0":"rgb(255,255,255)",
+  "1":"rgb(0,0,0)",
+  "portal_start":"rgb(100,111,0)",
+  "portal_end":"rgb(0,111,200)"
+}
 const matrix_size=100
 const level_objects = new Array(matrix_size).fill(0).map(() => new Array(matrix_size).fill(0));
 var player=new Object().append(createSquare(50*square_size,50*square_size,square_size,square_size,"rgb(0,255,0)","player")).show()
@@ -12,6 +19,23 @@ class Level{
       this.object=object
       this.identity=identity
     } 
+}
+// listeners ----
+document.addEventListener("keydown", press);
+function press(e) {
+  if (e.keyCode === 48 /* 0 */ ) {
+    global_block_type="0"
+  }
+  if (e.keyCode === 49 /* 1 */ ) {
+    global_block_type="1"
+  }
+  if (e.keyCode === 50 /* 2 */ ) {
+    global_block_type="portal_start"
+  }
+  if (e.keyCode === 51 /* 3 */ ) {
+    global_block_type="portal_end"
+  }
+  
 }
 
 //functions---
@@ -56,22 +80,15 @@ function showLevel(){
     
     for(let row=0;row<level_objects.length;row++){
       for(let col=0;col<level_objects[row].length;col++){
-        if(level_objects[row][col].identity=="1"){
+        let block_identity=level_objects[row][col].identity
+        
             let map_block=new Object()
-            map_block.append(createSquare(row*square_size, col*square_size, square_size, square_size, "rgb(0,0,0)"))
+            map_block.append(createSquare(row*square_size, col*square_size, square_size, square_size, global_block_color_map[block_identity]))
             .show()
             map_block.shape.onclick=()=>{draw(row,col)}
             map_block.shape.onmouseover=()=>{draw(row,col)}
             level_objects[row][col].object=map_block
-        }
-        else{
-          let map_block=new Object()
-          map_block.append(createSquare(row*square_size, col*square_size, square_size, square_size, "rgb(255,255,255)"))
-          .show()
-          map_block.shape.onclick=()=>{draw(row,col)}
-          map_block.shape.onmouseover=()=>{draw(row,col)}
-          level_objects[row][col].object=map_block
-        }
+        
       }
     }
 }
@@ -79,8 +96,9 @@ function draw(x,y){
     let block=level_objects[x][y]
     if(left_down){
         
-        block.identity="1"
-        block.object.shape.style["background-color"]="rgb(0,0,0)"
+        block.identity=global_block_type
+        block.object.shape.style["background-color"]=global_block_color_map[global_block_type]
+        
     }
     if(right_down){
         block.identity="0"
