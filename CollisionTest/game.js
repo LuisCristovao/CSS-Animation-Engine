@@ -122,6 +122,13 @@ function collisionDetection(speed){
       top_left_corner_left=true
       object_id=object.id
     }
+    //top right up corner collision
+    if(player.x+player.width-step>=object.x && player.x+player.width-step<=object.x +object.width && player.y<=object.y + object.height && player.y>=object.y){
+      top_right_corner_up=true
+      object_id=object.id
+    }
+
+    
     //bottom left down
     if(player.y+player.height>=object.y && player.y+player.height<=object.y+object.height && player.x+step<=object.x + object.width && player.x+step>=object.x  ){
       bot_left_corner_down=true
@@ -183,6 +190,14 @@ function collisionDetection(speed){
       block_left=true
       player.shape.style.left=object.x+object.width
       //player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
+    }
+
+    //only top right up
+    if(top_right_corner_up && !top_left_corner){
+      
+      block_up=true
+      player.shape.style.top=object.y+object.height
+      //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
     }
 
   })
