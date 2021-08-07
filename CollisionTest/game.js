@@ -74,12 +74,22 @@ function collisionDetection(speed){
   block_right=false,
   block_left=false;
   let object_id=null
-  
+  let step=10
+
   objects.forEach(object=>{
     let top_left_corner=false
     let top_right_corner=false
     let bot_right_corner=false
     let bot_left_corner=false
+    
+    let top_left_corner_up=false
+    let top_left_corner_left=false
+    let top_right_corner_up=false
+    let top_right_corner_right=false
+    let bot_right_corner_down=false
+    let bot_right_corner_right=false
+    let bot_left_corner_down=false
+    let bot_left_corner_left=false
 
     //top left corner collision
     if(player.y<=object.y + object.height && player.x<=object.x + object.width && player.x>=object.x && player.y>=object.y ){
@@ -101,7 +111,29 @@ function collisionDetection(speed){
       bot_right_corner=true
       object_id=object.id
     }
-  
+    
+    //top left up corner collision
+    if(player.y<=object.y + object.height && player.x+step<=object.x + object.width && player.x+step>=object.x && player.y>=object.y ){
+      top_left_corner_up=true
+      object_id=object.id
+    }
+    //top left left corner collision
+    if(player.y+step<=object.y + object.height && player.x<=object.x + object.width && player.x>=object.x && player.y+step>=object.y ){
+      top_left_corner_left=true
+      object_id=object.id
+    }
+    //bottom left down
+    if(player.y+player.height>=object.y && player.y+player.height<=object.y+object.height && player.x+step<=object.x + object.width && player.x+step>=object.x  ){
+      bot_left_corner_down=true
+      object_id=object.id
+    }
+    //bottom left left
+    if(player.y+player.height-step>=object.y && player.y+player.height-step<=object.y+object.height && player.x<=object.x + object.width && player.x>=object.x  ){
+      bot_left_corner_left=true
+      object_id=object.id
+    }
+
+
     //both left
     if(top_left_corner && bot_left_corner){
       block_left=true
@@ -127,54 +159,32 @@ function collisionDetection(speed){
       //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
     }
   
-     //just top left and object is above
-    if(top_left_corner && player.y+1>=object.y+object.height && player.x-1<object.x+object.width && !top_right_corner && !bot_left_corner){
+    //only top left up
+    if(top_left_corner_up && !top_right_corner ){
+      
       block_up=true
       player.shape.style.top=object.y+object.height
       //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
     }
-    //just top left with object on the left
-    if(top_left_corner && player.x-1 <=object.x+object.width && player.y<object.y+object.height && !bot_left_corner && !top_right_corner){
+    //only top left left
+    if(top_left_corner_left && !bot_left_corner){
       block_left=true
       player.shape.style.left=object.x+object.width
       //player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
     }
-    //just top right and  object is above
-    if(top_right_corner && player.y+1>object.y+object.height && player.x+player.width>object.x && !top_left_corner && !bot_right_corner){
-      block_up=true
-      player.shape.style.top=object.y+object.height
-      //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)+speed)
-    }
-    //just top right and object on  right
-    if(top_right_corner &&  player.y-1<object.y+object.height && player.x+player.width-1<=object.x && !bot_right_corner && !top_left_corner){
-      block_right=true
-      player.shape.style.left=object.x-player.width
-     // player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
-    }
-    //just bot right and object is under 
-    if(bot_right_corner && player.y+player.height-1<=object.y && player.x+player.width+1>object.x   && !top_right_corner && !bot_left_corner){
+    //only bottom left down
+    if(bot_left_corner_down && !bot_right_corner){
       block_down=true
       player.shape.style.top=object.y-player.height
       //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
     }
-    //just bot right and object is right 
-    if(bot_right_corner && player.x+player.width-1<object.x && player.y+player.height+1>object.y  && !bot_left_corner && !top_right_corner){
-      block_right=true
-      player.shape.style.left=object.x-player.width
-      //player.move(parseInt(player.shape.style.left)-speed,parseInt(player.shape.style.top))
-    }
-    //just bot left with object is under
-    if(bot_left_corner &&  player.y+player.height-1<object.y && player.x-1<object.x+object.width && !top_left_corner && !bot_right_corner){
-      block_down=true
-      player.shape.style.top=object.y-player.height
-      //player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed)
-    }
-    //just bot left with object is left
-    if(bot_left_corner && player.x-1<object.x+object.width && player.y+player.height>object.y && !bot_right_corner && !top_left_corner){
+    //only bottom left left
+    if( bot_left_corner_left && !top_left_corner ){
       block_left=true
       player.shape.style.left=object.x+object.width
       //player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
-    } 
+    }
+
   })
   return object_id
 
@@ -183,6 +193,7 @@ function collisionDetection(speed){
 
 function moveEnemy(time){
   enemy.move(1000,500+300*Math.cos(time))
+  //enemy.move(500+300*Math.cos(time),1000)
 }
 function init(){
     player.append(createSquare("300px","300px","50","70","rgb(255,0,0)","player")).show()
