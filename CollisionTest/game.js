@@ -2,7 +2,7 @@ var time= new Date().getTime() ;
 var real_time=0
 var player=new Object()
 var objects=[] 
-var enemy=null
+var enemy=null,speed=10
 var up = false,
   right = false,
   down = false,
@@ -48,9 +48,9 @@ function release(e) {
   if (e.keyCode === 37 /* left */ || e.keyCode === 65 /* a */) {
     left = false;
   }
-  /* if(e.keyCode === 75/*k key){
+   if(e.keyCode === 75/*k key*/){
     dodge = false
-  } */
+  } 
 }
 function move_player(speed){
   
@@ -66,15 +66,24 @@ function move_player(speed){
     if(right && !block_right){
         player.move(parseInt(player.shape.style.left)+speed,parseInt(player.shape.style.top))
     }
+    if(dodge){
+      player.move(parseInt(player.shape.style.left),parseInt(player.shape.style.top)-speed*10) 
+    }
     
 }
+function gravity(force){
+  if(!block_down){
+    player.move(player.x,player.y+force*2)
+  }
+}
+
 function collisionDetection(speed){
   block_down=false,
   block_up=false,
   block_right=false,
   block_left=false;
   let object_id=null
-  let step=10
+  let step=20
 
   objects.forEach(object=>{
     let top_left_corner=false
@@ -237,17 +246,19 @@ function collisionDetection(speed){
 }
 
 function moveEnemy(time){
-  enemy.move(1000,500+300*Math.cos(time))
-  //enemy.move(500+300*Math.cos(time),1000)
+  //enemy.move(1000,500+300*Math.cos(time))
+  enemy.move(1500+500*Math.cos(time/2),300)
 }
 function init(){
     player.append(createSquare("300px","300px","50","70","rgb(255,0,0)","player")).show()
-    objects.push(new Object("bha").append(createSquare("500px","500px","300","300","rgb(100,100,100)","floor")).show())
-    objects.push(new Object().append(createSquare("345px","600px","100","300","rgb(100,100,100)")).show())
+    objects.push(new Object("bha").append(createSquare("520px","500px","300","300","rgb(100,100,100)","floor")).show())
+    objects.push(new Object().append(createSquare("300px","600px","100","300","rgb(100,100,100)")).show())
     objects.push(new Object().append(createSquare("2500px","300px","100","300","rgb(100,100,100)")).show())
     objects.push(new Object().append(createSquare("2800px","555px","300","300","rgb(100,100,100)")).show()) 
     objects.push(new Object().append(createSquare("0px","2000px","3500","300","rgb(100,100,100)")).show()) 
-    objects.push(new Object("enemy").append(createSquare("1000px","500px","100","100","rgb(200,100,100)")).show())
+    objects.push(new Object("enemy").append(createSquare("1000px","100px","100","100","rgb(200,100,100)")).show())
+    objects.push(new Object("bha").append(createSquare("1200px","500px","300","300","rgb(100,100,100)","floor")).show())
+    objects.push(new Object("bha").append(createSquare("2000px","500px","300","300","rgb(100,100,100)","floor")).show())
     enemy=objects[5]
     document.body.style.width=3000
     document.body.style.height=3000
@@ -255,7 +266,7 @@ function init(){
 }
 
 function main(){
-    let speed=2
+    
     let object_id=null
     let dt = (new Date().getTime() - time) * 1e-3;
     time= new Date().getTime() 
@@ -265,6 +276,7 @@ function main(){
     player.y=parseInt(player.shape.style.top)
 
     moveEnemy(real_time)
+    gravity(10)
     move_player(speed)
     object_id=collisionDetection(speed)
     window.scroll({
@@ -276,6 +288,9 @@ function main(){
       player.shape.style["background-color"]="rgb(0,255,0)"
     }else{
       player.shape.style["background-color"]="rgb(255,0,0)"
+    }
+    if(object_id=="enemy"){
+      player.move(objects[5].x,player.y)
     }
     
     requestAnimationFrame(main)
