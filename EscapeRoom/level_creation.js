@@ -61,12 +61,14 @@ function createLevel(){
     let map=JSON.parse(JSON.parse(localStorage["EscapeRoom"]).map)
     for(let row=0;row<level_objects.length;row++){
       for(let col=0;col<level_objects[row].length;col++){
-        if(map[row][col]=="1"){
+        let identity=map[row][col]
+        level_objects[row][col]=new Level(identity)
+        /* if(map[row][col]=="1"){
           level_objects[row][col]=new Level("1")
         }
         if(map[row][col]=="0"){
           level_objects[row][col]=new Level("0")
-        }
+        } */
         /* if(Math.random()>0.5){
           level_objects[row][col]=new Level("1")
         }else{
