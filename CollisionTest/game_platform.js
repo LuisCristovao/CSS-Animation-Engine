@@ -247,10 +247,7 @@ function collisionDetection(speed){
 
 function moveEnemy(time){
   //enemy.move(1000,500+300*Math.cos(time))
-  let deltax=player.x-enemy.x
-  let deltay=player.y-enemy.y
-  //enemy.move(1500+500*Math.cos(time/2),300)
-  enemy.move(enemy.x+deltax/100,enemy.y+deltay/100)
+  enemy.move(1500+500*Math.cos(time/2),300)
 }
 function init(){
     player.append(createSquare("300px","300px","50","70","rgb(255,0,0)","player")).show()
@@ -277,11 +274,9 @@ function main(){
     //code here
     player.x=parseInt(player.shape.style.left)
     player.y=parseInt(player.shape.style.top)
-    enemy.x=parseInt(enemy.shape.style.left)
-    enemy.y=parseInt(enemy.shape.style.top)
-    
+
     moveEnemy(real_time)
-    //gravity(10)
+    gravity(10)
     move_player(speed)
     object_id=collisionDetection(speed)
     window.scroll({
@@ -295,7 +290,7 @@ function main(){
       player.shape.style["background-color"]="rgb(255,0,0)"
     }
     if(object_id=="enemy"){
-      player.shape.style.height=parseInt(player.shape.style.height)-1
+      player.move(objects[5].x,player.y)
     }
     
     requestAnimationFrame(main)
