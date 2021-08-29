@@ -71,9 +71,9 @@ function move_player(speed){
     }
     
 }
-function gravity(force){
+function gravity(force,time){
   if(!block_down){
-    player.move(player.x,player.y+force*2)
+    player.move(player.x,0.5*force*Math.pow(time,2)+force*time+player.y)
   }
 }
 
@@ -269,14 +269,21 @@ function main(){
     
     let object_id=null
     let dt = (new Date().getTime() - time) * 1e-3;
+    let jump_time=real_time
+    
     time= new Date().getTime() 
     real_time+=dt
+    
     //code here
     player.x=parseInt(player.shape.style.left)
     player.y=parseInt(player.shape.style.top)
 
     moveEnemy(real_time)
-    gravity(10)
+    if(block_down && real_time>0){
+      real_time=0
+    }
+    console.log(real_time-jump_time)
+    gravity(10,real_time)
     move_player(speed)
     object_id=collisionDetection(speed)
     window.scroll({
