@@ -1,10 +1,9 @@
-
-
 var objects = []
 //functions-----------------------------
-function getElement(id){
+function getElement(id) {
     return document.getElementById(id)
 }
+
 function createElement(type) {
     return document.createElement(type)
 }
@@ -81,8 +80,8 @@ function cos(x) {
     return Math.cos(x)
 }
 
-function linear_motion(starty,finaly,duration){
-  return ((finaly-starty)/duration)
+function linear_motion(starty, finaly, duration) {
+    return ((finaly - starty) / duration)
 }
 
 
@@ -97,136 +96,163 @@ const main = func => {
     }
     requestAnimationFrame(recurse)
 }
-var flores=[]
-var clouds=[]
+var flores = []
+var clouds = []
+var flores_shadow = []
+
+function getRandomRange(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
 function init() {
     let ninja = new Object()
-    let ground=new Object()
-    let street=new Object()
-    let sky=new Object()
+    let ground = new Object()
+    let street = new Object()
+    let sky = new Object()
 
-    let points=[]
-    for(let i=0;i<30;i++){
-      points.push([i*100,500])
-    } 
-    for(let i=0;i<30;i++){
-      points.push([i*100,650])
-    }
-      
-    ground.append(createSquare("-10px", "500px","2000","2000","rgb(0,255,0)","ground")).show()
-    street.append(createSquare("-10px", "550px","2000","100","rgb(230,200,88)","street")).show()
-    clouds.push(new Object().append(createSquare("200px", "100px","200","200","rgb(100,100,255,.5)")).show())
-    clouds.push(new Object().append(createSquare("400px", "100px","200","200","rgb(100,100,255,.5)")).show())
-    clouds.push(new Object().append(createSquare("200px", "550px","200","200","rgb(100,100,200,.5)")).show())
-    clouds.push(new Object().append(createSquare("400px", "550px","200","200","rgb(100,100,200,.5)")).show())
-    sky.append(createSquare("-10px", "-1500px","1000","3000","linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,229,251,1) 56%, rgba(245,248,249,1) 100%)","sky")).show()
-    points.forEach((point,i)=>{
-      let color_=[Math.random()*255,Math.random()*255,Math.random()*255]
-      flores.push(new Object().append(createCircle(`${point[0]}px`, `${point[1]}px`,"20",color_)).show())  
-      for(let j=0;j<10;j++){
-        flores.push(new Object().append(createCircle(`${point[0]+Math.random()*(20-(-20))-20}px`, `${point[1]+Math.random()*(20-(-20))-20}px`,"20",`rgb(${color_[0]+Math.random()*(20-(-20))-20},${color_[1]+Math.random()*(20-(-20))-20},${color_[2]+Math.random()*(20-(-20))-20})`)).show())  
-      }
+    let points = []
+
+    points.push([500, 250], [1000, 250],[1500, 250] )
+
+    ground.append(createSquare("-10px", "500px", "2000", "2000", "rgb(0,255,0)", "ground")).show()
+    street.append(createSquare("-10px", "550px", "2000", "100", "rgb(230,200,88)", "street")).show()
+    //    clouds.push(new Object().append(createSquare("200px", "100px", "200", "200", "rgb(100,100,255,.5)")).show())
+    //    clouds.push(new Object().append(createSquare("400px", "100px", "200", "200", "rgb(100,100,255,.5)")).show())
+    //    clouds.push(new Object().append(createSquare("200px", "550px", "200", "200", "rgb(100,100,200,.5)")).show())
+    //    clouds.push(new Object().append(createSquare("400px", "550px", "200", "200", "rgb(100,100,200,.5)")).show())
+    sky.append(createSquare("-10px", "-1500px", "1000", "3000", "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,229,251,1) 56%, rgba(245,248,249,1) 100%)", "sky")).show()
+    points.forEach((point, i) => {
+        let color_ = [Math.random() * 100, Math.random() * 100, Math.random() * 100]
+        let max_range = 200
+        let min_range = -200
+        let max_color_range = 20
+        let min_color_range = -20
+        let flower_width = 20
+        new Object().append(createSquare(`${point[0]-10}px`, `${point[1]}px`, "50", "500", "hsla(10, 51%, 21%, 1)", "tree")).show()
+        //flores.push(new Object().append(createCircle(`${point[0]}px`, `${point[1]}px`, "20", color_)).show())
+        for (let j = 0; j < 1000; j++) {
+            let height = point[1] + getRandomRange(min_range, max_range)
+            flores.push(new Object().append(createCircle(`${point[0]+getRandomRange(min_range,max_range)}px`, `${height}px`, `${flower_width}`, `hsl(${color_[0]+getRandomRange(min_color_range,max_color_range)},${100}%,${(100/(height+50))*(100+height*0.16)}%)`)).show())
+        }
+
+        
+
     })
-      
-      
+    let flower_width = 20
+    /*flores.forEach(flor => {
+        flores_shadow.push(new Object().append(createCircle(`${flor.x}px`, `${flor.y+500}px`, `${flower_width}`, `rgb(100,100,100,.5)`)).show())
+    })*/
+
     //flores.push(new Object().append(createCircle("100px", "600px","20","rgb(255,0,0)")).show())
     //flores.push(new Object().append(createCircle("200px", "600px","20","rgb(255,0,0)")).show())
     //flores.push(new Object().append(createCircle("300px", "600px","20","rgb(255,0,0)")).show())
-    getElement("sky").style["z-index"]="50"
-    getElement("sky").style.transform="rotate(90deg)"
+    getElement("sky").style["z-index"] = "50"
+    getElement("sky").style.transform = "rotate(90deg)"
     //x.append(createCircle("10%", "10%", "100px", "rgb(0,0,255)")).appendChild(createCircle("20%", "20%", "20px", "rgb(255,255,0)")).appendChild(createCircle("60%", "20%", "20px", "rgb(255,255,0)")).appendChild(createSmile("15%", "20%", "50px", "rgb(255,0,0)")).show()
     //x.appendChild(createTriangle("45%", "45%", "5px", "5px", "10px", "rgb(255,30,170)"))
     //ninja.append(createSquare("300px", "100px","100","200","rgb(220,100,0)","ninja")).show()
     //ninja
     //.appendChild(createSquare("60","30","30","30","green","left eye"))
-    
-    
+
+
 }
 //main------------------------------
 var up = false,
     right = false,
     down = false,
     left = false,
-    dodge= false
-document.addEventListener('keydown',press)
-function press(e){
-    
-  if (e.keyCode === 38 /* up */ || e.keyCode === 87 /* w */ ){
-    up = true
-  }
-  if (e.keyCode === 39 /* right */ || e.keyCode === 68 /* d */){
-    right = true
-  }
-  if (e.keyCode === 40 /* down */ || e.keyCode === 83 /* s */){
-    down = true
-  }
-  if (e.keyCode === 37 /* left */ || e.keyCode === 65 /* a */ ){
-    left = true
-  }
-  if(e.keyCode === 75/*k key*/){
-    dodge = true
-    setTimeout(()=>{dodge=false},100)
-  }
-}
-document.addEventListener('keyup',release)
-function release(e){
-  if (e.keyCode === 38 /* up */ || e.keyCode === 87 /* w */ ){
-    up = false
-  }
-  if (e.keyCode === 39 /* right */ || e.keyCode === 68 /* d */){
-    right = false
-  }
-  if (e.keyCode === 40 /* down */ || e.keyCode === 83 /* s */){
-    down = false
-  }
-  if (e.keyCode === 37 /* left */ || e.keyCode === 65 /* a */ ){
-    left = false
-  }
-  /* if(e.keyCode === 75/*k key){
     dodge = false
-  } */
+document.addEventListener('keydown', press)
+
+function press(e) {
+
+    if (e.keyCode === 38 /* up */ || e.keyCode === 87 /* w */ ) {
+        up = true
+    }
+    if (e.keyCode === 39 /* right */ || e.keyCode === 68 /* d */ ) {
+        right = true
+    }
+    if (e.keyCode === 40 /* down */ || e.keyCode === 83 /* s */ ) {
+        down = true
+    }
+    if (e.keyCode === 37 /* left */ || e.keyCode === 65 /* a */ ) {
+        left = true
+    }
+    if (e.keyCode === 75 /*k key*/ ) {
+        dodge = true
+        setTimeout(() => {
+            dodge = false
+        }, 100)
+    }
 }
-function rect(t,placement,size){
-    
-    if(t>=placement && t<=placement+size){
+document.addEventListener('keyup', release)
+
+function release(e) {
+    if (e.keyCode === 38 /* up */ || e.keyCode === 87 /* w */ ) {
+        up = false
+    }
+    if (e.keyCode === 39 /* right */ || e.keyCode === 68 /* d */ ) {
+        right = false
+    }
+    if (e.keyCode === 40 /* down */ || e.keyCode === 83 /* s */ ) {
+        down = false
+    }
+    if (e.keyCode === 37 /* left */ || e.keyCode === 65 /* a */ ) {
+        left = false
+    }
+    /* if(e.keyCode === 75/*k key){
+      dodge = false
+    } */
+}
+
+function rect(t, placement, size) {
+
+    if (t >= placement && t <= placement + size) {
         return 1
-    }else{
+    } else {
         return 0
     }
 }
-function inverse(num){
-    if (num==0){
+
+function inverse(num) {
+    if (num == 0) {
         return 1
-    }if(num==1){
+    }
+    if (num == 1) {
         return 0
     }
 }
 
 init()
-let real_time=0
+let real_time = 0
 
 
-main((dt,time)=>{
-  real_time+=dt
-  flores.forEach((flor,i)=>{
-    flor.shape.style.left=flor.x+5*Math.cos(2*(real_time-i*0.2))
-  })
-  clouds.forEach((cloud,i)=>{
-    cloud.shape.style.left=cloud.x+300*Math.cos((real_time/10))
-  })
-  //flores[0].getElement().style.left=5*Math.cos(2*real_time) 
-  //left_eye.style.height=Math.ceil((Math.abs(30*Math.abs(Math.sin(2*time)))+30*Math.abs(Math.sin(2*time)))/2)
-  //left_eye.style.height=30*(rect(real_time%3,0,2))+(rect(real_time%3,2,0.5)*(30-((30*2)*((real_time-2)%3))))+(rect(real_time%3,2.5,0.5)*(30-((30*2)*((real_time-2.5)%3))))
-  /* left_eye.style.height=30*(rect(real_time%3,0,2))+(rect(real_time%3,2,0.25)*(30-((30*4)*((real_time-2)%3))))+(rect(real_time%3,2.25,0.25)*(((30*4)*((real_time-2.25)%3))))+(rect(real_time%3,2.5,0.25)*(30-((30*4)*((real_time-2.5)%3))))+(rect(real_time%3,2.75,0.25)*(((30*4)*((real_time-2.75)%3))))
-  left_eye.style.top=30+5*Math.abs(Math.cos(2*real_time))
-  ninja.style.left=((300+linear_motion(300,500,3)*(real_time%6))*rect(real_time%6,0,3))+((500+linear_motion(500,300,3)*((real_time%6)-3))*rect(real_time%6,3,3))
-  ninja.style.top=((100+linear_motion(100,500,3)*(real_time%6))*rect(real_time%6,0,3))+((500+linear_motion(500,100,3)*((real_time%6)-3))*rect(real_time%6,3,3))
-  console.log(ninja.style.left) */
-  /*if(x>0  && x+110<getElement("html").offsetWidth ){
+main((dt, time) => {
+    real_time += dt
+    flores.forEach((flor, i) => {
+        flor.shape.style.left = flor.x + 5 * Math.cos(2 * (real_time - i * 0.2))
+        /*let shadow = flores_shadow[i]
+        shadow.shape.style.left = shadow.x + 5 * Math.cos(2 * (real_time - i * 0.2))*/
+    })
+    /*clouds.forEach((cloud, i) => {
+        cloud.shape.style.left = cloud.x + 300 * Math.cos((real_time / 10))
+    })*/
 
-      ninja.style.left = x
-  }
-  if(y>0  && y+230<getElement("html").offsetHeight){
-    ninja.style.top = y
-    }  */
+
+
+    //flores[0].getElement().style.left=5*Math.cos(2*real_time) 
+    //left_eye.style.height=Math.ceil((Math.abs(30*Math.abs(Math.sin(2*time)))+30*Math.abs(Math.sin(2*time)))/2)
+    //left_eye.style.height=30*(rect(real_time%3,0,2))+(rect(real_time%3,2,0.5)*(30-((30*2)*((real_time-2)%3))))+(rect(real_time%3,2.5,0.5)*(30-((30*2)*((real_time-2.5)%3))))
+    /* left_eye.style.height=30*(rect(real_time%3,0,2))+(rect(real_time%3,2,0.25)*(30-((30*4)*((real_time-2)%3))))+(rect(real_time%3,2.25,0.25)*(((30*4)*((real_time-2.25)%3))))+(rect(real_time%3,2.5,0.25)*(30-((30*4)*((real_time-2.5)%3))))+(rect(real_time%3,2.75,0.25)*(((30*4)*((real_time-2.75)%3))))
+    left_eye.style.top=30+5*Math.abs(Math.cos(2*real_time))
+    ninja.style.left=((300+linear_motion(300,500,3)*(real_time%6))*rect(real_time%6,0,3))+((500+linear_motion(500,300,3)*((real_time%6)-3))*rect(real_time%6,3,3))
+    ninja.style.top=((100+linear_motion(100,500,3)*(real_time%6))*rect(real_time%6,0,3))+((500+linear_motion(500,100,3)*((real_time%6)-3))*rect(real_time%6,3,3))
+    console.log(ninja.style.left) */
+    /*if(x>0  && x+110<getElement("html").offsetWidth ){
+
+        ninja.style.left = x
+    }
+    if(y>0  && y+230<getElement("html").offsetHeight){
+      ninja.style.top = y
+      }  */
 })
