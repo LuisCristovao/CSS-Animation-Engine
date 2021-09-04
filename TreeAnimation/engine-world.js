@@ -128,13 +128,21 @@ function init() {
         let max_color_range = 20
         let min_color_range = -20
         let flower_width = 20
-        new Object().append(createSquare(`${point[0]-10}px`, `${point[1]}px`, "50", "500", "hsla(10, 51%, 21%, 1)", "tree")).show()
+        new Object().append(createSquare(`${point[0]+min_range}px`, `${point[1]+400}px`, `${max_range*2}`, `${max_range}`, "rgb(100,100,100,.5)", "tree_shadow")).show()
+        let tree=new Object().append(createSquare(`${point[0]-10}px`, `${point[1]}px`, "50", "500", "hsla(10, 51%, 21%, 1)", "tree")).show()
+        tree.shape.style["z-index"]=200
         //flores.push(new Object().append(createCircle(`${point[0]}px`, `${point[1]}px`, "20", color_)).show())
         for (let j = 0; j < 1000; j++) {
             let height = point[1] + getRandomRange(min_range, max_range)
-            flores.push(new Object().append(createCircle(`${point[0]+getRandomRange(min_range,max_range)}px`, `${height}px`, `${flower_width}`, `hsl(${color_[0]+getRandomRange(min_color_range,max_color_range)},${100}%,${(100/(height+50))*(100+height*0.16)}%)`)).show())
+            let flor=new Object().append(createCircle(`${point[0]+getRandomRange(min_range,max_range)}px`, `${height}px`, `${flower_width}`, `hsl(${color_[0]+getRandomRange(min_color_range,max_color_range)},${100}%,${(100/(height+50))*(100+height*0.16)}%)`)).show()
+            flores.push(flor)
+            flor.shape.style["z-index"]=300
         }
-
+        for (let j = 0; j < 100; j++) {
+            let height = point[1] + getRandomRange(0, max_range)+400
+            flores_shadow.push(new Object().append(createCircle(`${point[0]+getRandomRange(min_range,max_range)}px`, `${height}px`, `${flower_width}`, `rgb(0,255,0)`)).show())
+            //flores_shadow[j].shape.style["z-index"]=100
+        }
         
 
     })
@@ -231,8 +239,10 @@ main((dt, time) => {
     real_time += dt
     flores.forEach((flor, i) => {
         flor.shape.style.left = flor.x + 5 * Math.cos(2 * (real_time - i * 0.2))
-        /*let shadow = flores_shadow[i]
-        shadow.shape.style.left = shadow.x + 5 * Math.cos(2 * (real_time - i * 0.2))*/
+    })
+    flores_shadow.forEach((shadow,i)=>{
+        shadow.shape.style.left = shadow.x + 5 * Math.cos(2 * (real_time - i * 0.2))
+        shadow.shape.style["background-color"]=`rgba(0,255,0,${Math.cos((real_time - i * 0.2))})`
     })
     /*clouds.forEach((cloud, i) => {
         cloud.shape.style.left = cloud.x + 300 * Math.cos((real_time / 10))
