@@ -14,7 +14,7 @@ class StateMachine {
     this.time= new Date().getTime()  
   };
   start = () => {
-    requestAnimationFrame(this.run);
+    this.run()
   };
   run = () => {
     this.execute(this.state);
