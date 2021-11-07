@@ -1,8 +1,8 @@
-let state="start game"
+let timer=0
 let ninja1 = new Object();
 let ninja2 = new Object();
 let power=new Object()
-let timer_id;
+
 power.append(createSquare("400px","135px","100","100","red","power"))
 ninja1.append(
       createSquare("300px", "100px", "100", "200", "rgb(12,100,200)", "ninja")
@@ -17,9 +17,9 @@ let state_machine = {
   "start game": new State(
     "start game",
     () => {
-      state="start game"
+      
       //clearTimeout(timer_id)
-      console.log(state);
+      console.log("start game");
      ninja1.shape.style.height=
        step(game.real_time % 3, 0, 1.5)*linear_motion(200,190,game.real_time,1.5)
       +step(game.real_time % 3, 1.5, 3)*linear_motion(190,200,game.real_time,1.5)
@@ -46,17 +46,18 @@ let state_machine = {
   }px`
     },
     () => {
-      timer_id=setTimeout(() => {
-        state="2";
-      }, 3000);
-      return "wait";
+      
+      if(game.real_time>timer+3){
+        return "2"
+      }
+      return "start game";
     }
   ),
   2: new State(
     "2",
     () => {
-      state="2"
-      console.log(state);
+      
+      console.log("2");
       power.destroy()
       power.append(createSquare("400px","135px","100","100","red","power")).show()
       //clearTimeout(timer_id)
@@ -64,15 +65,15 @@ let state_machine = {
       
     },
     () => {
-      state="3"
+      timer=game.real_time
       return "3"
     }
   ),
   3: new State(
     "3",
     () => {
-      state=3
-      console.log(state);
+      
+      console.log("3");
       ninja1.shape.style.height=
        step(game.real_time % 3, 0, 1.5)*linear_motion(200,190,game.real_time,1.5)
       +step(game.real_time % 3, 1.5, 3)*linear_motion(190,200,game.real_time,1.5)
@@ -97,23 +98,23 @@ let state_machine = {
       step(game.real_time % 3, 1, 3)*linear_motion(135,700,game.real_time,2)
     },
     () => {
-      timer_id=setTimeout(() => {
-        state="4";
-      }, 3000);
-      return "wait";
+      if(game.real_time>timer+2.9){
+        return "4"
+      }
+      return "3";
     }
   ),
   4: new State(
     "4",
     () => {
-      state="4"
-      clearTimeout(timer_id)
-      console.log(state);
+    
+      timer=game.real_time
+      console.log("4");
       power.destroy()
     },
     () => {
       
-      state="start game";
+      
       return "start game";
     }
   ),
@@ -121,10 +122,14 @@ let state_machine = {
     "wait",
     () => {
       //does nothing
+      console.log("wait")
     },
     () => {
       //does nothing
-      return state;
+      if(game.real_time>5){
+        return "2"
+      }
+      return "wait";
     }
   ),
 };
