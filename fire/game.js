@@ -40,9 +40,10 @@ function Main(){
   }
   if(real_time>1.1){
 
-    objects[0].velocityMove(2,0)
+    objects[0].goToPosition(100,300,1000,100,5)
     objects[1].velocityMove(3,0)
     objects[2].velocityMove(4,0)
+    objects[3].goToPosition(100,300,1000,500,5)
   }
   /* if(real_time>=3 && real_time<=3.2){
     tmp=new Object()

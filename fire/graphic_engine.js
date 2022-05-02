@@ -138,6 +138,8 @@ class Object {
     append(element) {
 
         this.shape = element
+        this.real_time=0
+        this.star_time=new Date().getTime() 
         this.x=parseInt(element.style.left)
         this.y=parseInt(element.style.top)
         this.width=parseInt(element.style.width)
@@ -151,10 +153,12 @@ class Object {
     }
     
     move(x, y) {
+        this.updateRealTime()
         this.shape.style.left = x
         this.shape.style.top = y
         this.x=x
         this.y=y
+        this.updateStartTime()
     }
     rotate(angle){
         this.shape.style.transform=`rotate(${angle}deg)`
@@ -163,9 +167,16 @@ class Object {
     getAngle(){
         return this.angle
     }
-    velocity(end_value,actual_value,real_time,animation_time){
+    updateRealTime(){
+        let dt = (new Date().getTime() - this.star_time) * 1e-3;
+        this.real_time+=dt
+    }
+    updateStartTime(){
+        this.star_time=new Date().getTime()
+    }
+    velocity(end_value,actual_value,animation_time){
         var delta=((end_value-actual_value)/animation_time)
-        let new_pos=delta*(real_time)+actual_value
+        let new_pos=delta*(this.real_time)+actual_value
         
         return new_pos
     }
@@ -180,9 +191,9 @@ class Object {
         this.move(new_x,new_y)
         //return {"x":new_x,"y":new_y}
     }
-    goToPosition(xi,yi,xf,yf,real_time,animation_time){
-        let new_x=this.velocity(xf,xi,real_time,animation_time)
-        let new_y=this.velocity(yf,yi,real_time,animation_time)
+    goToPosition(xi,yi,xf,yf,animation_time){
+        let new_x=this.velocity(xf,xi,animation_time)
+        let new_y=this.velocity(yf,yi,animation_time)
         if(Math.abs(this.x-xf)<=(this.width/animation_time) && Math.abs(this.y-yf)<=(this.height/animation_time)){
             //pass
 
