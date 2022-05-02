@@ -140,6 +140,8 @@ class Object {
         this.shape = element
         this.x=parseInt(element.style.left)
         this.y=parseInt(element.style.top)
+        this.width=parseInt(element.style.width)
+        this.height=parseInt(element.style.height)
         let rgb=parseRgb(element)
         this.color=rgbToHsl(rgb[0],rgb[1],rgb[2])
         return this
@@ -163,20 +165,31 @@ class Object {
     }
     velocity(end_value,actual_value,real_time,animation_time){
         var delta=((end_value-actual_value)/animation_time)
-        let new_pos=delta*(real_time%animation_time)+actual_value
+        let new_pos=delta*(real_time)+actual_value
         
         return new_pos
     }
-    setColor(hsl){
+    setColor(hsla){
         let shape=this.getElement()
-        this.color=hsl
-        shape.style.backgroundColor=`hsl(${this.color[0]},${this.color[1]}%,${this.color[2]}%)`
+        this.color=hsla
+        shape.style.backgroundColor=`hsla(${this.color[0]},${this.color[1]}%,${this.color[2]}%,${this.color[3]})`
     }
-    velocityMove(xi,yi,xf,yf,real_time,animation_time){
+    velocityMove(speedx,speedy){
+        let new_x=this.x+speedx
+        let new_y=this.y+speedy
+        this.move(new_x,new_y)
+        //return {"x":new_x,"y":new_y}
+    }
+    goToPosition(xi,yi,xf,yf,real_time,animation_time){
         let new_x=this.velocity(xf,xi,real_time,animation_time)
         let new_y=this.velocity(yf,yi,real_time,animation_time)
-        //this.move(new_x,new_y)
-        return {"x":new_x,"y":new_y}
+        if(Math.abs(this.x-xf)<=(this.width/animation_time) && Math.abs(this.y-yf)<=(this.height/animation_time)){
+            //pass
+
+        }else{
+
+            this.move(new_x,new_y)
+        }
     }
     rotateVel(init_angle,final_angle,real_time,animation_time){
         
