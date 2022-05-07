@@ -17,7 +17,7 @@ let state_machine = {};
 state_machine["creation_phase"] = new State(
   "creation_phase",
   () => {
-    console.log(state_machine["creation_phase"].id() + ":" + state_machine["creation_phase"].real_time);
+    //console.log(state_machine["creation_phase"].id() + ":" + state_machine["creation_phase"].real_time);
     tmp = new Object();
     objects.push(
       tmp
@@ -48,7 +48,7 @@ state_machine["creation_phase"] = new State(
     );
   },
   () => {
-    if (state_machine["creation_phase"].real_time > 1 ) {
+    if (state_machine["creation_phase"].real_time > 0.5 ) {
       state_machine["creation_phase"].real_time=0
       state_machine["animation"].time=new Date()
       return "animation";
@@ -59,13 +59,13 @@ state_machine["creation_phase"] = new State(
 state_machine["animation"] = new State(
   "animation",
   () => {
-    console.log(state_machine["animation"].id() + ":" + state_machine["animation"].real_time);
+    //console.log(state_machine["animation"].id() + ":" + state_machine["animation"].real_time);
     objects.forEach((object, index) => {
       setTimeout(() => {
         object.velocityMove(10, 0);
         let y = parseInt(object.shape.style.top);
         object.shape.style.top =
-          y + Math.cos(10 * real_time - index * 0.5) * 100;
+          y + Math.cos(10 * state_machine["animation"].real_time - index * 0.5) * 100;
       }, 100 * index);
     });
     objects2.forEach((object, index) => {
@@ -73,7 +73,7 @@ state_machine["animation"] = new State(
         object.velocityMove(10, 0);
         let y = parseInt(object.shape.style.top);
         object.shape.style.top =
-          y + Math.cos(10 * real_time - index * 0.5 - 2.3) * 100;
+          y + Math.cos(10 * state_machine["animation"].real_time - index * 0.5 - 2.3) * 100;
       }, 100 * index);
     });
   },
@@ -89,18 +89,18 @@ state_machine["animation"] = new State(
 state_machine["delete_phase"] = new State(
   "delete_phase",
   () => {
-    console.log(state_machine["delete_phase"].id() + ":" + state_machine["delete_phase"].real_time);
+    //console.log(state_machine["delete_phase"].id() + ":" + state_machine["delete_phase"].real_time);
     objects.forEach((object, index) => {
       object.destroy();
       objects = arrayRemove(objects, index);
     });
     objects2.forEach((object, index) => {
       object.destroy();
-      objects = arrayRemove(objects, index);
+      objects2 = arrayRemove(objects2, index);
     });
   },
   () => {
-    if (state_machine["delete_phase"].real_time > 5) {
+    if (state_machine["delete_phase"].real_time > 1) {
       state_machine["delete_phase"].real_time=0
       state_machine["creation_phase"].time=new Date()
       return "creation_phase";
