@@ -225,3 +225,16 @@ class Object {
     }
 
 }
+
+class AnimationObject{
+    constructor(state_machine) {
+
+       
+        this.state_machine=state_machine
+        this.objects=[]
+
+        this.state_machine.start()
+        
+    }
+
+}

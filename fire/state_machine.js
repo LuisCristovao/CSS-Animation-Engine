@@ -9,8 +9,8 @@ class StateMachine {
   execute = (state) => {
     this.dt = (new Date().getTime() - this.time) * 1e-3;
     this.real_time+=this.dt
-    state_machine[state].play();
-    this.state = state_machine[state].next();
+    this.state_machine[state].play();
+    this.state = this.state_machine[state].next();
     this.time= new Date().getTime()  
   };
   start = () => {
@@ -27,13 +27,19 @@ class State {
     this.state_id = state_id;
     this.action = action;
     this.next_state = next_state;
+    this.time= new Date().getTime() ;
+    this.real_time=0
   }
 
   id = () => {
     return this.state_id;
   };
   play = () => {
+    this.dt = (new Date().getTime() - this.time) * 1e-3;
+    this.real_time+=this.dt
     this.action();
+    this.time= new Date().getTime() 
+
   };
   next = () => {
     return this.next_state();

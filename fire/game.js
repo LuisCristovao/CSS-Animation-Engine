@@ -12,20 +12,59 @@ function arrayRemove(arr, index) {
     return i !== index;
   });
 }
-//fire.append(createCircle(100 ,300, 100, "hsl(46,100%,50%,1)", "fire"))
+let state_machine = {};
 
-//fire_light.append(createDiffCircle(300 ,500, 500,300, "hsl(46,100%,50%,0.3)", "light"))
-ground.append(createSquare(0, 500, 1800, 500, "hsl(129,100%,17%)", "ground"));
+state_machine["creation_phase"] = new State(
+  "creation_phase",
+  () => {
+    console.log(state_machine["creation_phase"].id() + ":" + state_machine["creation_phase"].real_time);
+  },
+  () => {
+    if (state_machine["creation_phase"].real_time > 6 ) {
+      state_machine["creation_phase"].real_time=0
+      state_machine["animation"].time=new Date()
+      return "animation";
+    }
+    return "creation_phase";
+  }
+);
+state_machine["animation"] = new State(
+  "animation",
+  () => {
+    console.log(state_machine["animation"].id() + ":" + state_machine["animation"].real_time);
+  },
+  () => {
+    if (state_machine["animation"].real_time > 5 ) {
+      state_machine["animation"].real_time=0
+      state_machine["delete_phase"].time=new Date()
+      return "delete_phase";
+    }
+    return "animation";
+  }
+);
+state_machine["delete_phase"] = new State(
+  "delete_phase",
+  () => {
+    console.log(state_machine["delete_phase"].id() + ":" + state_machine["delete_phase"].real_time);
+  },
+  () => {
+    if (state_machine["delete_phase"].real_time > 5) {
+      state_machine["delete_phase"].real_time=0
+      state_machine["creation_phase"].time=new Date()
+      return "creation_phase";
+    }
+    return "delete_phase";
+  }
+);
+let game=new StateMachine(state_machine,"creation_phase")
 //Main-----
-//ground.show()
-//fire.show()
-
 document.body.style.backgroundColor = "hsl(0,50%,5%)";
 function Main() {
   dt = (new Date().getTime() - time) * 1e-3;
   real_time += dt;
   // Do stuff here -----
-  if (real_time >= 1 && real_time <= 1.5) {
+
+  /* if (real_time >= 1 && real_time <= 1.5) {
     tmp = new Object();
     objects.push(
       tmp
@@ -70,39 +109,48 @@ function Main() {
       setTimeout(() => {
         object.velocityMove(10, 0);
         let y = parseInt(object.shape.style.top);
-        object.shape.style.top = y+Math.cos(10*real_time - index*0.5) * 100;
+        object.shape.style.top =
+          y + Math.cos(10 * real_time - index * 0.5) * 100;
       }, 100 * index);
-      
-    }); 
+    });
     objects2.forEach((object, index) => {
       setTimeout(() => {
         object.velocityMove(10, 0);
         let y = parseInt(object.shape.style.top);
-        object.shape.style.top = y+Math.sin(10*real_time - index*0.5-0.7) * 100;
-      }, 100 * index);
-      
-    });
-  }
-  /* if (real_time > 1.5) {
-    objects.forEach((object, index) => {
-      setTimeout(() => {
-        object.shape.style.top = Math.cos(real_time) * 100;
+        object.shape.style.top =
+          y + Math.cos(10 * real_time - index * 0.5 - 2.3) * 100;
       }, 100 * index);
     });
   } */
-  /* if(real_time>=3 && real_time<=3.2){
-    tmp=new Object()
-    objects.push(tmp.append(createCircle(0 ,300, 100, "hsl(46,100%,50%,1)", "fire")).show())
-    objects[0].velocityMove(2,0)
-  } */
-  //fire.velocityMove(2,0)
-  //fire_light.velocityMove(2,0)
-  //fire.move(fire.x+Math.cos(2*real_time)*10,fire.y-Math.cos(4*real_time)*2.5)
-
-  //fire_light.move(fire_light.x+Math.cos(2*real_time)*10)
 
   //----------------------
   time = new Date().getTime();
   requestAnimationFrame(Main);
 }
-requestAnimationFrame(Main);
+//requestAnimationFrame(Main);
+game.start()
+/* state_machine["1"]=new State(
+    "1",
+    () => {
+      console.log("ola:"+state_machine["1"].real_time);
+    },
+    () => {
+      if(state_machine["1"].real_time<3){
+        return "1"
+      }
+      state_machine["1"].real_time=0
+      return "2";
+    }
+  )
+  state_machine["2"]=new State(
+    "2",
+    ()=>{
+      console.log("ssss")
+    },
+    ()=>{
+      return "1"
+    }
+  )
+let game=new StateMachine(state_machine,"1")
+game.start() */
+
