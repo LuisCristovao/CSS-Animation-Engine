@@ -279,11 +279,9 @@ function main(){
     player.y=parseInt(player.shape.style.top)
 
     moveEnemy(real_time)
-    if(block_down && real_time>0){
-      real_time=0
-    }
+  
     console.log(real_time-jump_time)
-    gravity(10,real_time)
+    //gravity(10,real_time)
     move_player(speed)
     object_id=collisionDetection(speed)
     window.scroll({
