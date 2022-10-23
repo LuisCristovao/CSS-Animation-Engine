@@ -58,6 +58,9 @@ function mouseUp(e) {
     }
 }
 function createLevel(){
+    if(localStorage["EscapeRoom"]==undefined){
+      localStorage["EscapeRoom"]=JSON.stringify({"map":saveLevel()})
+    }
     let map=JSON.parse(JSON.parse(localStorage["EscapeRoom"]).map)
     for(let row=0;row<level_objects.length;row++){
       for(let col=0;col<level_objects[row].length;col++){
@@ -127,7 +130,8 @@ function saveLevel(){
     let blocks=[]
     for(let row=0;row<level_objects.length;row++){
         for(let col=0;col<level_objects[row].length;col++){
-            blocks.push(level_objects[row][col].identity)
+            let identity=(level_objects[row][col].identity!=null)?level_objects[row][col].identity:"0"
+            blocks.push(identity)
         }
         map.push(blocks)
         blocks=[]

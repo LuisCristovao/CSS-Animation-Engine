@@ -68,7 +68,7 @@ class Player{
     }
     window.scroll({
       top: (y*square_size)-300,
-      left: (x*square_size)-1000   
+      left: (x*square_size)-500   
     }); 
   }
 }
