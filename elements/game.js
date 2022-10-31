@@ -19,7 +19,7 @@ for (i = 0; i <= n_particules; i++) {
     createDiffCircle(500, 300, 10, 10, "rgba(255,200,0,1)", "fire")
   );
   fires[i].appendAnimation(() => {
-    fires[i].move(fires[i].x-0.5*Math.sin(1*(100*(fires[i].real_time/i)-0.1*i)),fires[i].y-0.5*Math.cos((1)*(100*(fires[i].real_time/i)-0.1*i)))
+    fires[i].move(fires[i].x-0.5*Math.sin(1*(100*(fires[i].real_time/i)-0.3*i)),fires[i].y-0.5*Math.cos((1)*(100*(fires[i].real_time/i)-0.3*i)))
     fires[i].setColor([fires[i].color[0]-10*Math.sin(0.2*(2*fires[i].real_time)-i),fires[i].color[1],fires[i].color[2],1]);
   });
   
