@@ -59,7 +59,7 @@ function createParticles(){
     );
     particles[i].appendAnimation(() => {
       try{
-        eval(`particles[i].move(${transformEquation(x_equation)},particles[i].y-2*Math.cos((1)*(100*(particles[i].real_time/(i*0.2))-0.3*i)))`)
+        eval(`particles[i].move(${transformEquation(x_equation)},${transformEquation(y_equation)})`)
       }catch(error){
         console.log(error)
       }
