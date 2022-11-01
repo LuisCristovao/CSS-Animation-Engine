@@ -34,18 +34,22 @@ function changeNumberOfParticles(new_n_particles){
   createParticles()
 }
 function changeXequation(new_equation){
+  deleteParticles()
   x_equation=new_equation
+  createParticles()
 }
 function changeYequation(new_equation){
-  y_equation=new_equation 
+  deleteParticles()
+  y_equation=new_equation
+  createParticles() 
 }
 function transformEquation(equation){
   return equation
+  .replaceAll("t","particles[i].real_time")
   .replaceAll("x","particles[i].x")
   .replaceAll("y","particles[i].y")
   .replaceAll("sin","Math.sin")
   .replaceAll("cos","Math.cos")
-  .replaceAll("t","particles[i].real_time")
 }
 function createParticles(){
   for (i = 0; i <n_particles; i++) {
@@ -54,7 +58,12 @@ function createParticles(){
       createDiffCircle(500, 300, 10, 10, "rgba(255,200,0,1)", "fire")
     );
     particles[i].appendAnimation(() => {
-      particles[i].move(particles[i].x-2*Math.sin(1*(100*(particles[i].real_time/(i*0.2))-0.3*i)),particles[i].y-2*Math.cos((1)*(100*(particles[i].real_time/(i*0.2))-0.3*i)))
+      try{
+        eval(`particles[i].move(${transformEquation(x_equation)},particles[i].y-2*Math.cos((1)*(100*(particles[i].real_time/(i*0.2))-0.3*i)))`)
+      }catch(error){
+        console.log(error)
+      }
+      //particles[i].move(particles[i].x-2*Math.sin(1*(100*(particles[i].real_time/(i*0.2))-0.3*i)),particles[i].y-2*Math.cos((1)*(100*(particles[i].real_time/(i*0.2))-0.3*i)))
       particles[i].setColor([particles[i].color[0]-10*Math.sin(0.2*(2*particles[i].real_time)-i),particles[i].color[1],particles[i].color[2],1]);
     });
     
