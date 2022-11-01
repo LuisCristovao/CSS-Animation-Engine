@@ -55,7 +55,7 @@ function createParticles(){
   for (i = 0; i <n_particles; i++) {
     particles[i] = new Object();
     particles[i].append(
-      createDiffCircle(500, 300, 10, 10, "rgba(255,200,0,1)", "fire")
+      createDiffCircle(Math.floor(window.innerWidth/2), Math.floor(window.innerHeight/2), 10, 10, "rgba(255,200,0,1)", "fire")
     );
     particles[i].appendAnimation(() => {
       try{
