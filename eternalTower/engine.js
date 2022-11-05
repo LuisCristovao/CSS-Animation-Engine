@@ -225,7 +225,7 @@ class Character {
       return this
   }
   play(time){
-      this.animation()
+      this.animation(this)
   }
 
 }

@@ -1,25 +1,25 @@
 
 
 let player=new Character()
-let speed=10
-let up,down,right,left=false
+let speed=4
+let up=false,down=false,right=false,left=false
 player.append(createSquare(100, 100, 100, 100, "rgb(255,0,0,1)"))
-player.appendAnimation(()=>{
-  let new_x;
-  let new_y;
+player.appendAnimation((self)=>{
+  let new_x=self.x;
+  let new_y=self.y;
   if(up){
-    new_y=this.y-speed
+    new_y=self.y-speed
   }
   if(down){
-    new_y=this.y+speed
+    new_y=self.y+speed
   }
   if(right){
-    new_x=this.x+speed
+    new_x=self.x+speed
   }
   if(left){
-    new_x=this.x-speed
+    new_x=self.x-speed
   }
-  this.move(new_x,new_y)
+  self.move(new_x,new_y)
 })
 document.addEventListener("keydown", press);
 function press(e) {
