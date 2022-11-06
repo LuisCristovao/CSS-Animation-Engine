@@ -12,6 +12,37 @@ player.append(createSquare(100, 100, 100, 100, "rgb(255,0,0,1)"))
 player.appendAnimation((self)=>{
   let new_x=self.x;
   let new_y=self.y;
+  for(let i=0;i<ghost_colliders.length;i++){
+    let c=ghost_colliders[i]
+    if((self.x+self.width>=c.x && self.x<=c.x+c.width) && (self.y+self.height>=c.y && self.y<=c.y+c.height) ){
+      c.shape.style["background-color"]="rgba(0,255,0,1)"
+      setTimeout(()=>{
+        c.shape.style["background-color"]="rgba(100,100,100,1)"
+      },100)
+    }
+  }
+  for(let i=0;i<colliders.length;i++){
+    let c=colliders[i]
+    if( (self.x+self.width>=c.x && self.x<=c.x+c.width) && (self.y+self.height>=c.y && self.y<=c.y+c.height) ){
+      c.shape.style["background-color"]="rgba(0,255,0,1)"
+      setTimeout(()=>{
+        c.shape.style["background-color"]="rgba(0,0,0,1)"
+      },100)
+      if(self.x-c.x<0){
+        right=false
+      }
+      if(self.x-c.x>0){
+        left=false
+      }
+      if(self.y-c.y>0){
+        up=false
+      }
+      if(self.y-c.y<0){
+        down=false
+      }
+      
+    }
+  }
   if(up){
     new_y=self.y-speed
   }
@@ -25,24 +56,8 @@ player.appendAnimation((self)=>{
     new_x=self.x-speed
   }
   self.move(new_x,new_y)
-  for(let i=0;i<ghost_colliders.length;i++){
-    let c=ghost_colliders[i]
-    if((self.x+self.width>=c.x && self.x<=c.x+c.width) && (self.y+self.height>=c.x && self.y<=c.y+c.height) ){
-      c.shape.style["background-color"]="rgba(0,255,0,1)"
-      setTimeout(()=>{
-        c.shape.style["background-color"]="rgba(100,100,100,1)"
-      },100)
-    }
-  }
-  for(let i=0;i<colliders.length;i++){
-    let c=colliders[i]
-    if((self.x+self.width>=c.x && self.x<=c.x+c.width) && (self.y+self.height>=c.x && self.y<=c.y+c.height) ){
-      new_x=self.x+((self.x))-(c.x)
-      new_y=self.y+(self.y)-(c.y+c.height)
-
-    }
-  }
-  self.move(new_x,new_y)
+  
+  //self.move(new_x,new_y)
   
 })
 document.addEventListener("keydown", press);
