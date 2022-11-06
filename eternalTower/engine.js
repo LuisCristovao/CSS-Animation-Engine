@@ -121,6 +121,10 @@ class Character {
       //this.animation=some_lambda
       //this.x=style.left
       //this.y=style.top
+      this.up=false
+      this.down=false
+      this.left=false
+      this.right=false
       this.angle=0
   }
   getElement(){

@@ -12,6 +12,24 @@ player.append(createSquare(100, 100, 100, 100, "rgb(255,0,0,1)"))
 player.appendAnimation((self)=>{
   let new_x=self.x;
   let new_y=self.y;
+
+  self.up=false
+  self.down=false
+  self.left=false
+  self.right=false
+
+  if(up){
+    self.up=true
+  }
+  if(down){
+    self.down=true
+  }
+  if(right){
+    self.right=true
+  }
+  if(left){
+    self.left=true
+  }
   for(let i=0;i<ghost_colliders.length;i++){
     let c=ghost_colliders[i]
     if((self.x+self.width>=c.x && self.x<=c.x+c.width) && (self.y+self.height>=c.y && self.y<=c.y+c.height) ){
@@ -29,30 +47,30 @@ player.appendAnimation((self)=>{
         c.shape.style["background-color"]="rgba(0,0,0,1)"
       },100)
       if(self.x-c.x<0){
-        right=false
+        self.right = false;
       }
       if(self.x-c.x>0){
-        left=false
+        self.left=false
       }
       if(self.y-c.y>0){
-        up=false
+        self.up=false
       }
       if(self.y-c.y<0){
-        down=false
+        self.down=false
       }
       
     }
   }
-  if(up){
+  if(self.up){
     new_y=self.y-speed
   }
-  if(down){
+  if(self.down){
     new_y=self.y+speed
   }
-  if(right){
+  if(self.right){
     new_x=self.x+speed
   }
-  if(left){
+  if(self.left){
     new_x=self.x-speed
   }
   self.move(new_x,new_y)
