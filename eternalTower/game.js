@@ -86,7 +86,7 @@ player.appendAnimation((self)=>{
           },100)
         }
       }
-      self.move(self.x,self.y-1)
+      self.move(self.x,self.y-4)
     })
     projectiles.push(p)
   }
