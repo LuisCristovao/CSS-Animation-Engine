@@ -75,7 +75,7 @@ player.appendAnimation((self)=>{
     }
   }
   if(projectile_up){
-    let p=new Character().append(createSquare(self.x, self.y, 10, 10, "rgb(100,0,0,1)"))
+    let p=new Character().append(createSquare(self.x, self.y, 10, 10, "rgb(255,200,0,1)"))
     p.appendAnimation((self)=>{
       for(let i=0;i<ghost_colliders.length;i++){
         let c=ghost_colliders[i]
