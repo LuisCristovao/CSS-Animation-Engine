@@ -30,7 +30,35 @@ ghost_colliders.push(
 ghost_colliders.push(
   new Object().append(createSquare(10500, 10500, 100, 100, "rgb(100,100,100,1)"))
 );
-
+ghost_colliders[0].appendAnimation((self)=>{
+  for (let i = 0; i < colliders.length; i++) {
+    let c = colliders[i];
+    if (
+      self.x + self.width >= c.x &&
+      self.x <= c.x + c.width &&
+      self.y + self.height >= c.y &&
+      self.y <= c.y + c.height
+    ) {
+      c.shape.style["background-color"] = "rgba(0,255,0,1)";
+      setTimeout(() => {
+        c.shape.style["background-color"] = "rgba(0,0,0,1)";
+      }, 100);
+      if (self.x - c.x < 0) {
+        self.right = false;
+      }
+      if (self.x - c.x > 0) {
+        self.left = false;
+      }
+      if (self.y - c.y > 0) {
+        self.up = false;
+      }
+      if (self.y - c.y < 0) {
+        self.down = false;
+      }
+    }
+  }
+  self.move(self.x+(player.x-self.x)*0.01,self.y+(player.y-self.y)*0.01)
+})
 colliders.push(
   new Object().append(createSquare(10300, 10200, 100, 100, "rgb(0,0,0,1)"))
 );
@@ -100,7 +128,7 @@ player.appendAnimation((self) => {
   }
   if (projectile_up) {
     let p = new Object().append(
-      createSquare(Math.floor((self.x+self.width/2)), self.y, 10, 10, "rgb(255,200,0,1)")
+      createSquare(self.x+self.width/2, self.y, 10, 10, "rgb(255,200,0,1)")
     );
     p.appendAnimation((self) => {
       for (let i = 0; i < ghost_colliders.length; i++) {
@@ -246,6 +274,7 @@ function main() {
     left: player.x-300
   }); 
   player.play();
+  ghost_colliders[0].play()
   projectiles.forEach((p) => {
     p.play();
   });
