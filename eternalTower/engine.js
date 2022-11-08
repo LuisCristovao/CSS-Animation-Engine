@@ -107,7 +107,7 @@ function parseRgb(element){
 
   return [r,g,b]
 }
-class Character {
+class Object {
   /*
   This object has two elements
   - shape
@@ -126,6 +126,7 @@ class Character {
       this.left=false
       this.right=false
       this.angle=0
+      
   }
   getElement(){
       return this.shape
@@ -151,11 +152,13 @@ class Character {
       let rgb=parseRgb(element)
       this.color=rgbToHsl(rgb[0],rgb[1],rgb[2])
       this.color[3]=1
+      this.is_destroyed=false
       this.show()
       return this
   }
   destroy() {
       this.shape.remove()
+      this.is_destroyed=true
   }
   
   move(x, y) {
