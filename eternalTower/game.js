@@ -62,7 +62,7 @@ ghost_colliders[0].appendAnimation((self)=>{
 colliders.push(
   new Object().append(createSquare(10300, 10200, 100, 100, "rgb(0,0,0,1)"))
 );
-
+colliders[0].shape.style.border="2px solid white"
 player.append(createSquare(10100, 10100, 100, 100, "rgb(255,0,0,1)"));
 
 player.appendAnimation((self) => {
@@ -312,7 +312,9 @@ function cleanUnusedProjectiles() {
   return new_projectiles_array;
 }
 
-function init() {}
+function init() {
+  document.body.style.background="rgb(0,0,0)"
+}
 
 function main() {
   dt = (new Date().getTime() - time) * 1e-3;
