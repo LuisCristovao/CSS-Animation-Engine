@@ -150,6 +150,30 @@ player.appendAnimation((self) => {
     });
     projectiles.push(p);
   }
+  if (projectile_down) {
+    let p = new Object().append(
+      createSquare(self.x+self.width/2, self.y+self.height, 10, 10, "rgb(255,200,0,1)")
+    );
+    p.appendAnimation((self) => {
+      for (let i = 0; i < ghost_colliders.length; i++) {
+        let c = ghost_colliders[i];
+        if (
+          self.x + self.width >= c.x &&
+          self.x <= c.x + c.width &&
+          self.y + self.height >= c.y &&
+          self.y <= c.y + c.height
+        ) {
+          c.shape.style["background-color"] = "rgba(0,255,0,1)";
+          setTimeout(() => {
+            p.destroy();
+            c.shape.style["background-color"] = "rgba(100,100,100,1)";
+          }, 100);
+        }
+      }
+      self.move(self.x, self.y + 4);
+    });
+    projectiles.push(p);
+  }
   if (projectile_right) {
     let p = new Object().append(
       createSquare(self.x+self.width, self.y+self.height/2, 10, 10, "rgb(255,200,0,1)")
@@ -171,6 +195,30 @@ player.appendAnimation((self) => {
         }
       }
       self.move(self.x+4, self.y);
+    });
+    projectiles.push(p);
+  }
+  if (projectile_left) {
+    let p = new Object().append(
+      createSquare(self.x, self.y+self.height/2, 10, 10, "rgb(255,200,0,1)")
+    );
+    p.appendAnimation((self) => {
+      for (let i = 0; i < ghost_colliders.length; i++) {
+        let c = ghost_colliders[i];
+        if (
+          self.x + self.width >= c.x &&
+          self.x <= c.x + c.width &&
+          self.y + self.height >= c.y &&
+          self.y <= c.y + c.height
+        ) {
+          c.shape.style["background-color"] = "rgba(0,255,0,1)";
+          setTimeout(() => {
+            p.destroy();
+            c.shape.style["background-color"] = "rgba(100,100,100,1)";
+          }, 100);
+        }
+      }
+      self.move(self.x-4, self.y);
     });
     projectiles.push(p);
   }
@@ -228,13 +276,13 @@ function release(e) {
   if (e.keyCode === 87 /* w */) {
     up = false;
   }
-  if (e.keyCode === 39 /* right */ || e.keyCode === 68 /* d */) {
+  if ( e.keyCode === 68 /* d */) {
     right = false;
   }
-  if (e.keyCode === 40 /* down */ || e.keyCode === 83 /* s */) {
+  if ( e.keyCode === 83 /* s */) {
     down = false;
   }
-  if (e.keyCode === 37 /* left */ || e.keyCode === 65 /* a */) {
+  if ( e.keyCode === 65 /* a */) {
     left = false;
   }
   if (e.keyCode === 75 /*k key*/) {
