@@ -23,7 +23,7 @@ let enemy_projectiles = [];
 
 //projectile behaviour
 function projectileBehaviour(self) {
-  let speed=4
+  let speed = 4;
   for (let i = 0; i < ghost_colliders.length; i++) {
     let c = ghost_colliders[i];
     if (
@@ -54,21 +54,17 @@ function projectileBehaviour(self) {
       }, 100);
     }
   }
-  if(self.options.up){
-
+  if (self.options.up) {
     self.move(self.x, self.y - speed);
   }
-  if(self.options.down){
-
+  if (self.options.down) {
     self.move(self.x, self.y + speed);
   }
-  if(self.options.left){
-
-    self.move(self.x-speed, self.y );
+  if (self.options.left) {
+    self.move(self.x - speed, self.y);
   }
-  if(self.options.right){
-
-    self.move(self.x+speed, self.y );
+  if (self.options.right) {
+    self.move(self.x + speed, self.y);
   }
 }
 //----------------
@@ -82,6 +78,24 @@ ghost_colliders.push(
   new Object().append(createSquare(500, 600, 100, 100, "rgb(100,100,100,1)"))
 );
 ghost_colliders[0].appendAnimation((self) => {
+  self.up = false;
+  self.down = false;
+  self.left = false;
+  self.right = false;
+  let new_x = self.x;
+  let new_y = self.y;
+  if (player.x - self.x > 0) {
+    self.right = true;
+  }
+  if (player.x - self.x < 0) {
+    self.left = true;
+  }
+  if (player.y - self.y < 0) {
+    self.up = true;
+  }
+  if (player.y - self.y > 0) {
+    self.down = true;
+  }
   for (let i = 0; i < colliders.length; i++) {
     let c = colliders[i];
     if (
@@ -108,10 +122,21 @@ ghost_colliders[0].appendAnimation((self) => {
       }
     }
   }
-  self.move(
-    self.x + (player.x - self.x) * 0.01,
-    self.y + (player.y - self.y) * 0.01
-  );
+  
+
+  if (self.up) {
+    new_y = self.y + (player.y - self.y) * 0.01;
+  }
+  if (self.down) {
+    new_y = self.y + (player.y - self.y) * 0.01;
+  }
+  if (self.right) {
+    new_x = self.x + (player.x - self.x) * 0.01;
+  }
+  if (self.left) {
+    new_x = self.x + (player.x - self.x) * 0.01;
+  }
+  self.move(new_x, new_y);
 });
 
 player.append(createSquare(300, 300, 100, 100, "rgb(255,0,0,1)"));
@@ -185,7 +210,7 @@ player.appendAnimation((self) => {
     let p = new Object().append(
       createSquare(self.x + self.width / 2, self.y, 10, 10, "rgb(255,200,0,1)")
     );
-    p.options.up=true
+    p.options.up = true;
     p.appendAnimation(projectileBehaviour);
     projectiles.push(p);
   }
@@ -199,7 +224,7 @@ player.appendAnimation((self) => {
         "rgb(255,200,0,1)"
       )
     );
-    p.options.down=true
+    p.options.down = true;
     p.appendAnimation(projectileBehaviour);
     projectiles.push(p);
   }
@@ -213,7 +238,7 @@ player.appendAnimation((self) => {
         "rgb(255,200,0,1)"
       )
     );
-    p.options.right=true
+    p.options.right = true;
     p.appendAnimation(projectileBehaviour);
     projectiles.push(p);
   }
@@ -221,7 +246,7 @@ player.appendAnimation((self) => {
     let p = new Object().append(
       createSquare(self.x, self.y + self.height / 2, 10, 10, "rgb(255,200,0,1)")
     );
-    p.options.left=true
+    p.options.left = true;
     p.appendAnimation(projectileBehaviour);
     projectiles.push(p);
   }
@@ -322,7 +347,13 @@ function init() {
   let box_size = 20;
   for (let x = 0; x < box_size; x++) {
     for (let y = 0; y < box_size; y++) {
-      if (x == 0 || x == box_size - 1 || y == 0 || y == box_size - 1 || (x==Math.floor(box_size/2) && y==Math.floor(box_size/2))) {
+      if (
+        x == 0 ||
+        x == box_size - 1 ||
+        y == 0 ||
+        y == box_size - 1 ||
+        (x == Math.floor(box_size / 2) && y == Math.floor(box_size / 2))
+      ) {
         let c = new Object().append(
           createSquare(x * length, y * length, length, length, "rgb(0,0,0,1)")
         );
