@@ -319,10 +319,10 @@ function init() {
   document.body.style.background = "rgb(0,0,0)";
 
   let length = 100;
-  let box_size = 10;
+  let box_size = 20;
   for (let x = 0; x < box_size; x++) {
     for (let y = 0; y < box_size; y++) {
-      if (x == 0 || x == box_size - 1 || y == 0 || y == box_size - 1) {
+      if (x == 0 || x == box_size - 1 || y == 0 || y == box_size - 1 || (x==Math.floor(box_size/2) && y==Math.floor(box_size/2))) {
         let c = new Object().append(
           createSquare(x * length, y * length, length, length, "rgb(0,0,0,1)")
         );
