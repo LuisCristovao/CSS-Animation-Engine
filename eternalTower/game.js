@@ -114,7 +114,7 @@ ghost_colliders[0].appendAnimation((self) => {
       if (self.x - c.x > 0) {
         self.left = false;
       }
-      if (self.y - c.y > 0) {
+      if (self.y - c.y > 0 ) {
         self.up = false;
       }
       if (self.y - c.y < 0) {
