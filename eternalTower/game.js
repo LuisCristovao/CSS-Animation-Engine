@@ -22,15 +22,19 @@ let projectiles = [];
 let enemy_projectiles = [];
 
 ghost_colliders.push(
-  new Object().append(createSquare(9999, 9999, 100, 100, "rgb(100,100,100,1)"))
+  new Object().append(createSquare(500, 500, 100, 100, "rgb(100,100,100,1)"))
 );
 ghost_colliders.push(
-  new Object().append(createSquare(99990, 99990, 100, 100, "rgb(100,100,100,1)"))
+  new Object().append(
+    createSquare(700, 700, 100, 100, "rgb(100,100,100,1)")
+  )
 );
 ghost_colliders.push(
-  new Object().append(createSquare(10500, 10500, 100, 100, "rgb(100,100,100,1)"))
+  new Object().append(
+    createSquare(500, 600, 100, 100, "rgb(100,100,100,1)")
+  )
 );
-ghost_colliders[0].appendAnimation((self)=>{
+ghost_colliders[0].appendAnimation((self) => {
   for (let i = 0; i < colliders.length; i++) {
     let c = colliders[i];
     if (
@@ -57,13 +61,13 @@ ghost_colliders[0].appendAnimation((self)=>{
       }
     }
   }
-  self.move(self.x+(player.x-self.x)*0.01,self.y+(player.y-self.y)*0.01)
-})
-colliders.push(
-  new Object().append(createSquare(10300, 10200, 100, 100, "rgb(0,0,0,1)"))
-);
-colliders[0].shape.style.border="2px solid white"
-player.append(createSquare(10100, 10100, 100, 100, "rgb(255,0,0,1)"));
+  self.move(
+    self.x + (player.x - self.x) * 0.01,
+    self.y + (player.y - self.y) * 0.01
+  );
+});
+
+player.append(createSquare(300, 300, 100, 100, "rgb(255,0,0,1)"));
 
 player.appendAnimation((self) => {
   let new_x = self.x;
@@ -112,15 +116,19 @@ player.appendAnimation((self) => {
       setTimeout(() => {
         c.shape.style["background-color"] = "rgba(0,0,0,1)";
       }, 100);
+      //left of the collider
       if (self.x - c.x < 0) {
         self.right = false;
       }
+      //right of the collider
       if (self.x - c.x > 0) {
         self.left = false;
       }
+      //under the collider
       if (self.y - c.y > 0) {
         self.up = false;
       }
+      //above the collider
       if (self.y - c.y < 0) {
         self.down = false;
       }
@@ -128,7 +136,7 @@ player.appendAnimation((self) => {
   }
   if (projectile_up) {
     let p = new Object().append(
-      createSquare(self.x+self.width/2, self.y, 10, 10, "rgb(255,200,0,1)")
+      createSquare(self.x + self.width / 2, self.y, 10, 10, "rgb(255,200,0,1)")
     );
     p.appendAnimation((self) => {
       for (let i = 0; i < ghost_colliders.length; i++) {
@@ -146,13 +154,34 @@ player.appendAnimation((self) => {
           }, 100);
         }
       }
+      for (let i = 0; i < colliders.length; i++) {
+        let c = colliders[i];
+        if (
+          self.x + self.width >= c.x &&
+          self.x <= c.x + c.width &&
+          self.y + self.height >= c.y &&
+          self.y <= c.y + c.height
+        ) {
+          c.shape.style["background-color"] = "rgba(0,255,0,1)";
+          setTimeout(() => {
+            p.destroy();
+            c.shape.style["background-color"] = "rgba(0,0,0,1)";
+          }, 100);
+        }
+      }
       self.move(self.x, self.y - 4);
     });
     projectiles.push(p);
   }
   if (projectile_down) {
     let p = new Object().append(
-      createSquare(self.x+self.width/2, self.y+self.height, 10, 10, "rgb(255,200,0,1)")
+      createSquare(
+        self.x + self.width / 2,
+        self.y + self.height,
+        10,
+        10,
+        "rgb(255,200,0,1)"
+      )
     );
     p.appendAnimation((self) => {
       for (let i = 0; i < ghost_colliders.length; i++) {
@@ -176,7 +205,13 @@ player.appendAnimation((self) => {
   }
   if (projectile_right) {
     let p = new Object().append(
-      createSquare(self.x+self.width, self.y+self.height/2, 10, 10, "rgb(255,200,0,1)")
+      createSquare(
+        self.x + self.width,
+        self.y + self.height / 2,
+        10,
+        10,
+        "rgb(255,200,0,1)"
+      )
     );
     p.appendAnimation((self) => {
       for (let i = 0; i < ghost_colliders.length; i++) {
@@ -194,13 +229,13 @@ player.appendAnimation((self) => {
           }, 100);
         }
       }
-      self.move(self.x+4, self.y);
+      self.move(self.x + 4, self.y);
     });
     projectiles.push(p);
   }
   if (projectile_left) {
     let p = new Object().append(
-      createSquare(self.x, self.y+self.height/2, 10, 10, "rgb(255,200,0,1)")
+      createSquare(self.x, self.y + self.height / 2, 10, 10, "rgb(255,200,0,1)")
     );
     p.appendAnimation((self) => {
       for (let i = 0; i < ghost_colliders.length; i++) {
@@ -218,7 +253,7 @@ player.appendAnimation((self) => {
           }, 100);
         }
       }
-      self.move(self.x-4, self.y);
+      self.move(self.x - 4, self.y);
     });
     projectiles.push(p);
   }
@@ -246,10 +281,10 @@ function press(e) {
   if (e.keyCode === 68 /* d */) {
     right = true;
   }
-  if ( e.keyCode === 83 /* s */) {
+  if (e.keyCode === 83 /* s */) {
     down = true;
   }
-  if ( e.keyCode === 65 /* a */) {
+  if (e.keyCode === 65 /* a */) {
     left = true;
   }
   if (e.keyCode === 75 /*k key*/) {
@@ -264,11 +299,11 @@ function press(e) {
   if (e.keyCode === 39 /* right */) {
     projectile_right = true;
   }
-  if(e.keyCode === 40 /* down */ ){
-    projectile_down=true
+  if (e.keyCode === 40 /* down */) {
+    projectile_down = true;
   }
-  if(e.keyCode === 37 /* left */  ){
-    projectile_left=true
+  if (e.keyCode === 37 /* left */) {
+    projectile_left = true;
   }
 }
 document.addEventListener("keyup", release);
@@ -276,13 +311,13 @@ function release(e) {
   if (e.keyCode === 87 /* w */) {
     up = false;
   }
-  if ( e.keyCode === 68 /* d */) {
+  if (e.keyCode === 68 /* d */) {
     right = false;
   }
-  if ( e.keyCode === 83 /* s */) {
+  if (e.keyCode === 83 /* s */) {
     down = false;
   }
-  if ( e.keyCode === 65 /* a */) {
+  if (e.keyCode === 65 /* a */) {
     left = false;
   }
   if (e.keyCode === 75 /*k key*/) {
@@ -292,13 +327,13 @@ function release(e) {
     projectile_up = false;
   }
   if (e.keyCode === 39 /* right */) {
-    projectile_right = false
+    projectile_right = false;
   }
-  if(e.keyCode === 40 /* down */ ){
-    projectile_down=false
+  if (e.keyCode === 40 /* down */) {
+    projectile_down = false;
   }
-  if(e.keyCode === 37 /* left */  ){
-    projectile_left=false
+  if (e.keyCode === 37 /* left */) {
+    projectile_left = false;
   }
 }
 
@@ -313,18 +348,31 @@ function cleanUnusedProjectiles() {
 }
 
 function init() {
-  document.body.style.background="rgb(0,0,0)"
+  document.body.style.background = "rgb(0,0,0)";
+
+  let length=100
+  let box_size=20
+  for(let x=0;x<box_size;x++){
+    for(let y=0;y<box_size;y++){
+      if(x==0 || x==box_size-1 || y==0 || y==box_size-1){
+        let c=new Object().append(createSquare(x*length, y*length, length, length, "rgb(0,0,0,1)"))
+        c.shape.style.border = "2px solid white";
+        colliders.push(c);
+      }
+    }
+  }
+  
 }
 
 function main() {
   dt = (new Date().getTime() - time) * 1e-3;
   real_time += dt;
   window.scroll({
-    top: player.y-300,
-    left: player.x-300
-  }); 
+    top: player.y - window.innerHeight/2,
+    left: player.x - window.innerWidth/2,
+  });
   player.play();
-  ghost_colliders[0].play()
+  ghost_colliders[0].play();
   projectiles.forEach((p) => {
     p.play();
   });
