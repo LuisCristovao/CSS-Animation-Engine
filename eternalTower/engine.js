@@ -126,6 +126,7 @@ class Object {
       this.left=false
       this.right=false
       this.angle=0
+      this.options={}
       
   }
   getElement(){
