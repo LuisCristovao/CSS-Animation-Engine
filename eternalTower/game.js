@@ -109,16 +109,16 @@ ghost_colliders[0].appendAnimation((self) => {
       setTimeout(() => {
         c.shape.style["background-color"] = "rgba(0,0,0,1)";
       }, 100);
-      if (self.x - c.x < 0 && Math.abs(self.x - c.x)==(self.width/2)+(c.width/2)) {
+      if (self.x - c.x < 0 && Math.abs(self.x - c.x)==self.width) {
         self.right = false;
       }
-      if (self.x - c.x > 0 && Math.abs(self.x - c.x)==(self.width/2)+(c.width/2)) {
+      if (self.x - c.x > 0 && Math.abs(self.x - c.x)==c.width) {
         self.left = false;
       }
-      if (self.y - c.y > 0 && Math.abs(self.y - c.y)==(self.height/2)+(c.height/2)) {
+      if (self.y - c.y > 0 && Math.abs(self.y - c.y)==c.height) {
         self.up = false;
       }
-      if (self.y - c.y < 0 && Math.abs(self.y - c.y)==(self.height/2)+(c.height/2)) {
+      if (self.y - c.y < 0 && Math.abs(self.y - c.y)==self.height) {
         self.down = false;
       }
     }
@@ -189,16 +189,16 @@ player.appendAnimation((self) => {
       setTimeout(() => {
         c.shape.style["background-color"] = "rgba(0,0,0,1)";
       }, 100);
-      if (self.x - c.x < 0 && Math.abs(self.x - c.x)==(self.width/2)+(c.width/2)) {
+      if (self.x - c.x < 0 && Math.abs(self.x - c.x)==self.width) {
         self.right = false;
       }
-      if (self.x - c.x > 0 && Math.abs(self.x - c.x)==(self.width/2)+(c.width/2)) {
+      if (self.x - c.x > 0 && Math.abs(self.x - c.x)==c.width) {
         self.left = false;
       }
-      if (self.y - c.y > 0 && Math.abs(self.y - c.y)==(self.height/2)+(c.height/2)) {
+      if (self.y - c.y > 0 && Math.abs(self.y - c.y)==c.height) {
         self.up = false;
       }
-      if (self.y - c.y < 0 && Math.abs(self.y - c.y)==(self.height/2)+(c.height/2)) {
+      if (self.y - c.y < 0 && Math.abs(self.y - c.y)==self.height) {
         self.down = false;
       }
     }
@@ -348,11 +348,17 @@ function init() {
         x == 0 ||
         x == box_size - 1 ||
         y == 0 ||
-        y == box_size - 1 ||
-        (x == Math.floor(box_size / 2) && y == Math.floor(box_size / 2))
+        y == box_size - 1 
       ) {
         let c = new Object().append(
           createSquare(x * length, y * length, length, length, "rgb(0,0,0,1)")
+        );
+        c.shape.style.border = "2px solid white";
+        colliders.push(c);
+      }
+      if((x == Math.floor(box_size / 2) && y == Math.floor(box_size / 2)) ){
+        let c = new Object().append(
+          createSquare(x * length, y * length, length*2, length*2, "rgb(0,0,0,1)")
         );
         c.shape.style.border = "2px solid white";
         colliders.push(c);
