@@ -68,6 +68,60 @@ function projectileBehaviour(self) {
   }
 }
 //----------------
+//collision detection function------
+function collisionDetection(object1, object2, action, solid = false) {
+  if (!solid) {
+    if (
+      object1.x + object1.width >= object2.x &&
+      object1.x <= object2.x + object2.width &&
+      object1.y + object1.height >= object2.y &&
+      object1.y <= object2.y + object2.height
+    ) {
+      action(object1, object2);
+    }
+  }else{
+    if (
+      object1.x + object1.width >= object2.x &&
+      object1.x <= object2.x + object2.width &&
+      object1.y + object1.height >= object2.y &&
+      object1.y <= object2.y + object2.height
+    ) {
+      action(object1, object2);
+
+      if (object1.x - object2.x < 0 && Math.abs(object1.x - object2.x) == object1.width) {
+        left_of = true;
+        aux_orientation++;
+      }
+      if (object1.x - object2.x > 0 && Math.abs(object1.x - object2.x) == object2.width) {
+        right_of = true;
+        aux_orientation++;
+      }
+      if (object1.y - object2.y > 0 && Math.abs(object1.y - object2.y) == object2.height) {
+        below = true;
+        aux_orientation++;
+      }
+      if (object1.y - object2.y < 0 && Math.abs(object1.y - object2.y) == object1.height) {
+        above = true;
+        aux_orientation++;
+      }
+      if (aux_orientation == 1) {
+        if (below) {
+          object1.up = false;
+        }
+        if (above) {
+          object1.down = false;
+        }
+        if (right_of) {
+          object1.left = false;
+        }
+        if (left_of) {
+          object1.right = false;
+        }
+      }
+    }
+  }
+}
+
 ghost_colliders.push(
   new Object().append(createSquare(500, 500, 100, 100, "rgb(100,100,100,1)"))
 );
@@ -99,6 +153,11 @@ ghost_colliders[0].appendAnimation((self) => {
   }
   for (let i = 0; i < colliders.length; i++) {
     let c = colliders[i];
+    aux_orientation = 0;
+    let below = false,
+      above = false,
+      left_of = false,
+      right_of = false;
     if (
       self.x + self.width >= c.x &&
       self.x <= c.x + c.width &&
@@ -110,16 +169,34 @@ ghost_colliders[0].appendAnimation((self) => {
         c.shape.style["background-color"] = "rgba(0,0,0,1)";
       }, 100);
       if (self.x - c.x < 0 && Math.abs(self.x - c.x) == self.width) {
-        self.right = false;
+        left_of = true;
+        aux_orientation++;
       }
       if (self.x - c.x > 0 && Math.abs(self.x - c.x) == c.width) {
-        self.left = false;
+        right_of = true;
+        aux_orientation++;
       }
       if (self.y - c.y > 0 && Math.abs(self.y - c.y) == c.height) {
-        self.up = false;
+        below = true;
+        aux_orientation++;
       }
       if (self.y - c.y < 0 && Math.abs(self.y - c.y) == self.height) {
-        self.down = false;
+        above = true;
+        aux_orientation++;
+      }
+      if (aux_orientation == 1) {
+        if (below) {
+          self.up = false;
+        }
+        if (above) {
+          self.down = false;
+        }
+        if (right_of) {
+          self.left = false;
+        }
+        if (left_of) {
+          self.right = false;
+        }
       }
     }
   }
@@ -142,7 +219,6 @@ ghost_colliders[0].appendAnimation((self) => {
 player.append(createSquare(300, 300, 100, 100, "rgb(255,0,0,1)"));
 
 player.appendAnimation((self) => {
-  
   let aux_orientation = 0;
 
   let new_x = self.x;
@@ -183,9 +259,9 @@ player.appendAnimation((self) => {
     let c = colliders[i];
     aux_orientation = 0;
     let below = false,
-    above = false,
-    left_of = false,
-    right_of = false;
+      above = false,
+      left_of = false,
+      right_of = false;
     if (
       self.x + self.width >= c.x &&
       self.x <= c.x + c.width &&
@@ -385,8 +461,8 @@ function init() {
         colliders.push(c);
         let c1 = new Object().append(
           createSquare(
-            (x) * length,
-            (y+1) * length,
+            x * length,
+            (y + 1) * length,
             length,
             length,
             "rgb(0,0,0,1)"
