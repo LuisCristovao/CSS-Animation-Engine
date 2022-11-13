@@ -45,6 +45,7 @@ function projectileBehaviour(self) {
       }, 100);
     })
   }
+  
   if (self.options.up) {
     self.move(self.x, self.y - speed);
   }
@@ -256,12 +257,14 @@ player.appendAnimation((self) => {
   }
 
   if (projectile_up) {
-    let p = new Object().append(
-      createSquare(self.x + self.width / 2, self.y, 10, 10, "rgb(255,200,0,1)")
-    );
-    p.options.up = true;
-    p.appendAnimation(projectileBehaviour);
-    projectiles.push(p);
+    if(Math.cos(200*self.real_time)-0.5>0){
+      let p = new Object().append(
+        createSquare(self.x + self.width / 2, self.y, 10, 10, "rgb(255,200,0,1)")
+      );
+      p.options.up = true;
+      p.appendAnimation(projectileBehaviour);
+      projectiles.push(p);
+    }
   }
   if (projectile_down) {
     let p = new Object().append(
@@ -365,7 +368,7 @@ function release(e) {
   if (e.keyCode === 75 /*k key*/) {
     dodge = false;
   }
-  if (e.keyCode === 38 /* up */) {
+  if (e.keyCode === 38 /* up */ ) {
     projectile_up = false;
   }
   if (e.keyCode === 39 /* right */) {
