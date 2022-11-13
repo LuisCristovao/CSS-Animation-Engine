@@ -84,6 +84,7 @@ ghost_colliders[0].appendAnimation((self) => {
   self.right = false;
   let new_x = self.x;
   let new_y = self.y;
+  let speed=1
   if (player.x - self.x > 0) {
     self.right = true;
   }
@@ -125,16 +126,16 @@ ghost_colliders[0].appendAnimation((self) => {
   
 
   if (self.up) {
-    new_y = self.y + (player.y - self.y) * 0.01;
+    new_y = self.y -speed;
   }
   if (self.down) {
-    new_y = self.y + (player.y - self.y) * 0.01;
+    new_y = self.y + speed
   }
   if (self.right) {
-    new_x = self.x + (player.x - self.x) * 0.01;
+    new_x = self.x + speed;
   }
   if (self.left) {
-    new_x = self.x + (player.x - self.x) * 0.01;
+    new_x = self.x -speed
   }
   self.move(new_x, new_y);
 });
