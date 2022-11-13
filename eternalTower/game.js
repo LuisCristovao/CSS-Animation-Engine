@@ -80,6 +80,11 @@ function collisionDetection(object1, object2, action, solid = false) {
       action(object1, object2);
     }
   }else{
+    let aux_orientation = 0;
+    let below = false,
+      above = false,
+      left_of = false,
+      right_of = false;
     if (
       object1.x + object1.width >= object2.x &&
       object1.x <= object2.x + object2.width &&
@@ -87,7 +92,6 @@ function collisionDetection(object1, object2, action, solid = false) {
       object1.y <= object2.y + object2.height
     ) {
       action(object1, object2);
-
       if (object1.x - object2.x < 0 && Math.abs(object1.x - object2.x) == object1.width) {
         left_of = true;
         aux_orientation++;
@@ -219,8 +223,7 @@ ghost_colliders[0].appendAnimation((self) => {
 player.append(createSquare(300, 300, 100, 100, "rgb(255,0,0,1)"));
 
 player.appendAnimation((self) => {
-  let aux_orientation = 0;
-
+  
   let new_x = self.x;
   let new_y = self.y;
 
@@ -243,66 +246,22 @@ player.appendAnimation((self) => {
   }
   for (let i = 0; i < ghost_colliders.length; i++) {
     let c = ghost_colliders[i];
-    if (
-      self.x + self.width >= c.x &&
-      self.x <= c.x + c.width &&
-      self.y + self.height >= c.y &&
-      self.y <= c.y + c.height
-    ) {
-      c.shape.style["background-color"] = "rgba(0,255,0,1)";
+    collisionDetection(self,c,(player,ghost)=>{
+      ghost.shape.style["background-color"] = "rgba(0,255,0,1)";
       setTimeout(() => {
-        c.shape.style["background-color"] = "rgba(100,100,100,1)";
+        ghost.shape.style["background-color"] = "rgba(100,100,100,1)";
       }, 100);
-    }
+    })
+    
   }
   for (let i = 0; i < colliders.length; i++) {
     let c = colliders[i];
-    aux_orientation = 0;
-    let below = false,
-      above = false,
-      left_of = false,
-      right_of = false;
-    if (
-      self.x + self.width >= c.x &&
-      self.x <= c.x + c.width &&
-      self.y + self.height >= c.y &&
-      self.y <= c.y + c.height
-    ) {
-      c.shape.style["background-color"] = "rgba(0,255,0,1)";
+    collisionDetection(self,c,(player,solid_block)=>{
+      solid_block.shape.style["background-color"] = "rgba(0,0,255,1)";
       setTimeout(() => {
-        c.shape.style["background-color"] = "rgba(0,0,0,1)";
+        solid_block.shape.style["background-color"] = "rgba(0,0,0,1)";
       }, 100);
-      if (self.x - c.x < 0 && Math.abs(self.x - c.x) == self.width) {
-        left_of = true;
-        aux_orientation++;
-      }
-      if (self.x - c.x > 0 && Math.abs(self.x - c.x) == c.width) {
-        right_of = true;
-        aux_orientation++;
-      }
-      if (self.y - c.y > 0 && Math.abs(self.y - c.y) == c.height) {
-        below = true;
-        aux_orientation++;
-      }
-      if (self.y - c.y < 0 && Math.abs(self.y - c.y) == self.height) {
-        above = true;
-        aux_orientation++;
-      }
-      if (aux_orientation == 1) {
-        if (below) {
-          self.up = false;
-        }
-        if (above) {
-          self.down = false;
-        }
-        if (right_of) {
-          self.left = false;
-        }
-        if (left_of) {
-          self.right = false;
-        }
-      }
-    }
+    },solid=true)
   }
 
   if (projectile_up) {
