@@ -383,17 +383,17 @@ function init() {
         );
         c.shape.style.border = "2px solid white";
         colliders.push(c);
-        // let c1 = new Object().append(
-        //   createSquare(
-        //     (x + 1) * length,
-        //     y * length,
-        //     length,
-        //     length,
-        //     "rgb(0,0,0,1)"
-        //   )
-        // );
-        // c1.shape.style.border = "2px solid white";
-        // colliders.push(c1);
+        let c1 = new Object().append(
+          createSquare(
+            (x) * length,
+            (y+1) * length,
+            length,
+            length,
+            "rgb(0,0,0,1)"
+          )
+        );
+        c1.shape.style.border = "2px solid white";
+        colliders.push(c1);
       }
     }
   }
