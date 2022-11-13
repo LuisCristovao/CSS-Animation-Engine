@@ -108,16 +108,16 @@ ghost_colliders[0].appendAnimation((self) => {
       setTimeout(() => {
         c.shape.style["background-color"] = "rgba(0,0,0,1)";
       }, 100);
-      if (self.x - c.x < 0) {
+      if (self.x - c.x < 0 && Math.abs(self.x - c.x)==(self.width/2)+(c.width/2)) {
         self.right = false;
       }
-      if (self.x - c.x > 0) {
+      if (self.x - c.x > 0 && Math.abs(self.x - c.x)==(self.width/2)+(c.width/2)) {
         self.left = false;
       }
-      if (self.y - c.y > 0 ) {
+      if (self.y - c.y > 0 && Math.abs(self.y - c.y)==(self.height/2)+(c.height/2)) {
         self.up = false;
       }
-      if (self.y - c.y < 0) {
+      if (self.y - c.y < 0 && Math.abs(self.y - c.y)==(self.height/2)+(c.height/2)) {
         self.down = false;
       }
     }
@@ -188,20 +188,16 @@ player.appendAnimation((self) => {
       setTimeout(() => {
         c.shape.style["background-color"] = "rgba(0,0,0,1)";
       }, 100);
-      //left of the collider
-      if (self.x - c.x < 0) {
+      if (self.x - c.x < 0 && Math.abs(self.x - c.x)==(self.width/2)+(c.width/2)) {
         self.right = false;
       }
-      //right of the collider
-      if (self.x - c.x > 0) {
+      if (self.x - c.x > 0 && Math.abs(self.x - c.x)==(self.width/2)+(c.width/2)) {
         self.left = false;
       }
-      //under the collider
-      if (self.y - c.y > 0) {
+      if (self.y - c.y > 0 && Math.abs(self.y - c.y)==(self.height/2)+(c.height/2)) {
         self.up = false;
       }
-      //above the collider
-      if (self.y - c.y < 0) {
+      if (self.y - c.y < 0 && Math.abs(self.y - c.y)==(self.height/2)+(c.height/2)) {
         self.down = false;
       }
     }
