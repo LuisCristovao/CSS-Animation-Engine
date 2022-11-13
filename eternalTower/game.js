@@ -142,10 +142,7 @@ ghost_colliders[0].appendAnimation((self) => {
 player.append(createSquare(300, 300, 100, 100, "rgb(255,0,0,1)"));
 
 player.appendAnimation((self) => {
-  let below = false,
-    above = false,
-    left_of = false,
-    right_of = false;
+  
   let aux_orientation = 0;
 
   let new_x = self.x;
@@ -185,6 +182,10 @@ player.appendAnimation((self) => {
   for (let i = 0; i < colliders.length; i++) {
     let c = colliders[i];
     aux_orientation = 0;
+    let below = false,
+    above = false,
+    left_of = false,
+    right_of = false;
     if (
       self.x + self.width >= c.x &&
       self.x <= c.x + c.width &&
@@ -382,17 +383,17 @@ function init() {
         );
         c.shape.style.border = "2px solid white";
         colliders.push(c);
-        let c1 = new Object().append(
-          createSquare(
-            (x + 1) * length,
-            y * length,
-            length,
-            length,
-            "rgb(0,0,0,1)"
-          )
-        );
-        c1.shape.style.border = "2px solid white";
-        colliders.push(c1);
+        // let c1 = new Object().append(
+        //   createSquare(
+        //     (x + 1) * length,
+        //     y * length,
+        //     length,
+        //     length,
+        //     "rgb(0,0,0,1)"
+        //   )
+        // );
+        // c1.shape.style.border = "2px solid white";
+        // colliders.push(c1);
       }
     }
   }
