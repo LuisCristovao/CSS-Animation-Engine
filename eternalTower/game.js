@@ -26,33 +26,24 @@ function projectileBehaviour(self) {
   let speed = 4;
   for (let i = 0; i < ghost_colliders.length; i++) {
     let c = ghost_colliders[i];
-    if (
-      self.x + self.width >= c.x &&
-      self.x <= c.x + c.width &&
-      self.y + self.height >= c.y &&
-      self.y <= c.y + c.height
-    ) {
-      c.shape.style["background-color"] = "rgba(0,255,0,1)";
+    collisionDetection(self,c,(projectile,ghost)=>{
+      ghost.shape.style["background-color"] = "rgba(0,255,0,1)";
       setTimeout(() => {
-        self.destroy();
-        c.shape.style["background-color"] = "rgba(100,100,100,1)";
+        projectile.destroy()
+        ghost.shape.style["background-color"] = "rgba(100,100,100,1)";
       }, 100);
-    }
+    })
+    
   }
   for (let i = 0; i < colliders.length; i++) {
     let c = colliders[i];
-    if (
-      self.x + self.width >= c.x &&
-      self.x <= c.x + c.width &&
-      self.y + self.height >= c.y &&
-      self.y <= c.y + c.height
-    ) {
-      c.shape.style["background-color"] = "rgba(0,255,0,1)";
+    collisionDetection(self,c,(projectile,ghost)=>{
+      ghost.shape.style["background-color"] = "rgba(0,255,0,1)";
       setTimeout(() => {
-        self.destroy();
-        c.shape.style["background-color"] = "rgba(0,0,0,1)";
+        projectile.destroy()
+        ghost.shape.style["background-color"] = "rgba(0,0,0,1)";
       }, 100);
-    }
+    })
   }
   if (self.options.up) {
     self.move(self.x, self.y - speed);
