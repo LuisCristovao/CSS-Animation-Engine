@@ -21,31 +21,64 @@ let colliders = [];
 let projectiles = [];
 let enemy_projectiles = [];
 
-//projectile behaviour
+//projectiles-----------
+function createProjectile(player, options) {
+  if (options.up) {
+    if (step(player.real_time % 0.2, 0, 0.1)) {
+      let p = new Object().append(
+        createSquare(
+          player.x + player.width / 2,
+          player.y,
+          10,
+          10,
+          "rgb(255,200,0,1)"
+        )
+      );
+      p.options.up = true;
+      p.appendAnimation(projectileBehaviour);
+      projectiles.push(p);
+    }
+  }
+  if (options.down) {
+    if (step(player.real_time % 0.2, 0, 0.1)) {
+      let p = new Object().append(
+        createSquare(
+          player.x + player.width / 2,
+          player.y,
+          10,
+          10,
+          "rgb(255,200,0,1)"
+        )
+      );
+      p.options.up = true;
+      p.appendAnimation(projectileBehaviour);
+      projectiles.push(p);
+    }
+  }
+}
 function projectileBehaviour(self) {
   let speed = 4;
   for (let i = 0; i < ghost_colliders.length; i++) {
     let c = ghost_colliders[i];
-    collisionDetection(self,c,(projectile,ghost)=>{
+    collisionDetection(self, c, (projectile, ghost) => {
       ghost.shape.style["background-color"] = "rgba(0,255,0,1)";
       setTimeout(() => {
-        projectile.destroy()
+        projectile.destroy();
         ghost.shape.style["background-color"] = "rgba(100,100,100,1)";
       }, 100);
-    })
-    
+    });
   }
   for (let i = 0; i < colliders.length; i++) {
     let c = colliders[i];
-    collisionDetection(self,c,(projectile,ghost)=>{
+    collisionDetection(self, c, (projectile, ghost) => {
       ghost.shape.style["background-color"] = "rgba(0,255,0,1)";
       setTimeout(() => {
-        projectile.destroy()
+        projectile.destroy();
         ghost.shape.style["background-color"] = "rgba(0,0,0,1)";
       }, 100);
-    })
+    });
   }
-  
+
   if (self.options.up) {
     self.move(self.x, self.y - speed);
   }
@@ -71,7 +104,7 @@ function collisionDetection(object1, object2, action, solid = false) {
     ) {
       action(object1, object2);
     }
-  }else{
+  } else {
     let aux_orientation = 0;
     let below = false,
       above = false,
@@ -84,19 +117,31 @@ function collisionDetection(object1, object2, action, solid = false) {
       object1.y <= object2.y + object2.height
     ) {
       action(object1, object2);
-      if (object1.x - object2.x < 0 && Math.abs(object1.x - object2.x) == object1.width) {
+      if (
+        object1.x - object2.x < 0 &&
+        Math.abs(object1.x - object2.x) == object1.width
+      ) {
         left_of = true;
         aux_orientation++;
       }
-      if (object1.x - object2.x > 0 && Math.abs(object1.x - object2.x) == object2.width) {
+      if (
+        object1.x - object2.x > 0 &&
+        Math.abs(object1.x - object2.x) == object2.width
+      ) {
         right_of = true;
         aux_orientation++;
       }
-      if (object1.y - object2.y > 0 && Math.abs(object1.y - object2.y) == object2.height) {
+      if (
+        object1.y - object2.y > 0 &&
+        Math.abs(object1.y - object2.y) == object2.height
+      ) {
         below = true;
         aux_orientation++;
       }
-      if (object1.y - object2.y < 0 && Math.abs(object1.y - object2.y) == object1.height) {
+      if (
+        object1.y - object2.y < 0 &&
+        Math.abs(object1.y - object2.y) == object1.height
+      ) {
         above = true;
         aux_orientation++;
       }
@@ -215,7 +260,6 @@ ghost_colliders[0].appendAnimation((self) => {
 player.append(createSquare(300, 300, 100, 100, "rgb(255,0,0,1)"));
 
 player.appendAnimation((self) => {
-  
   let new_x = self.x;
   let new_y = self.y;
 
@@ -238,28 +282,38 @@ player.appendAnimation((self) => {
   }
   for (let i = 0; i < ghost_colliders.length; i++) {
     let c = ghost_colliders[i];
-    collisionDetection(self,c,(player,ghost)=>{
+    collisionDetection(self, c, (player, ghost) => {
       ghost.shape.style["background-color"] = "rgba(0,255,0,1)";
       setTimeout(() => {
         ghost.shape.style["background-color"] = "rgba(100,100,100,1)";
       }, 100);
-    })
-    
+    });
   }
   for (let i = 0; i < colliders.length; i++) {
     let c = colliders[i];
-    collisionDetection(self,c,(player,solid_block)=>{
-      solid_block.shape.style["background-color"] = "rgba(0,0,255,1)";
-      setTimeout(() => {
-        solid_block.shape.style["background-color"] = "rgba(0,0,0,1)";
-      }, 100);
-    },solid=true)
+    collisionDetection(
+      self,
+      c,
+      (player, solid_block) => {
+        solid_block.shape.style["background-color"] = "rgba(0,0,255,1)";
+        setTimeout(() => {
+          solid_block.shape.style["background-color"] = "rgba(0,0,0,1)";
+        }, 100);
+      },
+      (solid = true)
+    );
   }
 
   if (projectile_up) {
-    if(Math.cos(200*self.real_time)-0.5>0){
+    if (step(self.real_time % 0.2, 0, 0.1)) {
       let p = new Object().append(
-        createSquare(self.x + self.width / 2, self.y, 10, 10, "rgb(255,200,0,1)")
+        createSquare(
+          self.x + self.width / 2,
+          self.y,
+          10,
+          10,
+          "rgb(255,200,0,1)"
+        )
       );
       p.options.up = true;
       p.appendAnimation(projectileBehaviour);
@@ -368,7 +422,7 @@ function release(e) {
   if (e.keyCode === 75 /*k key*/) {
     dodge = false;
   }
-  if (e.keyCode === 38 /* up */ ) {
+  if (e.keyCode === 38 /* up */) {
     projectile_up = false;
   }
   if (e.keyCode === 39 /* right */) {
@@ -394,7 +448,7 @@ function cleanUnusedProjectiles() {
 
 function init() {
   document.body.style.background = "rgb(0,0,0)";
-  document.body.style.overflow = 'hidden';
+  document.body.style.overflow = "hidden";
   let length = 100;
   let box_size = 20;
   for (let x = 0; x < box_size; x++) {
