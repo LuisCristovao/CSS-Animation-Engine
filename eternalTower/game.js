@@ -394,7 +394,7 @@ function cleanUnusedProjectiles() {
 
 function init() {
   document.body.style.background = "rgb(0,0,0)";
-
+  document.body.style.overflow = 'hidden';
   let length = 100;
   let box_size = 20;
   for (let x = 0; x < box_size; x++) {
