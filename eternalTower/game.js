@@ -44,13 +44,13 @@ function createProjectile(player, options) {
       let p = new Object().append(
         createSquare(
           player.x + player.width / 2,
-          player.y,
+          player.y+player.height,
           10,
           10,
           "rgb(255,200,0,1)"
         )
       );
-      p.options.up = true;
+      p.options.down = true;
       p.appendAnimation(projectileBehaviour);
       projectiles.push(p);
     }
@@ -305,34 +305,10 @@ player.appendAnimation((self) => {
   }
 
   if (projectile_up) {
-    if (step(self.real_time % 0.2, 0, 0.1)) {
-      let p = new Object().append(
-        createSquare(
-          self.x + self.width / 2,
-          self.y,
-          10,
-          10,
-          "rgb(255,200,0,1)"
-        )
-      );
-      p.options.up = true;
-      p.appendAnimation(projectileBehaviour);
-      projectiles.push(p);
-    }
+    createProjectile(player,{up:true})
   }
   if (projectile_down) {
-    let p = new Object().append(
-      createSquare(
-        self.x + self.width / 2,
-        self.y + self.height,
-        10,
-        10,
-        "rgb(255,200,0,1)"
-      )
-    );
-    p.options.down = true;
-    p.appendAnimation(projectileBehaviour);
-    projectiles.push(p);
+    createProjectile(player,{down:true})
   }
   if (projectile_right) {
     let p = new Object().append(
