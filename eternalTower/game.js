@@ -55,6 +55,38 @@ function createProjectile(player, options) {
       projectiles.push(p);
     }
   }
+  if(options.right){
+    if (step(player.real_time % 0.2, 0, 0.1)) {
+      let p = new Object().append(
+        createSquare(
+          player.x + player.width,
+          player.y + player.height / 2,
+          10,
+          10,
+          "rgb(255,200,0,1)"
+        )
+      );
+      p.options.right = true;
+      p.appendAnimation(projectileBehaviour);
+      projectiles.push(p);
+    }
+  }
+  if(options.left){
+    if (step(player.real_time % 0.2, 0, 0.1)) {
+      let p = new Object().append(
+        createSquare(
+          player.x ,
+          player.y + player.height / 2,
+          10,
+          10,
+          "rgb(255,200,0,1)"
+        )
+      );
+      p.options.left = true;
+      p.appendAnimation(projectileBehaviour);
+      projectiles.push(p);
+    }
+  }
 }
 function projectileBehaviour(self) {
   let speed = 4;
@@ -311,26 +343,10 @@ player.appendAnimation((self) => {
     createProjectile(player,{down:true})
   }
   if (projectile_right) {
-    let p = new Object().append(
-      createSquare(
-        self.x + self.width,
-        self.y + self.height / 2,
-        10,
-        10,
-        "rgb(255,200,0,1)"
-      )
-    );
-    p.options.right = true;
-    p.appendAnimation(projectileBehaviour);
-    projectiles.push(p);
+    createProjectile(player,{right:true})
   }
   if (projectile_left) {
-    let p = new Object().append(
-      createSquare(self.x, self.y + self.height / 2, 10, 10, "rgb(255,200,0,1)")
-    );
-    p.options.left = true;
-    p.appendAnimation(projectileBehaviour);
-    projectiles.push(p);
+    createProjectile(player,{left:true})
   }
   if (self.up) {
     new_y = self.y - speed;
