@@ -24,13 +24,12 @@ let enemy_projectiles = [];
 //projectiles-----------
 function createProjectile(player, options) {
   if (options.up) {
-    if (step(player.real_time % 0.2, 0, 0.1)) {
+    if (step(player.real_time % options.prepeat, 0, options.pfrequency)) {
       let p = new Object().append(
-        createSquare(
+        createCircle(
           player.x + player.width / 2,
           player.y,
-          10,
-          10,
+          options.size,
           "rgb(255,200,0,1)"
         )
       );
@@ -337,7 +336,7 @@ player.appendAnimation((self) => {
   }
 
   if (projectile_up) {
-    createProjectile(player,{up:true})
+    createProjectile(player,{up:true,speed:1,size:100,pfrequency:0.02,prepeat:0.5})
   }
   if (projectile_down) {
     createProjectile(player,{down:true})
