@@ -34,6 +34,7 @@ function createProjectile(player, options) {
         )
       );
       p.options.up = true;
+      p.options.speed=options.speed
       p.appendAnimation(projectileBehaviour);
       projectiles.push(p);
     }
@@ -41,10 +42,9 @@ function createProjectile(player, options) {
   if (options.down) {
     if (step(player.real_time % 0.2, 0, 0.1)) {
       let p = new Object().append(
-        createSquare(
+        createCircle(
           player.x + player.width / 2,
           player.y+player.height,
-          10,
           10,
           "rgb(255,200,0,1)"
         )
@@ -55,19 +55,43 @@ function createProjectile(player, options) {
     }
   }
   if(options.right){
-    if (step(player.real_time % 0.2, 0, 0.1)) {
-      let p = new Object().append(
-        createSquare(
+    if (step(player.real_time % options.prepeat, 0, options.pfrequency)) {
+      let p1 = new Object().append(
+        createCircle(
           player.x + player.width,
-          player.y + player.height / 2,
-          10,
-          10,
+          player.y ,
+          options.size,
           "rgb(255,200,0,1)"
         )
       );
-      p.options.right = true;
-      p.appendAnimation(projectileBehaviour);
-      projectiles.push(p);
+      let p2= new Object().append(
+        createCircle(
+          player.x + player.width,
+          player.y + player.height/2,
+          options.size,
+          "rgb(255,200,0,1)"
+        )
+      );
+      let p3 = new Object().append(
+        createCircle(
+          player.x + player.width,
+          player.y + player.height,
+          options.size,
+          "rgb(255,200,0,1)"
+        )
+      );
+      p1.options.right = true;
+      p2.options.right = true;
+      p3.options.right = true;
+      p1.options.speed=options.speed
+      p2.options.speed=options.speed
+      p3.options.speed=options.speed
+      p1.appendAnimation(projectileBehaviour);
+      p2.appendAnimation(projectileBehaviour);
+      p3.appendAnimation(projectileBehaviour);
+      projectiles.push(p1);
+      projectiles.push(p2);
+      projectiles.push(p3);
     }
   }
   if(options.left){
@@ -88,7 +112,7 @@ function createProjectile(player, options) {
   }
 }
 function projectileBehaviour(self) {
-  let speed = 4;
+  let speed = (self.options.speed!=undefined)?self.options.speed:4;
   for (let i = 0; i < ghost_colliders.length; i++) {
     let c = ghost_colliders[i];
     collisionDetection(self, c, (projectile, ghost) => {
@@ -336,13 +360,13 @@ player.appendAnimation((self) => {
   }
 
   if (projectile_up) {
-    createProjectile(player,{up:true,speed:1,size:100,pfrequency:0.02,prepeat:0.5})
+    createProjectile(player,{up:true,speed:1,size:100,pfrequency:0.1,prepeat:1})
   }
   if (projectile_down) {
     createProjectile(player,{down:true})
   }
   if (projectile_right) {
-    createProjectile(player,{right:true})
+    createProjectile(player,{right:true,speed:10,size:10,pfrequency:0.1,prepeat:1})
   }
   if (projectile_left) {
     createProjectile(player,{left:true})
