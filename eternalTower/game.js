@@ -22,6 +22,26 @@ let projectiles = [];
 let enemy_projectiles = [];
 
 //projectiles-----------
+function createProjectile2(player,options){
+  if (step(player.real_time % 0.2, 0, 0.1)) {
+    let p = new Object().append(
+      createCircle(
+        player.x + player.width / 2,
+        player.y + player.height/ 2,
+        10,
+        "rgb(255,200,0,1)"
+      )
+    );
+    p.options.x_move_function=(self)=>{
+      return self.x-4
+    }
+    p.options.y_move_function=(self)=>{
+      return self.y
+    }
+    p.appendAnimation(projectileBehaviour2);
+    projectiles.push(p);
+  }
+}
 function createProjectile(player, options) {
   if (options.up) {
     if (step(player.real_time % options.prepeat, 0, options.pfrequency)) {
@@ -110,6 +130,43 @@ function createProjectile(player, options) {
       projectiles.push(p);
     }
   }
+}
+function projectileBehaviour2(self){
+  let speed = (self.options.speed!=undefined)?self.options.speed:4;
+  for (let i = 0; i < ghost_colliders.length; i++) {
+    let c = ghost_colliders[i];
+    collisionDetection(self, c, (projectile, ghost) => {
+      ghost.shape.style["background-color"] = "rgba(0,255,0,1)";
+      setTimeout(() => {
+        projectile.destroy();
+        ghost.shape.style["background-color"] = "rgba(100,100,100,1)";
+      }, 100);
+    });
+  }
+  for (let i = 0; i < colliders.length; i++) {
+    let c = colliders[i];
+    collisionDetection(self, c, (projectile, ghost) => {
+      ghost.shape.style["background-color"] = "rgba(0,255,0,1)";
+      setTimeout(() => {
+        projectile.destroy();
+        ghost.shape.style["background-color"] = "rgba(0,0,0,1)";
+      }, 100);
+    });
+  }
+
+  let new_x=self.options.x_move_function(self)
+  let new_y=self.options.y_move_function(self)
+  self.move(new_x,new_y );
+  
+  // if (self.options.down) {
+  //   self.move(self.x, self.y + speed);
+  // }
+  // if (self.options.left) {
+  //   self.move(self.x - speed, self.y);
+  // }
+  // if (self.options.right) {
+  //   self.move(self.x + speed, self.y);
+  // }
 }
 function projectileBehaviour(self) {
   let speed = (self.options.speed!=undefined)?self.options.speed:4;
@@ -369,7 +426,7 @@ player.appendAnimation((self) => {
     createProjectile(player,{right:true,speed:10,size:10,pfrequency:0.1,prepeat:1})
   }
   if (projectile_left) {
-    createProjectile(player,{left:true})
+    createProjectile2(player,{left:true})
   }
   if (self.up) {
     new_y = self.y - speed;
