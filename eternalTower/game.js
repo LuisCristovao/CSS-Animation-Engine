@@ -435,9 +435,11 @@ player.appendAnimation((self) => {
       x_move_function: (self) => {
         return self.x - 8;
       },
-      y_move_function: (self) => {
-        return self.y;
-      },
+      y_move_function:(Math.random()>0.5?(self) => {
+        return self.y -1;
+      }:(self) => {
+        return self.y +1;
+      }) ,
       create_projectile_function: () => {
         return new Object().append(
           createCircle(
