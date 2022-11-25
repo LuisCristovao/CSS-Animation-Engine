@@ -433,7 +433,7 @@ player.appendAnimation((self) => {
         return step(player.real_time % 0.1, 0, 0.02);
       },
       x_move_function: (self) => {
-        return self.x - 8;
+        return self.x - self.real_time*self.real_time-self.real_time*2;
       },
       y_move_function:(Math.random()>0.5?(self) => {
         return self.y -1;
