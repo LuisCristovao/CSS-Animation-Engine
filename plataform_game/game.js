@@ -3,17 +3,14 @@ let time = new Date().getTime();
 let dt = 0;
 
 let player = new Object();
-let speed=4
+let speed = 4;
 let up = false,
   down = false,
   right = false,
   left = false,
-  jump=false;
-
+  jump = false;
 
 let colliders = [];
-
-
 
 //----------------
 //collision detection function------
@@ -41,62 +38,62 @@ function collisionDetection(object1, object2, action, solid = true) {
     ) {
       action(object1, object2);
       if (
-        object1.x - object2.x < 0 &&
-        Math.abs(object1.x - object2.x) == object1.width
+        object1.x - object2.x < 0 
       ) {
         left_of = true;
         aux_orientation++;
       }
-      if (
-        object1.x - object2.x > 0 &&
-        Math.abs(object1.x - object2.x) == object2.width
-      ) {
+      if (object1.x - object2.x > 0) {
         right_of = true;
         aux_orientation++;
       }
       if (
-        object1.y - object2.y > 0 &&
-        Math.abs(object1.y - object2.y) == object2.height
+        object1.y - object2.y > 0 
       ) {
         below = true;
         aux_orientation++;
       }
       if (
-        object1.y - object2.y < 0 &&
-        Math.abs(object1.y - object2.y) == object1.height
+        object1.y - object2.y < 0 
       ) {
         above = true;
         aux_orientation++;
       }
-      if (aux_orientation == 1) {
-        if (below) {
-          object1.up = false;
-        }
-        if (above) {
-          object1.down = false;
-        }
-        if (right_of) {
-          object1.left = false;
-        }
-        if (left_of) {
-          object1.right = false;
-        }
+
+      if (below) {
+        object1.up = false;
+        //object1.speedy=(object1.y - object2.y)*0.05
+      }
+      if (above) {
+        object1.down = false;
+        object1.speedy=(object1.y - object2.y)*0.05
+        
+      }
+      if (right_of) {
+        object1.left = false;
+        object1.speedx=(object1.x - object2.x)*0.05
+      }
+      if (left_of) {
+        object1.right = false;
+        object1.speedx=(object1.x - object2.x)*0.05
       }
     }
   }
 }
-
 
 player.append(createSquare(300, 300, 100, 100, "rgb(255,0,0,1)"));
 
 player.appendAnimation((self) => {
   let new_x = self.x;
   let new_y = self.y;
+  let accx = 0;
+  let accy = 0;
 
   self.up = false;
   self.down = false;
   self.left = false;
   self.right = false;
+  self.options.on_ground = false;
 
   if (up) {
     self.up = true;
@@ -110,7 +107,7 @@ player.appendAnimation((self) => {
   if (left) {
     self.left = true;
   }
- 
+
   for (let i = 0; i < colliders.length; i++) {
     let c = colliders[i];
     collisionDetection(
@@ -121,25 +118,30 @@ player.appendAnimation((self) => {
         setTimeout(() => {
           solid_block.shape.style["background-color"] = "rgba(0,0,0,1)";
         }, 100);
+        player.options.on_ground = true;
+        player.real_time = 0;
       },
       (solid = true)
     );
   }
 
-  
-  if (self.up) {
-    new_y = self.y - speed;
+  if (self.up && self.options.on_ground) {
+    self.speedy = self.speedy + self.dt * -15000;
   }
   if (self.down) {
-    new_y = self.y + speed;
+    //new_y = self.y + speed;
   }
   if (self.right) {
-    new_x = self.x + speed;
+    self.speedx = self.speedx + self.dt * 200;
   }
   if (self.left) {
-    new_x = self.x - speed;
+    self.speedx = self.speedx + self.dt * -200;
   }
-  self.move(new_x, new_y);
+  //on the air
+  if (!self.options.on_ground) {
+    self.speedy = self.speedy + self.dt * 300;
+  }
+  self.move(self.x + self.dt * self.speedx, self.y + self.dt * self.speedy);
 
   //self.move(new_x,new_y)
 });
@@ -224,14 +226,14 @@ function init() {
   let box_size = 20;
   for (let y = 0; y < box_size; y++) {
     for (let x = 0; x < box_size; x++) {
-      if (x == 3  & (y == 4) ) {
+      if ((x == 3) & (y == 4)) {
         let c = new Object().append(
           createSquare(x * length, y * length, length, length, "rgb(0,0,0,1)")
         );
         c.shape.style.border = "2px solid white";
         colliders.push(c);
       }
-      if (x == 6 & (y == 7)) {
+      if ((x == 6) & (y == 7)) {
         let c = new Object().append(
           createSquare(x * length, y * length, length, length, "rgb(0,0,0,1)")
         );
@@ -250,7 +252,7 @@ function main() {
     left: player.x - window.innerWidth / 2,
   });
   player.play();
-  
+
   time = new Date().getTime();
   requestAnimationFrame(main);
 }

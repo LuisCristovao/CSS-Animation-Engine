@@ -132,6 +132,9 @@ class Object {
       this.left=false
       this.right=false
       this.angle=0
+      this.speedx=0
+      this.speedy=0
+      this.dt=0
       this.options={}
       
   }
@@ -186,7 +189,7 @@ class Object {
       return this.angle
   }
   updateRealTime(){
-      let dt = (new Date().getTime() - this.star_time) * 1e-3;
+      this.dt = (new Date().getTime() - this.star_time) * 1e-3;
       this.real_time+=dt
   }
   updateStartTime(){
