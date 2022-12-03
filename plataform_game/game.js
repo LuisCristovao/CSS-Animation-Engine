@@ -37,32 +37,35 @@ function collisionDetection(object1, object2, action, solid = true) {
       object1.y <= object2.y + object2.height
     ) {
       action(object1, object2);
+      let collision_margin_error=10
       if (
-        object1.x - object2.x < 0 
+        object1.x - object2.x < 0 && Math.abs(Math.round(Math.abs((object1.x - object2.x))-object1.width))<collision_margin_error
       ) {
         left_of = true;
         aux_orientation++;
       }
-      if (object1.x - object2.x > 0) {
+      if (object1.x - object2.x > 0 && Math.abs(Math.round(Math.abs((object1.x - object2.x))-object1.width))<collision_margin_error) {
         right_of = true;
+        console.log("right of "+Math.abs(Math.round(Math.abs((object1.x - object2.x))-object1.width)))
         aux_orientation++;
       }
       if (
-        object1.y - object2.y > 0 
+        object1.y - object2.y > 0 && Math.abs(Math.round(Math.abs((object1.y - object2.y))-object1.height))<collision_margin_error
       ) {
         below = true;
         aux_orientation++;
       }
       if (
-        object1.y - object2.y < 0 
+        object1.y - object2.y < 0 && Math.abs(Math.round(Math.abs((object1.y - object2.y))-object1.height))<collision_margin_error
       ) {
+        console.log('above '+Math.abs(Math.round(Math.abs((object1.y - object2.y))-object1.height)))
         above = true;
         aux_orientation++;
       }
 
       if (below) {
         object1.up = false;
-        //object1.speedy=(object1.y - object2.y)*0.05
+        object1.speedy=(object1.y - object2.y)*0.05
       }
       if (above) {
         object1.down = false;
@@ -234,6 +237,20 @@ function init() {
         colliders.push(c);
       }
       if ((x == 6) & (y == 7)) {
+        let c = new Object().append(
+          createSquare(x * length, y * length, length, length, "rgb(0,0,0,1)")
+        );
+        c.shape.style.border = "2px solid white";
+        colliders.push(c);
+      }
+      if ((y == 8)) {
+        let c = new Object().append(
+          createSquare(x * length, y * length, length, length, "rgb(0,0,0,1)")
+        );
+        c.shape.style.border = "2px solid white";
+        colliders.push(c);
+      }
+      if ((x == 10)) {
         let c = new Object().append(
           createSquare(x * length, y * length, length, length, "rgb(0,0,0,1)")
         );
