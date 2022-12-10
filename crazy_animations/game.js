@@ -10,12 +10,26 @@ let animtion_id=0
 let menu_on=false
 function initSite(){
   if(window.location.search!=''){
-    
+    x_equation=window.location.search.split("?")[1].split(";")[0]
+    y_equation=window.location.search.split("?")[1].split(";")[1]
+    color_equation=window.location.search.split("?")[1].split(";")[2]
   }
   document.body.style.backgroundColor = "hsl(0,50%,5%)";
   exitMenu()
   RunAnimation()
 }
+
+const copyToClipboard = (str) => {
+  const el = document.createElement("textarea");
+  el.value = str;
+  el.setAttribute("readonly", "");
+  el.style.position = "absolute";
+  el.style.left = "-9999px";
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand("copy");
+  document.body.removeChild(el);
+};
 function Menu(){
   menu_on=true
   //cancelAnimation()
@@ -23,11 +37,19 @@ function Menu(){
   html+=`<input oninput="changeXequation(this.value)" type="text" placeholder="Input X Equation"  value="${x_equation}"><br>`
   html+=`<input oninput="changeYequation(this.value)" type="text" placeholder="Input Y Equation"  value="${y_equation}"><br>`
   html+=`<input oninput="changeColorequation(this.value)" type="text" placeholder="Input Color Equation"  value="${color_equation}"><br>`
-  html+=`<input oninput="changeNumberOfParticles(this.value)" type="number" placeholder="Number of Particles" value="${n_particles}"><br>`
+  html+=`<input oninput="changeNumberOfParticles(this.value)" type="number" placeholder="Number of Particles" value="${n_particles}"><br><br>`
+  html+=`<button onclick="ShareEquations(this)">Share Equations</button><br><br>`
   html+=`<button onclick="exitMenu()">Exit Menu</button>`
   document.body.innerHTML=html
   createParticles()
 
+}
+function ShareEquations(btn){
+  btn.innerText="Copied Link!"
+  copyToClipboard(window.location.origin+`/crazy_animations/game.html?${x_equation};${y_equation};${color_equation}`)
+  setTimeout(()=>{
+    btn.innerText="Share Equations"
+  },1000)
 }
 function exitMenu(){
   document.body.innerHTML=`<p style="color:white;cursor:pointer" onclick="Menu()">Menu</p>`
