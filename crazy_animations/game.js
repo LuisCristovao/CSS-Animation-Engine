@@ -46,7 +46,7 @@ function Menu(){
 }
 function ShareEquations(btn){
   btn.innerText="Copied Link!"
-  copyToClipboard(window.location.origin+`/crazy_animations/game.html?${x_equation};${y_equation};${color_equation}`)
+  copyToClipboard(window.location.origin+`/CSS-Animation-Engine/crazy_animations/game.html?${x_equation};${y_equation};${color_equation}`)
   setTimeout(()=>{
     btn.innerText="Share Equations"
   },1000)
