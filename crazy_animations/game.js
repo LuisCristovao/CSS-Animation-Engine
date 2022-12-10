@@ -38,6 +38,7 @@ function Menu(){
   html+=`<input oninput="changeYequation(this.value)" type="text" placeholder="Input Y Equation"  value="${y_equation}"><br>`
   html+=`<input oninput="changeColorequation(this.value)" type="text" placeholder="Input Color Equation"  value="${color_equation}"><br>`
   html+=`<input oninput="changeNumberOfParticles(this.value)" type="number" placeholder="Number of Particles" value="${n_particles}"><br><br>`
+  
   html+=`<button onclick="ShareEquations(this)">Share Equations</button><br><br>`
   html+=`<button onclick="exitMenu()">Exit Menu</button>`
   document.body.innerHTML=html
