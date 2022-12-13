@@ -1,7 +1,7 @@
 let real_time = 0;
 let time = new Date().getTime();
 let dt = 0;
-
+let offset=5000
 let player = new Object();
 let speed = 4;
 let up = false,
@@ -11,6 +11,8 @@ let up = false,
   jump = false;
 
 let colliders = [];
+player.append(createSquare(offset+300, 5000+300, 100, 100, "rgb(255,0,0,1)"));
+
 
 //----------------
 //collision detection function------
@@ -94,7 +96,6 @@ function collisionDetection(object1, object2, action, solid = true) {
   }
 }
 
-player.append(createSquare(5000+300, 5000+300, 100, 100, "rgb(255,0,0,1)"));
 
 player.appendAnimation((self) => {
   let new_x = self.x;
@@ -237,7 +238,7 @@ function init() {
   document.body.style.overflow = "hidden";
   let length = 100;
   let box_size = 20;
-  let offset=5000
+  
   // let c = new Object().append(
   //           createSquare(bla+300, bla+400, 100, 100, "rgb(0,0,0,1)")
   //         );
