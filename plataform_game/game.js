@@ -32,7 +32,7 @@ function touchEnd(e) {
 function touchStart(e) {
   mouse[0] = e.touches[0].clientX;
   mouse[1] = e.touches[0].clientY;
-  mouse_obj.append(createCircle(e.touches[0].clientX + player.x - window.innerWidth / 2, e.touches[0].clientY + player.y - window.innerHeight / 2, 100, "rgb(0,0,255,1)"))
+  mouse_obj.append(createCircle(e.touches[0].clientX + player.x - window.innerWidth / 2, e.touches[0].clientY + player.y - window.innerHeight / 2, 100, "rgb(0,0,255,0.4)"))
 }
 
 function touchMove(e) {
