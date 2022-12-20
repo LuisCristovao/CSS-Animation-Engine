@@ -78,22 +78,22 @@ function collisionDetection(object1, object2, action, solid = true) {
       if (below) {
         object1.up = false;
         object1.speedy = (object1.y - object2.y) * 0.05
-        object1.options.on_ground=false
+        object1.options.on_ground = false
       }
       if (above) {
         object1.down = false;
         object1.speedy = (object1.y - object2.y) * 0.05
-        
+
       }
       if (right_of) {
         object1.left = false;
         object1.speedx = (object1.x - object2.x) * 0.05
-        object1.options.on_ground=false
+        object1.options.on_ground = false
       }
       if (left_of) {
         object1.right = false;
         object1.speedx = (object1.x - object2.x) * 0.05
-        object1.options.on_ground=false
+        object1.options.on_ground = false
       }
     }
   }
@@ -111,7 +111,9 @@ player.appendAnimation((self) => {
   self.left = false;
   self.right = false;
   self.options.on_ground = false;
-  self.options.limit_multiple_jumps_oncontact = false;
+
+
+
   if (up) {
     self.up = true;
   }
@@ -136,14 +138,19 @@ player.appendAnimation((self) => {
           solid_block.shape.style["background-color"] = "rgba(0,0,0,1)";
         }, 100);
         player.options.on_ground = true;
+        player.options.double_jump = false
         player.real_time = 0;
       },
       (solid = true)
     );
   }
 
-  if (self.up && self.options.on_ground ) {
-    self.speedy = self.speedy + self.dt * -15000;
+  if ((self.up && self.options.on_ground) || (self.up && !self.options.double_jump && !self.options.on_ground)) {
+    self.speedy = self.dt * -15000;
+    if (self.up && !self.options.double_jump && !self.options.on_ground) {
+      self.options.double_jump = true
+    }
+
   }
   if (self.down) {
     //new_y = self.y + speed;
@@ -242,38 +249,38 @@ function init() {
   let length = 100;
   let box_size = 20;
   let c = new Object().append(
-    createSquare(player.x, player.y +player.height, length, length, "rgb(0,0,0,1)")
+    createSquare(player.x, player.y + player.height, length, length, "rgb(0,0,0,1)")
   );
   c.shape.style.border = "2px solid white";
   colliders.push(c);
   c = new Object().append(
-    createSquare(player.x+200, player.y , length, length, "rgb(0,0,0,1)")
+    createSquare(player.x + 200, player.y, length, length, "rgb(0,0,0,1)")
   );
   c.shape.style.border = "2px solid white";
   colliders.push(c);
-  for(i=0;i<100;i++){
-    let random=Math.random()
-    let next_x_position_block=0
-    let next_y_position_block=0
-    if(random>0.5){
-      next_x_position_block=400
-    }else{
-      next_x_position_block=-400
+  for (i = 0; i < 100; i++) {
+    let random = Math.random()
+    let next_x_position_block = 0
+    let next_y_position_block = 0
+    if (random > 0.5) {
+      next_x_position_block = 400
+    } else {
+      next_x_position_block = -400
     }
-    if(Math.random()>0.5){
-      next_y_position_block=200
-    }else{
-      next_x_position_block=100
+    if (Math.random() > 0.5) {
+      next_y_position_block = 200
+    } else {
+      next_x_position_block = 100
     }
 
-    let nc=new Object().append(
-      createSquare(c.x+next_x_position_block, c.y-100 , length, length, "rgb(0,0,0,1)")
+    let nc = new Object().append(
+      createSquare(c.x + next_x_position_block, c.y - 100, length, length, "rgb(0,0,0,1)")
     );
     nc.shape.style.border = "2px solid white";
     colliders.push(nc);
-    c=nc
+    c = nc
   }
-  
+
   // for (let y = 0; y < box_size; y++) {
   //   for (let x = 0; x < box_size; x++) {
   //     if ((x == 3) & (y == 4)) {
@@ -307,7 +314,7 @@ function init() {
   //   }
   // }
   c = new Object().append(
-    createSquare(offset+10000, offset+1000, length, length, "rgb(0,0,0,1)")
+    createSquare(offset + 10000, offset + 1000, length, length, "rgb(0,0,0,1)")
   );
   c.shape.style.border = "2px solid white";
   colliders.push(c);
