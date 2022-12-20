@@ -148,6 +148,7 @@ class Object {
   appendChild(element) {
       
       this.shape.appendChild(element)
+      this.show()
       return this
   }
   append(element) {

@@ -11,7 +11,30 @@ let up = false,
   jump = false;
 
 let colliders = [];
-player.append(createSquare(offset + 300, offset + 300, 100, 100, "rgb(255,0,0,1)"));
+let mouse=[0,0]
+let mouse_obj=new Object()
+
+
+player.append(createSquare(offset, offset, 100, 100, "rgb(255,0,0,1)"));
+//player.appendChild(createSquare(player.x-1000, player.y-1000, 1000, 1000, "rgb(255,255,255,0.1)","window"))
+document.body.addEventListener("touchmove", touchMove,false);
+document.body.addEventListener("touchstart", touchStart,false);
+document.body.addEventListener("touchend", touchEnd,false);
+
+function touchEnd(e){
+  mouse_obj.destroy()
+}
+function touchStart(e){
+  mouse_obj.append(createCircle(e.touches[0].clientX+offset-window.innerWidth/2,e.touches[0].clientY+offset-window.innerHeight/2,100,"rgb(0,0,255,1)"))
+}
+
+function touchMove(e) {
+	
+mouse[0]=e.touches[0].clientX;
+mouse[1]=e.touches[0].clientY;
+console.log(mouse)
+//alert(mouse)
+}
 
 
 //----------------
@@ -48,7 +71,7 @@ function collisionDetection(object1, object2, action, solid = true) {
       }
       if (object1.x - object2.x > 0) {
         right_of = true;
-        console.log("right of " + (object1.x - object2.x))
+        //console.log("right of " + (object1.x - object2.x))
         aux_orientation++;
       }
       if (
@@ -60,7 +83,7 @@ function collisionDetection(object1, object2, action, solid = true) {
       if (
         object1.y - object2.y < 0
       ) {
-        console.log('above ' + (object1.y - object2.y))
+        //console.log('above ' + (object1.y - object2.y))
         above = true;
         aux_orientation++;
       }
@@ -246,6 +269,8 @@ function cleanUnusedProjectiles() {
 function init() {
   document.body.style.background = "rgb(0,0,0)";
   document.body.style.overflow = "hidden";
+  document.body.style.height="200000px"
+  document.body.style.width="2000000px"
   let length = 100;
   let box_size = 20;
   let c = new Object().append(
