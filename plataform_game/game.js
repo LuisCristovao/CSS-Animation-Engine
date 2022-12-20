@@ -1,7 +1,7 @@
 let real_time = 0;
 let time = new Date().getTime();
 let dt = 0;
-let offset=5000
+let offset = 100000
 let player = new Object();
 let speed = 4;
 let up = false,
@@ -11,7 +11,7 @@ let up = false,
   jump = false;
 
 let colliders = [];
-player.append(createSquare(offset+300, 5000+300, 100, 100, "rgb(255,0,0,1)"));
+player.append(createSquare(offset + 300, offset + 300, 100, 100, "rgb(255,0,0,1)"));
 
 
 //----------------
@@ -39,37 +39,37 @@ function collisionDetection(object1, object2, action, solid = true) {
       object1.y <= object2.y + object2.height
     ) {
       action(object1, object2);
-      let collision_margin_error=10
+      let collision_margin_error = 10
       if (
-        object1.x - object2.x < 0 
+        object1.x - object2.x < 0
       ) {
         left_of = true;
         aux_orientation++;
       }
-      if (object1.x - object2.x > 0 ) {
+      if (object1.x - object2.x > 0) {
         right_of = true;
-        console.log("right of "+(object1.x - object2.x))
+        console.log("right of " + (object1.x - object2.x))
         aux_orientation++;
       }
       if (
-        object1.y - object2.y > 0 
+        object1.y - object2.y > 0
       ) {
         below = true;
         aux_orientation++;
       }
       if (
-        object1.y - object2.y < 0 
+        object1.y - object2.y < 0
       ) {
-        console.log('above '+(object1.y - object2.y))
+        console.log('above ' + (object1.y - object2.y))
         above = true;
         aux_orientation++;
       }
 
-      if(aux_orientation>1){
-        if(Math.abs(object1.y - object2.y)>Math.abs(object1.x - object2.x)){
-          left_of=false;right_of=false
-        }else{
-          above=false;below=false
+      if (aux_orientation > 1) {
+        if (Math.abs(object1.y - object2.y) > Math.abs(object1.x - object2.x)) {
+          left_of = false; right_of = false
+        } else {
+          above = false; below = false
         }
       }
 
@@ -77,20 +77,20 @@ function collisionDetection(object1, object2, action, solid = true) {
 
       if (below) {
         object1.up = false;
-        object1.speedy=(object1.y - object2.y)*0.05
+        object1.speedy = (object1.y - object2.y) * 0.05
       }
       if (above) {
         object1.down = false;
-        object1.speedy=(object1.y - object2.y)*0.05
-        
+        object1.speedy = (object1.y - object2.y) * 0.05
+
       }
       if (right_of) {
         object1.left = false;
-        object1.speedx=(object1.x - object2.x)*0.05
+        object1.speedx = (object1.x - object2.x) * 0.05
       }
       if (left_of) {
         object1.right = false;
-        object1.speedx=(object1.x - object2.x)*0.05
+        object1.speedx = (object1.x - object2.x) * 0.05
       }
     }
   }
@@ -238,97 +238,73 @@ function init() {
   document.body.style.overflow = "hidden";
   let length = 100;
   let box_size = 20;
-  
-  // let c = new Object().append(
-  //           createSquare(bla+300, bla+400, 100, 100, "rgb(0,0,0,1)")
-  //         );
-  //         c.shape.style.border = "2px solid white";
-  //         colliders.push(c);
-  //         c = new Object().append(
-  //           createSquare(bla+400, bla+400, 100, 100, "rgb(0,0,0,1)")
-  //         );
-  //         c.shape.style.border = "2px solid white";
-  //         colliders.push(c);
-  //         c = new Object().append(
-  //           createSquare(bla+700, bla+500, 100, 100, "rgb(0,0,0,1)")
-  //         );
-  //         c.shape.style.border = "2px solid white";
-  //         colliders.push(c);
-  //         c = new Object().append(
-  //           createSquare(bla+900, bla+400, 100, 100, "rgb(0,0,0,1)")
-  //         );
-  //         c.shape.style.border = "2px solid white";
-  //         colliders.push(c);
-  //         c = new Object().append(
-  //           createSquare(bla+1100, bla+300, 100, 100, "rgb(0,0,0,1)")
-  //         );
-  //         c.shape.style.border = "2px solid white";
-  //         colliders.push(c);
-  //         c = new Object().append(
-  //           createSquare(bla+1400, bla+300, 100, 100, "rgb(0,0,0,1)")
-  //         );
-  //         c.shape.style.border = "2px solid white";
-  //         colliders.push(c);
-
-  //         c = new Object().append(
-  //           createSquare(bla+1700, bla+800, 100, 100, "rgb(0,0,0,1)")
-  //         );
-  //         c.shape.style.border = "2px solid white";
-  //         colliders.push(c);
-  //         c = new Object().append(
-  //           createSquare(bla+2200, bla+1000, 300, 100, "rgb(0,0,0,1)")
-  //         );
-  //         c.shape.style.border = "2px solid white";
-  //         colliders.push(c);
-  //         c = new Object().append(
-  //           createSquare(bla+2800, bla+1500, 200, 100, "rgb(0,0,0,1)")
-  //         );
-  //         c.shape.style.border = "2px solid white";
-  //         colliders.push(c);
-  //         c = new Object().append(
-  //           createSquare(bla+3000, bla+2000, 200, 100, "rgb(0,0,0,1)")
-  //         );
-  //         c.shape.style.border = "2px solid white";
-  //         colliders.push(c);
-  //         c = new Object().append(
-  //           createSquare(10000, 10000, 300, 100, "rgb(0,0,0,1)")
-  //         );
-  //         c.shape.style.border = "2px solid white";
-  //         colliders.push(c);
-  for (let y = 0; y < box_size; y++) {
-    for (let x = 0; x < box_size; x++) {
-      if ((x == 3) & (y == 4)) {
-        let c = new Object().append(
-          createSquare(offset+x * length, offset+y * length, length, length, "rgb(0,0,0,1)")
-        );
-        c.shape.style.border = "2px solid white";
-        colliders.push(c);
-      }
-      if ((x == 6) & (y == 7)) {
-        let c = new Object().append(
-          createSquare(offset+x * length, offset+y * length, length, length, "rgb(0,0,0,1)")
-        );
-        c.shape.style.border = "2px solid white";
-        colliders.push(c);
-      }
-      if ((y == 8)) {
-        let c = new Object().append(
-          createSquare(offset+x * length, offset+y * length, length, length, "rgb(0,0,0,1)")
-        );
-        c.shape.style.border = "2px solid white";
-        colliders.push(c);
-      }
-      if ((x == 10)) {
-        let c = new Object().append(
-          createSquare(offset+x * length, offset+y * length, length, length, "rgb(0,0,0,1)")
-        );
-        c.shape.style.border = "2px solid white";
-        colliders.push(c);
-      }
-    }
-  }
   let c = new Object().append(
-    createSquare(10000, 10000, length, length, "rgb(0,0,0,1)")
+    createSquare(player.x, player.y +player.height, length, length, "rgb(0,0,0,1)")
+  );
+  c.shape.style.border = "2px solid white";
+  colliders.push(c);
+  c = new Object().append(
+    createSquare(player.x+200, player.y , length, length, "rgb(0,0,0,1)")
+  );
+  c.shape.style.border = "2px solid white";
+  colliders.push(c);
+  for(i=0;i<100;i++){
+    let random=Math.random()
+    let next_x_position_block=0
+    let next_y_position_block=0
+    if(random>0.5){
+      next_x_position_block=400
+    }else{
+      next_x_position_block=-400
+    }
+    if(Math.random()>0.5){
+      next_y_position_block=200
+    }else{
+      next_x_position_block=100
+    }
+
+    let nc=new Object().append(
+      createSquare(c.x+next_x_position_block, c.y-100 , length, length, "rgb(0,0,0,1)")
+    );
+    nc.shape.style.border = "2px solid white";
+    colliders.push(nc);
+    c=nc
+  }
+  
+  // for (let y = 0; y < box_size; y++) {
+  //   for (let x = 0; x < box_size; x++) {
+  //     if ((x == 3) & (y == 4)) {
+  //       let c = new Object().append(
+  //         createSquare(offset+x * length, offset+y * length, length, length, "rgb(0,0,0,1)")
+  //       );
+  //       c.shape.style.border = "2px solid white";
+  //       colliders.push(c);
+  //     }
+  //     if ((x == 6) & (y == 7)) {
+  //       let c = new Object().append(
+  //         createSquare(offset+x * length, offset+y * length, length, length, "rgb(0,0,0,1)")
+  //       );
+  //       c.shape.style.border = "2px solid white";
+  //       colliders.push(c);
+  //     }
+  //     if ((y == 8)) {
+  //       let c = new Object().append(
+  //         createSquare(offset+x * length, offset+y * length, length, length, "rgb(0,0,0,1)")
+  //       );
+  //       c.shape.style.border = "2px solid white";
+  //       colliders.push(c);
+  //     }
+  //     if ((x == 10)) {
+  //       let c = new Object().append(
+  //         createSquare(offset+x * length, offset+y * length, length, length, "rgb(0,0,0,1)")
+  //       );
+  //       c.shape.style.border = "2px solid white";
+  //       colliders.push(c);
+  //     }
+  //   }
+  // }
+  c = new Object().append(
+    createSquare(offset+10000, offset+1000, length, length, "rgb(0,0,0,1)")
   );
   c.shape.style.border = "2px solid white";
   colliders.push(c);
