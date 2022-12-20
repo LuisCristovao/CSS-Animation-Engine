@@ -11,29 +11,43 @@ let up = false,
   jump = false;
 
 let colliders = [];
-let mouse=[0,0]
-let mouse_obj=new Object()
+let mouse = [0, 0]
+let mouse_obj = new Object()
 
 
 player.append(createSquare(offset, offset, 100, 100, "rgb(255,0,0,1)"));
 //player.appendChild(createSquare(player.x-1000, player.y-1000, 1000, 1000, "rgb(255,255,255,0.1)","window"))
-document.body.addEventListener("touchmove", touchMove,false);
-document.body.addEventListener("touchstart", touchStart,false);
-document.body.addEventListener("touchend", touchEnd,false);
+document.body.addEventListener("touchmove", touchMove, false);
+document.body.addEventListener("touchstart", touchStart, false);
+document.body.addEventListener("touchend", touchEnd, false);
 
-function touchEnd(e){
+function touchEnd(e) {
   mouse_obj.destroy()
+  up = false
+  down = false
+  right = false
+  left = false
+  jump = false
 }
-function touchStart(e){
-  mouse_obj.append(createCircle(e.touches[0].clientX+offset-window.innerWidth/2,e.touches[0].clientY+offset-window.innerHeight/2,100,"rgb(0,0,255,1)"))
+function touchStart(e) {
+  mouse[0] = e.touches[0].clientX;
+  mouse[1] = e.touches[0].clientY;
+  mouse_obj.append(createCircle(e.touches[0].clientX + player.x - window.innerWidth / 2, e.touches[0].clientY + player.y - window.innerHeight / 2, 100, "rgb(0,0,255,1)"))
 }
 
 function touchMove(e) {
-	
-mouse[0]=e.touches[0].clientX;
-mouse[1]=e.touches[0].clientY;
-console.log(mouse)
-//alert(mouse)
+  mouse_obj.move(e.touches[0].clientX + player.x - window.innerWidth / 2, e.touches[0].clientY + player.y - window.innerHeight / 2)
+  if (mouse[1] - e.touches[0].clientY > 200) {
+    up = true;
+  }
+  if (mouse[0] - e.touches[0].clientX < 0) {
+    right = true
+  }
+  if (mouse[0] - e.touches[0].clientX > 0) {
+    left = true
+  }
+  console.log(mouse[1] - e.touches[0].clientY)
+  //alert(mouse)
 }
 
 
@@ -269,8 +283,8 @@ function cleanUnusedProjectiles() {
 function init() {
   document.body.style.background = "rgb(0,0,0)";
   document.body.style.overflow = "hidden";
-  document.body.style.height="200000px"
-  document.body.style.width="2000000px"
+  document.body.style.height = "200000px"
+  document.body.style.width = "2000000px"
   let length = 100;
   let box_size = 20;
   let c = new Object().append(
