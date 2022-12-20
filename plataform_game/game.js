@@ -78,19 +78,22 @@ function collisionDetection(object1, object2, action, solid = true) {
       if (below) {
         object1.up = false;
         object1.speedy = (object1.y - object2.y) * 0.05
+        object1.options.on_ground=false
       }
       if (above) {
         object1.down = false;
         object1.speedy = (object1.y - object2.y) * 0.05
-
+        
       }
       if (right_of) {
         object1.left = false;
         object1.speedx = (object1.x - object2.x) * 0.05
+        object1.options.on_ground=false
       }
       if (left_of) {
         object1.right = false;
         object1.speedx = (object1.x - object2.x) * 0.05
+        object1.options.on_ground=false
       }
     }
   }
@@ -108,7 +111,7 @@ player.appendAnimation((self) => {
   self.left = false;
   self.right = false;
   self.options.on_ground = false;
-
+  self.options.limit_multiple_jumps_oncontact = false;
   if (up) {
     self.up = true;
   }
@@ -139,7 +142,7 @@ player.appendAnimation((self) => {
     );
   }
 
-  if (self.up && self.options.on_ground) {
+  if (self.up && self.options.on_ground ) {
     self.speedy = self.speedy + self.dt * -15000;
   }
   if (self.down) {
