@@ -193,17 +193,24 @@ player.appendAnimation((self) => {
     //new_y = self.y + speed;
   }
   if (self.right) {
-    self.speedx = self.speedx + self.dt * 200;
+    self.speedx = self.speedx + self.dt * ((self.options.on_ground)?900:150);
   }
   if (self.left) {
-    self.speedx = self.speedx + self.dt * -200;
+    self.speedx = self.speedx + self.dt * ((self.options.on_ground)?-900:-150);
   }
   //on the air
   if (!self.options.on_ground) {
     self.speedy = self.speedy + self.dt * 300;
+  }else{
+    //x-axis drag on floor
+    self.speedx=self.speedx+(-self.speedx*0.07)
   }
-  self.move(self.x + self.dt * self.speedx, self.y + self.dt * self.speedy);
 
+  console.log(self.speedx)
+
+  self.move(self.x + self.dt * self.speedx, self.y + self.dt * self.speedy);
+  
+  
   //self.move(new_x,new_y)
 });
 document.addEventListener("keydown", press);
