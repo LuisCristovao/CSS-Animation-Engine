@@ -306,6 +306,127 @@ function init() {
   let length = 100;
   let box_size = 20;
   let c;
+  let direction = Math.random() > 0.5;
+  let challenges = {
+    normal: {
+      0: (c, right) => {
+        let next_x_position_block = 0;
+        if (right) {
+          next_x_position_block = 200;
+        } else {
+          next_x_position_block = -200;
+        }
+        let nc = new Object().append(
+          createSquare(
+            c.x + next_x_position_block,
+            c.y - 100,
+            length,
+            length,
+            "rgb(0,0,0,1)"
+          )
+        );
+        nc.shape.style.border = "2px solid white";
+        colliders.push(nc);
+        return nc;
+      },
+      1: (c, right) => {
+        let next_x_position_block = 0;
+        if (right) {
+          next_x_position_block = 400;
+        } else {
+          next_x_position_block = -400;
+        }
+        let nc = new Object().append(
+          createSquare(
+            c.x + next_x_position_block,
+            c.y - 100,
+            length,
+            length,
+            "rgb(0,0,0,1)"
+          )
+        );
+        nc.shape.style.border = "2px solid white";
+        colliders.push(nc);
+        return nc;
+      },
+      2: (c, right) => {
+        let next_x_position_block = 0;
+        if (right) {
+          next_x_position_block = 300;
+        } else {
+          next_x_position_block = -300;
+        }
+        let nc = new Object().append(
+          createSquare(
+            c.x + next_x_position_block,
+            c.y,
+            length,
+            length,
+            "rgb(0,0,0,1)"
+          )
+        );
+        nc.shape.style.border = "2px solid white";
+        colliders.push(nc);
+        return nc;
+      },
+    },
+    change_direction: {
+      0: (c, right) => {
+        let nc
+        if (right) {
+          nc = new Object().append(
+            createSquare(
+              c.x -200,
+              c.y-100,
+              length,
+              length,
+              "rgb(0,0,0,1)"
+            )
+          );
+          nc.shape.style.border = "2px solid white";
+          colliders.push(nc);
+          nc = new Object().append(
+            createSquare(
+              c.x +200,
+              c.y-100,
+              length,
+              length,
+              "rgb(0,0,0,1)"
+            )
+          );
+          nc.shape.style.border = "2px solid white";
+          colliders.push(nc);
+        } else {
+          nc = new Object().append(
+            createSquare(
+              c.x +200,
+              c.y-100,
+              length,
+              length,
+              "rgb(0,0,0,1)"
+            )
+          );
+          nc.shape.style.border = "2px solid white";
+          colliders.push(nc);
+          nc = new Object().append(
+            createSquare(
+              c.x -200,
+              c.y-100,
+              length,
+              length,
+              "rgb(0,0,0,1)"
+            )
+          );
+          nc.shape.style.border = "2px solid white";
+          colliders.push(nc);
+        }
+        
+        return nc;
+      }
+      
+    },
+  };
+
   //make ground
   for (i = -50; i < 50; i++) {
     c = new Object().append(
@@ -322,37 +443,22 @@ function init() {
   }
 
   c = new Object().append(
-    createSquare(player.x + 200, player.y, length, length, "rgb(0,0,0,1)")
+    createSquare(player.x + 200, player.y - 100, length, length, "rgb(0,0,0,1)")
   );
   c.shape.style.border = "2px solid white";
   colliders.push(c);
-  for (i = 0; i < 100; i++) {
-    let random = Math.random();
-    let next_x_position_block = 0;
-    let next_y_position_block = 0;
-    if (random > 0.5) {
-      next_x_position_block = 400;
-    } else {
-      next_x_position_block = -400;
-    }
-    if (Math.random() > 0.5) {
-      next_y_position_block = 200;
-    } else {
-      next_x_position_block = 100;
-    }
 
-    let nc = new Object().append(
-      createSquare(
-        c.x + next_x_position_block,
-        c.y - 100,
-        length,
-        length,
-        "rgb(0,0,0,1)"
-      )
-    );
-    nc.shape.style.border = "2px solid white";
-    colliders.push(nc);
-    c = nc;
+  for (i = 0; i < 100; i++) {
+    let random = Math.floor(Math.random() * 3);
+    let change_direction = Math.random() > 0.8;
+    if (change_direction) {
+      direction = !direction;
+      let nc = challenges["change_direction"][0](c, direction);
+      c = nc;
+    }else{
+      let nc = challenges["normal"][random](c, direction);
+      c = nc;
+    }
   }
 
   // for (let y = 0; y < box_size; y++) {
