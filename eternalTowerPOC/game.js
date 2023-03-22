@@ -266,9 +266,9 @@ function collisionDetection(object1, object2, action, solid = false) {
 
 
 
-player.append(createHotDog(300, 300, 100, 100, "rgb(100,100,100,1)"));
-player.appendChild(createHotDog(60, 10, 20, 20, "rgb(255,255,0,1)"))
-player.appendChild(createHotDog(20, 10, 20, 20, "rgb(255,255,0,1)"))
+player.append(createHotDog(300, 300, 100, 100, "rgb(230,0,0,1)"));
+player.appendChild(createHotDog(60, 17, 20, 20, "rgb(255,255,0,1)"))
+player.appendChild(createHotDog(20, 17, 20, 20, "rgb(255,255,0,1)"))
 
 player.appendAnimation((self) => {
   let new_x = self.x;
@@ -278,6 +278,7 @@ player.appendAnimation((self) => {
   self.down = false;
   self.left = false;
   self.right = false;
+  self.moving= false
 
   if (up) {
     self.up = true;
@@ -364,18 +365,29 @@ player.appendAnimation((self) => {
   }
   if (self.up) {
     new_y = self.y - speed;
+    self.moving=true
   }
   if (self.down) {
     new_y = self.y + speed;
+    self.moving=true
   }
   if (self.right) {
     new_x = self.x + speed;
+    self.moving=true
   }
   if (self.left) {
     new_x = self.x - speed;
+    self.moving=true
   }
   self.move(new_x, new_y);
-
+  if(self.moving){
+    self.move(new_x,new_y+Math.sin(20*self.real_time)*1.2)
+    if(Math.sin(20*self.real_time)<=0.2 && Math.sin(20*self.real_time)>=0)
+    new Object()
+    .append(
+        createHotDog(player.x, player.y+80, 70, 70, "rgb(200,200,200,1)")
+      )
+  }
   //self.move(new_x,new_y)
 });
 document.addEventListener("keydown", press);
