@@ -382,11 +382,20 @@ player.appendAnimation((self) => {
   self.move(new_x, new_y);
   if(self.moving){
     self.move(new_x,new_y+Math.sin(20*self.real_time)*1.2)
-    if(Math.sin(20*self.real_time)<=0.2 && Math.sin(20*self.real_time)>=0)
-    new Object()
-    .append(
-        createHotDog(player.x, player.y+80, 70, 70, "rgb(200,200,200,1)")
-      )
+    if(Math.sin(20*self.real_time)<=0.2 && Math.sin(20*self.real_time)>=0){
+      let smoke=new Object()
+      .append(
+          createHotDog(player.x, player.y+80, 70, 70, "rgb(200,200,200,1)")
+        )
+      smoke.appendAnimation((self)=>{
+        self.setColor([0,0,50,Math.cos(self.real_time)*2])
+        self.move(self.x,self.y-1)
+        if(self.real_time>2){
+          self.destroy()
+        }
+      })
+      projectiles.push(smoke)
+    }
   }
   //self.move(new_x,new_y)
 });
