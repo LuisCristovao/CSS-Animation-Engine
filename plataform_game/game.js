@@ -14,7 +14,11 @@ let colliders = [];
 let mouse = [0, 0];
 let mouse_obj = new Object();
 
-player.append(createSquare(offset, offset, 100, 100, "rgb(255,0,0,1)"));
+player.append(createHotDog(offset, offset, 100, 100, "rgb(230,0,0,1)"));
+player.appendChild(createHotDog(60, 17, 20, 20, "rgb(255,255,0,1)","player_eye"))
+//player.appendChild(createHotDog(20, 17, 20, 20, "rgb(255,255,0,1)"))
+//player.append(createSquare(offset, offset, 100, 100, "rgb(255,0,0,1)"));
+
 //player.appendChild(createSquare(player.x-1000, player.y-1000, 1000, 1000, "rgb(255,255,255,0.1)","window"))
 document.body.addEventListener("touchmove", touchMove, false);
 document.body.addEventListener("touchstart", touchStart, false);
@@ -168,9 +172,11 @@ player.appendAnimation((self) => {
   }
   if (right) {
     self.right = true;
+    document.getElementById("player_eye").style.left="60px"
   }
   if (left) {
     self.left = true;
+    document.getElementById("player_eye").style.left="20px"
   }
 
   for (let i = 0; i < colliders.length; i++) {
@@ -221,7 +227,7 @@ player.appendAnimation((self) => {
   //console.log(self.speedy)
 
   self.move(self.x + self.dt * self.speedx, self.y + self.dt * self.speedy);
-
+  document.getElementById("player_eye").style.height=`${20*(1-(Math.sin(real_time)**100))}px`
   //self.move(new_x,new_y)
 });
 document.addEventListener("keydown", press);
