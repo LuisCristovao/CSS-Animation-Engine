@@ -308,6 +308,7 @@ function createGreenBlock(x,y){
     )
   );
   block.shape.style.border = "2px solid white";
+  block.appendChild(new createHotDog(-10,-10,120,20,"rgb(255,255,255,1)"))
   return block
 }
 
