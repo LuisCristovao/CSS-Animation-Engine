@@ -299,10 +299,11 @@ function cleanUnusedProjectiles() {
 }
 
 function init() {
-  document.body.style.background = "rgb(0,0,0)";
+  document.body.style.background = "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(0,241,255,1) 100%) fixed";
   document.body.style.overflow = "hidden";
   document.body.style.height = "200000px";
   document.body.style.width = "2000000px";
+ 
   let length = 100;
   let box_size = 20;
   let c;
