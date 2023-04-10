@@ -297,6 +297,19 @@ function cleanUnusedProjectiles() {
   });
   return new_projectiles_array;
 }
+function createGreenBlock(x,y){
+  let block=new Object().append(
+    createSquare(
+      x,
+      y,
+      100,
+      100,
+      "rgb(0,255,0,1)"
+    )
+  );
+  block.shape.style.border = "2px solid white";
+  return block
+}
 
 function init() {
   document.body.style.background = "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(0,241,255,1) 100%) fixed";
@@ -317,16 +330,7 @@ function init() {
         } else {
           next_x_position_block = -200;
         }
-        let nc = new Object().append(
-          createSquare(
-            c.x + next_x_position_block,
-            c.y - 100,
-            length,
-            length,
-            "rgb(0,0,0,1)"
-          )
-        );
-        nc.shape.style.border = "2px solid white";
+        let nc = createGreenBlock(c.x + next_x_position_block,c.y - 100)
         colliders.push(nc);
         return nc;
       },
@@ -430,16 +434,7 @@ function init() {
 
   //make ground
   for (i = -50; i < 50; i++) {
-    c = new Object().append(
-      createSquare(
-        player.x + i * length,
-        player.y + player.height,
-        length,
-        length,
-        "rgb(0,0,0,1)"
-      )
-    );
-    c.shape.style.border = "2px solid white";
+    c = createGreenBlock(player.x + i * length,player.y + player.height)
     colliders.push(c);
   }
 
