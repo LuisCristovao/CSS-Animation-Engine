@@ -15,7 +15,9 @@ let mouse = [0, 0];
 let mouse_obj = new Object();
 
 player.append(createHotDog(offset, offset, 100, 100, "rgb(230,0,0,1)"));
-player.appendChild(createHotDog(60, 17, 20, 20, "rgb(255,255,0,1)","player_eye"))
+player.appendChild(
+  createHotDog(60, 17, 20, 20, "rgb(255,255,0,1)", "player_eye")
+);
 //player.appendChild(createHotDog(20, 17, 20, 20, "rgb(255,255,0,1)"))
 //player.append(createSquare(offset, offset, 100, 100, "rgb(255,0,0,1)"));
 
@@ -65,7 +67,13 @@ function touchMove(e) {
 
 //----------------
 //collision detection function------
-function collisionDetection(object1, object2, action, solid = true) {
+function collisionDetection(
+  object1,
+  object2,
+  action,
+  solid = true,
+  bounce = 0.05
+) {
   if (!solid) {
     if (
       object1.x + object1.width >= object2.x &&
@@ -125,7 +133,7 @@ function collisionDetection(object1, object2, action, solid = true) {
       }
       if (above) {
         object1.down = false;
-        object1.speedy = (object1.y - object2.y) * 0.05;
+        object1.speedy = (object1.y - object2.y) * bounce;
         //console.log((object1.y - object2.y))
       }
       if (right_of) {
@@ -172,29 +180,47 @@ player.appendAnimation((self) => {
   }
   if (right) {
     self.right = true;
-    document.getElementById("player_eye").style.left="60px"
+    document.getElementById("player_eye").style.left = "60px";
   }
   if (left) {
     self.left = true;
-    document.getElementById("player_eye").style.left="20px"
+    document.getElementById("player_eye").style.left = "20px";
   }
 
   for (let i = 0; i < colliders.length; i++) {
     let c = colliders[i];
-    collisionDetection(
-      self,
-      c,
-      (player, solid_block) => {
-        solid_block.shape.style["background-color"] = "rgba(0,0,255,1)";
-        setTimeout(() => {
-          solid_block.shape.style["background-color"] = "rgba(0,0,0,1)";
-        }, 100);
-        player.options.on_ground = true;
-        player.options.double_jump = false;
-        player.real_time = 0;
-      },
-      (solid = true)
-    );
+    if (c.shape.id == "green_block") {
+      collisionDetection(
+        self,
+        c,
+        (player, solid_block) => {
+          solid_block.shape.style["background-color"] = "rgba(0,0,255,1)";
+          setTimeout(() => {
+            solid_block.shape.style["background-color"] = "rgba(0,0,0,1)";
+          }, 100);
+          player.options.on_ground = true;
+          player.options.double_jump = false;
+          player.real_time = 0;
+        },
+        (solid = true),
+        (bounce = 7)
+      );
+    } else {
+      collisionDetection(
+        self,
+        c,
+        (player, solid_block) => {
+          solid_block.shape.style["background-color"] = "rgba(0,0,255,1)";
+          setTimeout(() => {
+            solid_block.shape.style["background-color"] = "rgba(0,0,0,1)";
+          }, 100);
+          player.options.on_ground = true;
+          player.options.double_jump = false;
+          player.real_time = 0;
+        },
+        (solid = true)
+      );
+    }
   }
 
   if (
@@ -227,7 +253,9 @@ player.appendAnimation((self) => {
   //console.log(self.speedy)
 
   self.move(self.x + self.dt * self.speedx, self.y + self.dt * self.speedy);
-  document.getElementById("player_eye").style.height=`${20*(1-(Math.sin(real_time)**100))}px`
+  document.getElementById("player_eye").style.height = `${
+    20 * (1 - Math.sin(real_time) ** 100)
+  }px`;
   //self.move(new_x,new_y)
 });
 document.addEventListener("keydown", press);
@@ -303,27 +331,22 @@ function cleanUnusedProjectiles() {
   });
   return new_projectiles_array;
 }
-function createGreenBlock(x,y){
-  let block=new Object().append(
-    createSquare(
-      x,
-      y,
-      100,
-      100,
-      "rgb(0,255,0,1)"
-    )
+function createGreenBlock(x, y) {
+  let block = new Object().append(
+    createSquare(x, y, 100, 100, "rgb(0,255,0,1)", "green_block")
   );
   block.shape.style.border = "2px solid white";
-  block.appendChild(new createHotDog(-10,-10,120,20,"rgb(255,255,255,1)"))
-  return block
+  block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
+  return block;
 }
 
 function init() {
-  document.body.style.background = "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(0,241,255,1) 100%) fixed";
+  document.body.style.background =
+    "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(0,241,255,1) 100%) fixed";
   document.body.style.overflow = "hidden";
   document.body.style.height = "200000px";
   document.body.style.width = "2000000px";
- 
+
   let length = 100;
   let box_size = 20;
   let c;
@@ -337,7 +360,7 @@ function init() {
         } else {
           next_x_position_block = -200;
         }
-        let nc = createGreenBlock(c.x + next_x_position_block,c.y - 100)
+        let nc = createGreenBlock(c.x + next_x_position_block, c.y - 100);
         colliders.push(nc);
         return nc;
       },
@@ -384,64 +407,39 @@ function init() {
     },
     change_direction: {
       0: (c, right) => {
-        let nc
+        let nc;
         if (right) {
           nc = new Object().append(
-            createSquare(
-              c.x -200,
-              c.y-100,
-              length,
-              length,
-              "rgb(0,0,0,1)"
-            )
+            createSquare(c.x - 200, c.y - 100, length, length, "rgb(0,0,0,1)")
           );
           nc.shape.style.border = "2px solid white";
           colliders.push(nc);
           nc = new Object().append(
-            createSquare(
-              c.x +200,
-              c.y-100,
-              length,
-              length,
-              "rgb(0,0,0,1)"
-            )
+            createSquare(c.x + 200, c.y - 100, length, length, "rgb(0,0,0,1)")
           );
           nc.shape.style.border = "2px solid white";
           colliders.push(nc);
         } else {
           nc = new Object().append(
-            createSquare(
-              c.x +200,
-              c.y-100,
-              length,
-              length,
-              "rgb(0,0,0,1)"
-            )
+            createSquare(c.x + 200, c.y - 100, length, length, "rgb(0,0,0,1)")
           );
           nc.shape.style.border = "2px solid white";
           colliders.push(nc);
           nc = new Object().append(
-            createSquare(
-              c.x -200,
-              c.y-100,
-              length,
-              length,
-              "rgb(0,0,0,1)"
-            )
+            createSquare(c.x - 200, c.y - 100, length, length, "rgb(0,0,0,1)")
           );
           nc.shape.style.border = "2px solid white";
           colliders.push(nc);
         }
-        
+
         return nc;
-      }
-      
+      },
     },
   };
 
   //make ground
   for (i = -50; i < 50; i++) {
-    c = createGreenBlock(player.x + i * length,player.y + player.height)
+    c = createGreenBlock(player.x + i * length, player.y + player.height);
     colliders.push(c);
   }
 
@@ -458,7 +456,7 @@ function init() {
       direction = !direction;
       let nc = challenges["change_direction"][0](c, direction);
       c = nc;
-    }else{
+    } else {
       let nc = challenges["normal"][random](c, direction);
       c = nc;
     }
