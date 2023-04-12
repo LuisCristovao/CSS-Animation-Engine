@@ -118,12 +118,16 @@ function handleMouseClick() {
   let cell_width = 100;
   let x = Math.floor(mouse[0] / cell_width) * cell_width;
   let y = Math.floor(mouse[1] / cell_width) * cell_width;
-  if(level_map[`${x}:${y}`]==undefined){
-
-    if (object_code == "delete") {
+  if (object_code == "delete") {
+    try{
       level_map[`${x}:${y}`].object.destroy()
       delete level_map[`${x}:${y}`]
+    }catch{
+      //pass
     }
+  }
+  if(level_map[`${x}:${y}`]==undefined){
+
     if (object_code == "green_block") {
       let object = createGreenBlock(x, y);
       level_map[`${x}:${y}`] = {
