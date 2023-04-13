@@ -104,38 +104,50 @@ function createGreenBlock(x, y) {
 function init() {
   document.body.style.background =
     "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(0,241,255,1) 100%) fixed";
-  document.body.style.overflow = "hidden";
+  //document.body.style.overflow = "hidden";
   document.body.style.height = "200000px";
   document.body.style.width = "2000000px";
 
   c = new Object().append(
-    createSquare(offset + 10000, offset + 1000, length, length, "rgb(0,0,0,1)")
+    createSquare(offset + 10000, offset + 1000, length, length, "rgb(0,0,0,1)","level_limit")
   );
   c.shape.style.border = "2px solid white";
   colliders.push(c);
 }
+function saveToLevelMap(x, y, object_code, object) {
+  let local_store_level_map = {};
+  level_map[`${x}:${y}`] = {
+    x: x,
+    y: y,
+    object_code: object_code,
+    object: object,
+  };
+  for (key in level_map) {
+    let value=level_map[key]
+    local_store_level_map[key] = {
+      x: value.x,
+      y: value.y,
+      object_code: value.object_code,
+    };
+  }
+  localStorage["holy mountain game"]=JSON.stringify(local_store_level_map)
+}
 function handleMouseClick() {
   let cell_width = 100;
-  let x = Math.floor(mouse[0] / cell_width) * cell_width;
-  let y = Math.floor(mouse[1] / cell_width) * cell_width;
+  let x = Math.floor((window.scrollX+mouse[0]) / cell_width) * cell_width;
+  let y = Math.floor((window.scrollY+mouse[1]) / cell_width) * cell_width;
   if (object_code == "delete") {
-    try{
-      level_map[`${x}:${y}`].object.destroy()
-      delete level_map[`${x}:${y}`]
-    }catch{
+    try {
+      level_map[`${x}:${y}`].object.destroy();
+      delete level_map[`${x}:${y}`];
+    } catch {
       //pass
     }
   }
-  if(level_map[`${x}:${y}`]==undefined){
-
+  if (level_map[`${x}:${y}`] == undefined) {
     if (object_code == "green_block") {
       let object = createGreenBlock(x, y);
-      level_map[`${x}:${y}`] = {
-        x: x,
-        y: y,
-        object_code: object_code,
-        object: object,
-      };
+      saveToLevelMap(x, y, object_code, object)
     }
   }
 }
@@ -146,7 +158,7 @@ function main() {
   if (mouse_click) {
     handleMouseClick();
   }
-  colliders=cleanUnusedProjectiles();
+  colliders = cleanUnusedProjectiles();
   time = new Date().getTime();
   requestAnimationFrame(main);
 }
