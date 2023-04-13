@@ -53,31 +53,11 @@ function press(e) {
     object_code = "green_block";
     console.log("1");
   }
-
-  if (e.keyCode === 83 /* s */) {
-    down = true;
+  if (e.keyCode === 50 /* 2 */) {
+    object_code = "solid_stone_block";
+    
   }
-  if (e.keyCode === 65 /* a */) {
-    left = true;
-  }
-  if (e.keyCode === 75 /*k key*/) {
-    dodge = true;
-    setTimeout(() => {
-      dodge = false;
-    }, 100);
-  }
-  if (e.keyCode === 38 /* up */) {
-    projectile_up = true;
-  }
-  if (e.keyCode === 39 /* right */) {
-    projectile_right = true;
-  }
-  if (e.keyCode === 40 /* down */) {
-    projectile_down = true;
-  }
-  if (e.keyCode === 37 /* left */) {
-    projectile_left = true;
-  }
+  
 }
 document.addEventListener("keyup", release);
 function release(e) {}
@@ -91,16 +71,26 @@ function cleanUnusedProjectiles() {
   });
   return new_projectiles_array;
 }
+//blocks------------
 function createGreenBlock(x, y) {
   let block = new Object().append(
     createSquare(x, y, 100, 100, "rgb(0,255,0,1)", "green_block")
   );
   block.shape.style.border = "2px solid white";
-  block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
+  //block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
   colliders.push(block);
   return block;
 }
-
+function createSolidStone(x, y) {
+  let block = new Object().append(
+    createSquare(x, y, 100, 100, "hsl(0, 0%, 79%)", "solid_stone_block")
+  );
+  block.shape.style.border = "2px solid white";
+  //block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
+  colliders.push(block);
+  return block;
+}
+//----------------------
 function init() {
   document.body.style.background =
     "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(0,241,255,1) 100%) fixed";
@@ -109,7 +99,14 @@ function init() {
   document.body.style.width = "2000000px";
 
   c = new Object().append(
-    createSquare(offset + 10000, offset + 1000, length, length, "rgb(0,0,0,1)","level_limit")
+    createSquare(
+      offset + 10000,
+      offset + 1000,
+      length,
+      length,
+      "rgb(0,0,0,1)",
+      "level_limit"
+    )
   );
   c.shape.style.border = "2px solid white";
   colliders.push(c);
@@ -123,19 +120,30 @@ function saveToLevelMap(x, y, object_code, object) {
     object: object,
   };
   for (key in level_map) {
-    let value=level_map[key]
+    let value = level_map[key];
     local_store_level_map[key] = {
       x: value.x,
       y: value.y,
       object_code: value.object_code,
     };
   }
-  localStorage["holy mountain game"]=JSON.stringify(local_store_level_map)
+  localStorage["holy mountain game"] = JSON.stringify(local_store_level_map);
 }
 function handleMouseClick() {
   let cell_width = 100;
-  let x = Math.floor((window.scrollX+mouse[0]) / cell_width) * cell_width;
-  let y = Math.floor((window.scrollY+mouse[1]) / cell_width) * cell_width;
+  let x = Math.floor((window.scrollX + mouse[0]) / cell_width) * cell_width;
+  let y = Math.floor((window.scrollY + mouse[1]) / cell_width) * cell_width;
+  let ifs = {
+    green_block: () => {
+      let object = createGreenBlock(x, y);
+      saveToLevelMap(x, y, object_code, object);
+    },
+    solid_stone_block: () => {
+      let object = createSolidStone(x, y);
+      saveToLevelMap(x, y, object_code, object);
+    },
+  };
+
   if (object_code == "delete") {
     try {
       level_map[`${x}:${y}`].object.destroy();
@@ -143,11 +151,9 @@ function handleMouseClick() {
     } catch {
       //pass
     }
-  }
-  if (level_map[`${x}:${y}`] == undefined) {
-    if (object_code == "green_block") {
-      let object = createGreenBlock(x, y);
-      saveToLevelMap(x, y, object_code, object)
+  }else{
+    if (level_map[`${x}:${y}`] == undefined) {
+      ifs[object_code]();
     }
   }
 }
