@@ -189,10 +189,32 @@ player.appendAnimation((self) => {
     self.left = true;
     document.getElementById("player_eye").style.left = "20px";
   }
-
-  for (let i = 0; i < colliders.length; i++) {
-    let c = colliders[i];
-    if (c.shape.id == "water") {
+  let ifs = {
+    green_block: (self,c) => {
+      collisionDetection(
+        self,
+        c,
+        (player, solid_block) => {
+          player.options.on_ground = true;
+          player.options.double_jump = false;
+          player.real_time = 0;
+        },
+        (solid = true)
+      );
+    },
+    solid_stone_block: (self,c) => {
+      collisionDetection(
+        self,
+        c,
+        (player, solid_block) => {
+          player.options.on_ground = true;
+          player.options.double_jump = false;
+          player.real_time = 0;
+        },
+        (solid = true)
+      );
+    },
+    water: (self,c) => {
       collisionDetection(
         self,
         c,
@@ -205,7 +227,8 @@ player.appendAnimation((self) => {
         (solid = false)
         
       );
-    } else {
+    },
+    sand: (self,c) => {
       collisionDetection(
         self,
         c,
@@ -216,14 +239,34 @@ player.appendAnimation((self) => {
         },
         (solid = true)
       );
-    }
+    },
+    cloud: (self,c) => {
+      collisionDetection(
+        self,
+        c,
+        (player, solid_block) => {
+          player.options.on_ground = true;
+          player.options.double_jump = false;
+          player.real_time = 0;
+          if (player.y - solid_block.y < 0) {
+            player.speedy = (player.y - solid_block.y) * 7;
+          }
+        },
+        (solid = false)
+        
+      );
+    },
+  };
+  for (let i = 0; i < colliders.length; i++) {
+    let c = colliders[i];
+    ifs[c.shape.id](self,c)
   }
 
   if (
     (self.up && self.options.on_ground) ||
     (self.up && !self.options.double_jump && !self.options.on_ground)
   ) {
-    self.speedy = self.dt * -15000;
+    self.speedy = self.dt * self.jump_force;
     if (self.up && !self.options.double_jump && !self.options.on_ground) {
       self.options.double_jump = true;
     }
@@ -357,7 +400,7 @@ function createWaterBlock(x, y) {
 }
 function createSandBlock(x, y) {
   let block = new Object().append(
-    createSquare(x, y, 100, 100, "hsl(49, 100%, 50%)", "cloud")
+    createSquare(x, y, 100, 100, "hsl(49, 100%, 50%)", "sand")
   );
   //block.shape.style.border = "2px solid white";
   //block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
@@ -366,7 +409,7 @@ function createSandBlock(x, y) {
 }
 function createCloudBlock(x, y) {
   let block = new Object().append(
-    createSquare(x, y, 100, 100, "hsl(194, 100%, 98%)", "water")
+    createSquare(x, y, 100, 100, "hsl(194, 100%, 98%)", "cloud")
   );
   //block.shape.style.border = "2px solid white";
   //block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
