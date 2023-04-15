@@ -207,7 +207,7 @@ function handleMapCreation() {
       colliders.push(block);
     },
     cloud: (x, y) => {
-      bolck = createCloudBlock(x, y);
+      block = createCloudBlock(x, y);
       colliders.push(block);
     },
   };
