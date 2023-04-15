@@ -256,6 +256,19 @@ player.appendAnimation((self) => {
         
       );
     },
+    ice: (self,c) => {
+      collisionDetection(
+        self,
+        c,
+        (player, solid_block) => {
+          player.options.on_ground = true;
+          player.options.double_jump = false;
+          player.real_time = 0;
+          player.friction=0
+        },
+        (solid = true)
+      );
+    }
   };
   for (let i = 0; i < colliders.length; i++) {
     let c = colliders[i];
@@ -416,7 +429,17 @@ function createCloudBlock(x, y) {
   colliders.push(block);
   return block;
 }
-
+function createIceBlock(x, y) {
+  let block = new Object().append(
+    createSquare(x, y, 100, 100, "hsl(178, 100%, 74%)", "ice")
+  );
+  block.shape.style.border = "2px solid white";
+  let ice_reflection=new createHotDog(20, 40, 70, 20, "rgb(255,255,255,1)")
+  ice_reflection.style.transform=`rotate(${-45}deg)`
+  block.appendChild(ice_reflection);
+  colliders.push(block);
+  return block;
+}
 function createTextBlock(x, y) {
   let block = new Object().append(
     createSquare(x, y, 100, 100, "hsl(0, 0%, 79%)", "solid_stone_block")
@@ -445,6 +468,9 @@ function handleMapCreation() {
     cloud: (x, y) => {
       createCloudBlock(x, y);
     },
+    ice:(x,y)=>{
+      createIceBlock(x,y)
+    }
   };
   for (key in map) {
     ifs[map[key].object_code](map[key].x, map[key].y);
