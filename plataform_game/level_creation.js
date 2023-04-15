@@ -101,6 +101,7 @@ function createWaterBlock(x, y) {
   let block = new Object().append(
     createSquare(x, y, 100, 100, "hsl(194, 100%, 50%)", "water")
   );
+  block.options.solid=false
   //block.shape.style.border = "2px solid white";
   //block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
   colliders.push(block);
@@ -137,7 +138,7 @@ function createTextBlock(x, y) {
 //----------------------
 function init() {
   document.body.style.background =
-    "linear-gradient(180deg, rgba(161,201,255,1) 0%, rgba(0,146,255,1) 50%) fixed";
+    "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(0,241,255,1) 100%) fixed";
   //document.body.style.overflow = "hidden";
   document.body.style.height = "200000px";
   document.body.style.width = "2000000px";
