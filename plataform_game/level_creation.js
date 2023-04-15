@@ -62,8 +62,11 @@ function press(e) {
   if (e.keyCode === 52 /* 4 */) {
     object_code = "water";
   }
-  if (e.keyCode === 53 /* 4 */) {
+  if (e.keyCode === 53 /* 5 */) {
     object_code = "cloud";
+  }
+  if (e.keyCode === 54 /* 6 */) {
+    object_code = "ice";
   }
 }
 document.addEventListener("keyup", release);
@@ -125,7 +128,17 @@ function createCloudBlock(x, y) {
   colliders.push(block);
   return block;
 }
-
+function createIceBlock(x, y) {
+  let block = new Object().append(
+    createSquare(x, y, 100, 100, "hsl(178, 100%, 74%)", "ice")
+  );
+  block.shape.style.border = "2px solid white";
+  let ice_reflection=new createHotDog(20, 40, 70, 20, "rgb(255,255,255,1)")
+  ice_reflection.style.transform=`rotate(${-45}deg)`
+  block.appendChild(ice_reflection);
+  colliders.push(block);
+  return block;
+}
 function createTextBlock(x, y) {
   let block = new Object().append(
     createSquare(x, y, 100, 100, "hsl(0, 0%, 79%)", "solid_stone_block")
@@ -211,6 +224,10 @@ function handleMapCreation() {
       block = createCloudBlock(x, y);
       colliders.push(block);
     },
+    ice: (x, y) => {
+      block = createIceBlock(x, y);
+      colliders.push(block);
+    },
   };
   for (key in map) {
     ifs[map[key].object_code](map[key].x, map[key].y);
@@ -239,6 +256,10 @@ function handleMouseClick() {
     },
     cloud: () => {
       let object = createCloudBlock(x, y);
+      saveToLevelMap(x, y, object_code, object);
+    },
+    ice: () => {
+      let object = createIceBlock(x, y);
       saveToLevelMap(x, y, object_code, object);
     },
   };
