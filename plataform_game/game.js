@@ -18,6 +18,7 @@ player.append(createHotDog(offset, offset, 100, 100, "rgb(230,0,0,1)"));
 player.appendChild(
   createHotDog(60, 17, 20, 20, "rgb(255,255,0,1)", "player_eye")
 );
+player.shape.style["z-index"]=500
 //player.appendChild(createHotDog(20, 17, 20, 20, "rgb(255,255,0,1)"))
 //player.append(createSquare(offset, offset, 100, 100, "rgb(255,0,0,1)"));
 
@@ -161,16 +162,18 @@ function collisionDetection(
 }
 
 player.appendAnimation((self) => {
-  let new_x = self.x;
-  let new_y = self.y;
-  let accx = 0;
-  let accy = 0;
+  
 
   self.up = false;
   self.down = false;
   self.left = false;
   self.right = false;
   self.options.on_ground = false;
+  self.gravity =300
+  self.jump_force=-15000
+  self.ground_speed=900
+  self.air_speed=150
+  self.friction=0.07 
 
   if (up) {
     self.up = true;
@@ -189,23 +192,20 @@ player.appendAnimation((self) => {
 
   for (let i = 0; i < colliders.length; i++) {
     let c = colliders[i];
-    // if (c.shape.id == "green_block") {
-    //   collisionDetection(
-    //     self,
-    //     c,
-    //     (player, solid_block) => {
-    //       solid_block.shape.style["background-color"] = "rgba(0,0,255,1)";
-    //       setTimeout(() => {
-    //         solid_block.shape.style["background-color"] = "rgba(0,0,0,1)";
-    //       }, 100);
-    //       player.options.on_ground = true;
-    //       player.options.double_jump = false;
-    //       player.real_time = 0;
-    //     },
-    //     (solid = true),
-    //     (bounce = 7)
-    //   );
-    // } else {
+    if (c.shape.id == "water") {
+      collisionDetection(
+        self,
+        c,
+        (player, solid_block) => {
+          player.gravity=100
+          player.options.on_ground = false;
+          player.options.double_jump = false;
+          player.real_time = 0;
+        },
+        (solid = false)
+        
+      );
+    } else {
       collisionDetection(
         self,
         c,
@@ -216,7 +216,7 @@ player.appendAnimation((self) => {
         },
         (solid = true)
       );
-    //}
+    }
   }
 
   if (
@@ -232,18 +232,18 @@ player.appendAnimation((self) => {
     //new_y = self.y + speed;
   }
   if (self.right) {
-    self.speedx = self.speedx + self.dt * (self.options.on_ground ? 900 : 150);
+    self.speedx = self.speedx + self.dt * (self.options.on_ground ? self.ground_speed : self.air_speed);
   }
   if (self.left) {
     self.speedx =
-      self.speedx + self.dt * (self.options.on_ground ? -900 : -150);
+      self.speedx + self.dt * (self.options.on_ground ? -self.ground_speed : -self.air_speed);
   }
-  //on the air
+  //on the air (gravity)
   if (!self.options.on_ground) {
-    self.speedy = self.speedy + self.dt * 300;
+    self.speedy = self.speedy + self.dt * self.gravity;
   } else {
     //x-axis drag on floor
-    self.speedx = self.speedx + -self.speedx * 0.07;
+    self.speedx = self.speedx + -self.speedx * self.friction;
   }
 
   //console.log(self.speedy)
