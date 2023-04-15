@@ -189,38 +189,34 @@ player.appendAnimation((self) => {
 
   for (let i = 0; i < colliders.length; i++) {
     let c = colliders[i];
-    if (c.shape.id == "green_block") {
+    // if (c.shape.id == "green_block") {
+    //   collisionDetection(
+    //     self,
+    //     c,
+    //     (player, solid_block) => {
+    //       solid_block.shape.style["background-color"] = "rgba(0,0,255,1)";
+    //       setTimeout(() => {
+    //         solid_block.shape.style["background-color"] = "rgba(0,0,0,1)";
+    //       }, 100);
+    //       player.options.on_ground = true;
+    //       player.options.double_jump = false;
+    //       player.real_time = 0;
+    //     },
+    //     (solid = true),
+    //     (bounce = 7)
+    //   );
+    // } else {
       collisionDetection(
         self,
         c,
         (player, solid_block) => {
-          solid_block.shape.style["background-color"] = "rgba(0,0,255,1)";
-          setTimeout(() => {
-            solid_block.shape.style["background-color"] = "rgba(0,0,0,1)";
-          }, 100);
-          player.options.on_ground = true;
-          player.options.double_jump = false;
-          player.real_time = 0;
-        },
-        (solid = true),
-        (bounce = 7)
-      );
-    } else {
-      collisionDetection(
-        self,
-        c,
-        (player, solid_block) => {
-          solid_block.shape.style["background-color"] = "rgba(0,0,255,1)";
-          setTimeout(() => {
-            solid_block.shape.style["background-color"] = "rgba(0,0,0,1)";
-          }, 100);
           player.options.on_ground = true;
           player.options.double_jump = false;
           player.real_time = 0;
         },
         (solid = true)
       );
-    }
+    //}
   }
 
   if (
@@ -331,15 +327,87 @@ function cleanUnusedProjectiles() {
   });
   return new_projectiles_array;
 }
+//blocks------------
 function createGreenBlock(x, y) {
   let block = new Object().append(
     createSquare(x, y, 100, 100, "rgb(0,255,0,1)", "green_block")
   );
-  block.shape.style.border = "2px solid white";
-  block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
+  //block.shape.style.border = "2px solid white";
+  //block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
+  colliders.push(block);
+  return block;
+}
+function createSolidStone(x, y) {
+  let block = new Object().append(
+    createSquare(x, y, 100, 100, "hsl(0, 0%, 79%)", "solid_stone_block")
+  );
+  //block.shape.style.border = "2px solid white";
+  //block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
+  colliders.push(block);
+  return block;
+}
+function createWaterBlock(x, y) {
+  let block = new Object().append(
+    createSquare(x, y, 100, 100, "hsl(194, 100%, 50%)", "water")
+  );
+  //block.shape.style.border = "2px solid white";
+  //block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
+  colliders.push(block);
+  return block;
+}
+function createSandBlock(x, y) {
+  let block = new Object().append(
+    createSquare(x, y, 100, 100, "hsl(49, 100%, 50%)", "cloud")
+  );
+  //block.shape.style.border = "2px solid white";
+  //block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
+  colliders.push(block);
+  return block;
+}
+function createCloudBlock(x, y) {
+  let block = new Object().append(
+    createSquare(x, y, 100, 100, "hsl(194, 100%, 98%)", "water")
+  );
+  //block.shape.style.border = "2px solid white";
+  //block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
+  colliders.push(block);
   return block;
 }
 
+function createTextBlock(x, y) {
+  let block = new Object().append(
+    createSquare(x, y, 100, 100, "hsl(0, 0%, 79%)", "solid_stone_block")
+  );
+  block.shape.style.border = "2px solid white";
+  //block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
+  colliders.push(block);
+  return block;
+}
+function handleMapCreation() {
+  let map=JSON.parse(localStorage["platform game"])
+  
+  let ifs = {
+    green_block: (x,y) => {
+      createGreenBlock(x, y);
+    },
+    solid_stone_block: (x,y) => {
+      createSolidStone(x, y);
+    },
+    water: (x,y) => {
+      createWaterBlock(x, y);
+    },
+    sand: (x,y) => {
+      createSandBlock(x, y);
+    },
+    cloud: (x,y) => {
+      createCloudBlock(x, y);
+    },
+  };
+for(key in map){
+  ifs[map[key].object_code](map[key].x,map[key].y)
+}
+
+}
 function init() {
   document.body.style.background =
     "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(0,241,255,1) 100%) fixed";
@@ -436,69 +504,72 @@ function init() {
       },
     },
   };
-
-  //make ground
-  for (i = -50; i < 50; i++) {
-    c = createGreenBlock(player.x + i * length, player.y + player.height);
+  if(localStorage["platform game"]!=undefined){
+    handleMapCreation()
+  }else{
+    //make ground
+    for (i = -50; i < 50; i++) {
+      c = createGreenBlock(player.x + i * length, player.y + player.height);
+      colliders.push(c);
+    }
+  
+    c = new Object().append(
+      createSquare(player.x + 200, player.y - 100, length, length, "rgb(0,0,0,1)")
+    );
+    c.shape.style.border = "2px solid white";
+    colliders.push(c);
+  
+    for (i = 0; i < 100; i++) {
+      let random = Math.floor(Math.random() * 3);
+      let change_direction = Math.random() > 0.8;
+      if (change_direction) {
+        direction = !direction;
+        let nc = challenges["change_direction"][0](c, direction);
+        c = nc;
+      } else {
+        let nc = challenges["normal"][random](c, direction);
+        c = nc;
+      }
+    }
+  
+    // for (let y = 0; y < box_size; y++) {
+    //   for (let x = 0; x < box_size; x++) {
+    //     if ((x == 3) & (y == 4)) {
+    //       let c = new Object().append(
+    //         createSquare(offset+x * length, offset+y * length, length, length, "rgb(0,0,0,1)")
+    //       );
+    //       c.shape.style.border = "2px solid white";
+    //       colliders.push(c);
+    //     }
+    //     if ((x == 6) & (y == 7)) {
+    //       let c = new Object().append(
+    //         createSquare(offset+x * length, offset+y * length, length, length, "rgb(0,0,0,1)")
+    //       );
+    //       c.shape.style.border = "2px solid white";
+    //       colliders.push(c);
+    //     }
+    //     if ((y == 8)) {
+    //       let c = new Object().append(
+    //         createSquare(offset+x * length, offset+y * length, length, length, "rgb(0,0,0,1)")
+    //       );
+    //       c.shape.style.border = "2px solid white";
+    //       colliders.push(c);
+    //     }
+    //     if ((x == 10)) {
+    //       let c = new Object().append(
+    //         createSquare(offset+x * length, offset+y * length, length, length, "rgb(0,0,0,1)")
+    //       );
+    //       c.shape.style.border = "2px solid white";
+    //       colliders.push(c);
+    //     }
+    //   }
+    // }
+    c = new Object().append(
+      createSquare(offset + 10000, offset + 1000, length, length, "rgb(0,0,0,1)")
+    );
+    c.shape.style.border = "2px solid white";
     colliders.push(c);
   }
-
-  c = new Object().append(
-    createSquare(player.x + 200, player.y - 100, length, length, "rgb(0,0,0,1)")
-  );
-  c.shape.style.border = "2px solid white";
-  colliders.push(c);
-
-  for (i = 0; i < 100; i++) {
-    let random = Math.floor(Math.random() * 3);
-    let change_direction = Math.random() > 0.8;
-    if (change_direction) {
-      direction = !direction;
-      let nc = challenges["change_direction"][0](c, direction);
-      c = nc;
-    } else {
-      let nc = challenges["normal"][random](c, direction);
-      c = nc;
-    }
-  }
-
-  // for (let y = 0; y < box_size; y++) {
-  //   for (let x = 0; x < box_size; x++) {
-  //     if ((x == 3) & (y == 4)) {
-  //       let c = new Object().append(
-  //         createSquare(offset+x * length, offset+y * length, length, length, "rgb(0,0,0,1)")
-  //       );
-  //       c.shape.style.border = "2px solid white";
-  //       colliders.push(c);
-  //     }
-  //     if ((x == 6) & (y == 7)) {
-  //       let c = new Object().append(
-  //         createSquare(offset+x * length, offset+y * length, length, length, "rgb(0,0,0,1)")
-  //       );
-  //       c.shape.style.border = "2px solid white";
-  //       colliders.push(c);
-  //     }
-  //     if ((y == 8)) {
-  //       let c = new Object().append(
-  //         createSquare(offset+x * length, offset+y * length, length, length, "rgb(0,0,0,1)")
-  //       );
-  //       c.shape.style.border = "2px solid white";
-  //       colliders.push(c);
-  //     }
-  //     if ((x == 10)) {
-  //       let c = new Object().append(
-  //         createSquare(offset+x * length, offset+y * length, length, length, "rgb(0,0,0,1)")
-  //       );
-  //       c.shape.style.border = "2px solid white";
-  //       colliders.push(c);
-  //     }
-  //   }
-  // }
-  c = new Object().append(
-    createSquare(offset + 10000, offset + 1000, length, length, "rgb(0,0,0,1)")
-  );
-  c.shape.style.border = "2px solid white";
-  colliders.push(c);
 }
 
 function main() {
