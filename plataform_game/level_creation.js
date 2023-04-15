@@ -109,7 +109,7 @@ function createWaterBlock(x, y) {
 }
 function createSandBlock(x, y) {
   let block = new Object().append(
-    createSquare(x, y, 100, 100, "hsl(49, 100%, 50%)", "cloud")
+    createSquare(x, y, 100, 100, "hsl(49, 100%, 50%)", "sand")
   );
   //block.shape.style.border = "2px solid white";
   //block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
