@@ -181,7 +181,7 @@ function saveToLevelMap(x, y, object_code, object) {
       object_code: value.object_code,
     };
   }
-  localStorage["plataform game"] = JSON.stringify(local_store_level_map);
+  localStorage["platform game"] = JSON.stringify(local_store_level_map);
 }
 function handleMouseClick() {
   let cell_width = 100;
