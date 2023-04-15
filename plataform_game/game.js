@@ -384,29 +384,28 @@ function createTextBlock(x, y) {
   return block;
 }
 function handleMapCreation() {
-  let map=JSON.parse(localStorage["platform game"])
-  
+  let map = JSON.parse(localStorage["platform game"]);
+
   let ifs = {
-    green_block: (x,y) => {
+    green_block: (x, y) => {
       createGreenBlock(x, y);
     },
-    solid_stone_block: (x,y) => {
+    solid_stone_block: (x, y) => {
       createSolidStone(x, y);
     },
-    water: (x,y) => {
+    water: (x, y) => {
       createWaterBlock(x, y);
     },
-    sand: (x,y) => {
+    sand: (x, y) => {
       createSandBlock(x, y);
     },
-    cloud: (x,y) => {
+    cloud: (x, y) => {
       createCloudBlock(x, y);
     },
   };
-for(key in map){
-  ifs[map[key].object_code](map[key].x,map[key].y)
-}
-
+  for (key in map) {
+    ifs[map[key].object_code](map[key].x, map[key].y);
+  }
 }
 function init() {
   document.body.style.background =
