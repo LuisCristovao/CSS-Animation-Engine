@@ -50,14 +50,21 @@ function press(e) {
     object_code = "delete";
   }
   if (e.keyCode === 49 /* 1 */) {
-    object_code = "green_block";
+    object_code = "solid_stone_block";
     console.log("1");
   }
   if (e.keyCode === 50 /* 2 */) {
-    object_code = "solid_stone_block";
-    
+    object_code = "green_block";
   }
-  
+  if (e.keyCode === 51 /* 3 */) {
+    object_code = "sand";
+  }
+  if (e.keyCode === 52 /* 4 */) {
+    object_code = "water";
+  }
+  if (e.keyCode === 53 /* 4 */) {
+    object_code = "cloud";
+  }
 }
 document.addEventListener("keyup", release);
 function release(e) {}
@@ -76,12 +83,49 @@ function createGreenBlock(x, y) {
   let block = new Object().append(
     createSquare(x, y, 100, 100, "rgb(0,255,0,1)", "green_block")
   );
-  block.shape.style.border = "2px solid white";
+  //block.shape.style.border = "2px solid white";
   //block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
   colliders.push(block);
   return block;
 }
 function createSolidStone(x, y) {
+  let block = new Object().append(
+    createSquare(x, y, 100, 100, "hsl(0, 0%, 79%)", "solid_stone_block")
+  );
+  //block.shape.style.border = "2px solid white";
+  //block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
+  colliders.push(block);
+  return block;
+}
+function createWaterBlock(x, y) {
+  let block = new Object().append(
+    createSquare(x, y, 100, 100, "hsl(194, 100%, 50%)", "water")
+  );
+  //block.shape.style.border = "2px solid white";
+  //block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
+  colliders.push(block);
+  return block;
+}
+function createSandBlock(x, y) {
+  let block = new Object().append(
+    createSquare(x, y, 100, 100, "hsl(49, 100%, 50%)", "cloud")
+  );
+  //block.shape.style.border = "2px solid white";
+  //block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
+  colliders.push(block);
+  return block;
+}
+function createCloudBlock(x, y) {
+  let block = new Object().append(
+    createSquare(x, y, 100, 100, "hsl(194, 100%, 98%)", "water")
+  );
+  //block.shape.style.border = "2px solid white";
+  //block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
+  colliders.push(block);
+  return block;
+}
+
+function createTextBlock(x, y) {
   let block = new Object().append(
     createSquare(x, y, 100, 100, "hsl(0, 0%, 79%)", "solid_stone_block")
   );
@@ -97,7 +141,17 @@ function init() {
   //document.body.style.overflow = "hidden";
   document.body.style.height = "200000px";
   document.body.style.width = "2000000px";
-
+  setTimeout(() => {
+    window.scroll({
+      top: offset,
+      left: offset,
+    });
+  }, 1000);
+  let player = new Object();
+  player.append(createHotDog(offset, offset, 100, 100, "rgb(230,0,0,1)"));
+  player.appendChild(
+    createHotDog(60, 17, 20, 20, "rgb(255,255,0,1)", "player_eye")
+  );
   c = new Object().append(
     createSquare(
       offset + 10000,
@@ -127,7 +181,7 @@ function saveToLevelMap(x, y, object_code, object) {
       object_code: value.object_code,
     };
   }
-  localStorage["holy mountain game"] = JSON.stringify(local_store_level_map);
+  localStorage["plataform game"] = JSON.stringify(local_store_level_map);
 }
 function handleMouseClick() {
   let cell_width = 100;
@@ -142,6 +196,18 @@ function handleMouseClick() {
       let object = createSolidStone(x, y);
       saveToLevelMap(x, y, object_code, object);
     },
+    water: () => {
+      let object = createWaterBlock(x, y);
+      saveToLevelMap(x, y, object_code, object);
+    },
+    sand: () => {
+      let object = createSandBlock(x, y);
+      saveToLevelMap(x, y, object_code, object);
+    },
+    cloud: () => {
+      let object = createCloudBlock(x, y);
+      saveToLevelMap(x, y, object_code, object);
+    },
   };
 
   if (object_code == "delete") {
@@ -151,7 +217,7 @@ function handleMouseClick() {
     } catch {
       //pass
     }
-  }else{
+  } else {
     if (level_map[`${x}:${y}`] == undefined) {
       ifs[object_code]();
     }
