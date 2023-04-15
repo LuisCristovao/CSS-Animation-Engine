@@ -117,7 +117,7 @@ function createSandBlock(x, y) {
 }
 function createCloudBlock(x, y) {
   let block = new Object().append(
-    createSquare(x, y, 100, 100, "hsl(194, 100%, 98%)", "water")
+    createSquare(x, y, 100, 100, "hsl(194, 100%, 98%)", "cloud")
   );
   //block.shape.style.border = "2px solid white";
   //block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
@@ -137,7 +137,7 @@ function createTextBlock(x, y) {
 //----------------------
 function init() {
   document.body.style.background =
-    "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(0,241,255,1) 100%) fixed";
+    "linear-gradient(180deg, rgba(161,201,255,1) 0%, rgba(0,146,255,1) 50%) fixed";
   //document.body.style.overflow = "hidden";
   document.body.style.height = "200000px";
   document.body.style.width = "2000000px";
@@ -147,6 +147,9 @@ function init() {
       left: offset,
     });
   }, 1000);
+  if (localStorage["platform game"] != undefined) {
+    handleMapCreation();
+  }
   let player = new Object();
   player.append(createHotDog(offset, offset, 100, 100, "rgb(230,0,0,1)"));
   player.appendChild(
@@ -182,6 +185,35 @@ function saveToLevelMap(x, y, object_code, object) {
     };
   }
   localStorage["platform game"] = JSON.stringify(local_store_level_map);
+}
+function handleMapCreation() {
+  let map = JSON.parse(localStorage["platform game"]);
+  let block=null
+  let ifs = {
+    green_block: (x, y) => {
+      block=createGreenBlock(x, y);
+      colliders.push(block);
+    },
+    solid_stone_block: (x, y) => {
+      block = createSolidStone(x, y);
+      colliders.push(block);
+    },
+    water: (x, y) => {
+      block = createWaterBlock(x, y);
+      colliders.push(block);
+    },
+    sand: (x, y) => {
+      block = createSandBlock(x, y);
+      colliders.push(block);
+    },
+    cloud: (x, y) => {
+      bolck = createCloudBlock(x, y);
+      colliders.push(block);
+    },
+  };
+  for (key in map) {
+    ifs[map[key].object_code](map[key].x, map[key].y);
+  }
 }
 function handleMouseClick() {
   let cell_width = 100;
