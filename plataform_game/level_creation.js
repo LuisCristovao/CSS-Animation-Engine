@@ -3,7 +3,7 @@ let time = new Date().getTime();
 let dt = 0;
 let offset = 100000;
 let mouse_click = false;
-let object_code = "";
+let object_code = "green_block";
 let level_map = {}; //each with "x:y":{x:1,y:2,obkect_code:green_block}
 let colliders = [];
 let mouse = [0, 0];
@@ -209,27 +209,31 @@ function handleMapCreation() {
   let ifs = {
     green_block: (x, y) => {
       block = createGreenBlock(x, y);
-      colliders.push(block);
+      saveToLevelMap(x, y, "green_block", block);
     },
     solid_stone_block: (x, y) => {
       block = createSolidStone(x, y);
-      colliders.push(block);
+      saveToLevelMap(x, y, "solid_stone_block", block);
     },
     water: (x, y) => {
       block = createWaterBlock(x, y);
-      colliders.push(block);
+      saveToLevelMap(x, y, "water", block);
+
     },
     sand: (x, y) => {
       block = createSandBlock(x, y);
-      colliders.push(block);
+      saveToLevelMap(x, y, "sand", block);
+
     },
     cloud: (x, y) => {
       block = createCloudBlock(x, y);
-      colliders.push(block);
+      saveToLevelMap(x, y, "cloud", block);
+
     },
     ice: (x, y) => {
       block = createIceBlock(x, y);
-      colliders.push(block);
+      saveToLevelMap(x, y, "ice", block);
+
     },
   };
   for (key in map) {
@@ -271,6 +275,9 @@ function handleMouseClick() {
     try {
       level_map[`${x}:${y}`].object.destroy();
       delete level_map[`${x}:${y}`];
+      let new_storage_data=JSON.parse(localStorage["platform game"])
+      delete new_storage_data[`${x}:${y}`]
+      localStorage["platform game"]=JSON.stringify(new_storage_data)
     } catch {
       //pass
     }
