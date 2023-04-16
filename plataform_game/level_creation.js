@@ -104,7 +104,7 @@ function createWaterBlock(x, y) {
   let block = new Object().append(
     createSquare(x, y, 100, 100, "hsl(194, 100%, 50%)", "water")
   );
-  block.options.solid=false
+  block.options.solid = false;
   //block.shape.style.border = "2px solid white";
   //block.appendChild(new createHotDog(-10, -10, 120, 20, "rgb(255,255,255,1)"));
   colliders.push(block);
@@ -133,8 +133,8 @@ function createIceBlock(x, y) {
     createSquare(x, y, 100, 100, "hsl(178, 100%, 74%)", "ice")
   );
   block.shape.style.border = "2px solid white";
-  let ice_reflection=new createHotDog(20, 40, 70, 20, "rgb(255,255,255,1)")
-  ice_reflection.style.transform=`rotate(${-45}deg)`
+  let ice_reflection = new createHotDog(20, 40, 70, 20, "rgb(255,255,255,1)");
+  ice_reflection.style.transform = `rotate(${-45}deg)`;
   block.appendChild(ice_reflection);
   colliders.push(block);
   return block;
@@ -184,6 +184,9 @@ function init() {
 }
 function saveToLevelMap(x, y, object_code, object) {
   let local_store_level_map = {};
+  if (localStorage["platform game"] != undefined) {
+    local_store_level_map = JSON.parse(localStorage["platform game"]);
+  }
   level_map[`${x}:${y}`] = {
     x: x,
     y: y,
@@ -202,10 +205,10 @@ function saveToLevelMap(x, y, object_code, object) {
 }
 function handleMapCreation() {
   let map = JSON.parse(localStorage["platform game"]);
-  let block=null
+  let block = null;
   let ifs = {
     green_block: (x, y) => {
-      block=createGreenBlock(x, y);
+      block = createGreenBlock(x, y);
       colliders.push(block);
     },
     solid_stone_block: (x, y) => {
