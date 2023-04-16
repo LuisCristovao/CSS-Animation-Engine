@@ -198,6 +198,7 @@ player.appendAnimation((self) => {
           player.options.on_ground = true;
           player.options.double_jump = false;
           player.real_time = 0;
+          player.friction=0.05
         },
         (solid = true)
       );
@@ -208,7 +209,7 @@ player.appendAnimation((self) => {
         c,
         (player, solid_block) => {
           player.options.on_ground = true;
-          player.options.double_jump = false;
+          player.options.double_jump = true;
           player.real_time = 0;
         },
         (solid = true)
@@ -223,6 +224,7 @@ player.appendAnimation((self) => {
           player.options.on_ground = false;
           player.options.double_jump = false;
           player.real_time = 0;
+          player.friction=1
         },
         (solid = false)
         
@@ -265,6 +267,18 @@ player.appendAnimation((self) => {
           player.options.double_jump = false;
           player.real_time = 0;
           player.friction=0
+        },
+        (solid = true)
+      );
+    },
+    undefined:(self,c) => {
+      collisionDetection(
+        self,
+        c,
+        (player, solid_block) => {
+          player.options.on_ground = true;
+          player.options.double_jump = false;
+          player.real_time = 0;
         },
         (solid = true)
       );
