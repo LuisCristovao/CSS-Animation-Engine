@@ -8,12 +8,109 @@ let ball_size=33
 let colliders = [];
 let mouse = [0, 0];
 let mouse_obj = new Object();
-
+let up = false,
+  down = false,
+  right = false,
+  left = false,
+  jump = false;
 
 
 document.body.addEventListener("touchmove", touchMove, false);
 document.body.addEventListener("touchstart", touchStart, false);
 document.body.addEventListener("touchend", touchEnd, false);
+
+player.append(createCircle(offset,offset,33,"rgb(0,0,0)","player"))
+player.appendAnimation((self) => {
+  
+
+  self.up = false;
+  self.down = false;
+  self.left = false;
+  self.right = false;
+  self.options.on_ground = false;
+  self.gravity =300
+  self.jump_force=-15000
+  self.ground_speed=900
+  self.air_speed=150
+  self.friction=0.07 
+
+  if (up) {
+    self.up = true;
+  }
+  if (down) {
+    self.down = true;
+  }
+  if (right) {
+    self.right = true;
+    
+  }
+  if (left) {
+    self.left = true;
+    
+  }
+  let ifs = {
+    green_ball: (self,c) => {
+      collisionDetection(
+        self,
+        c,
+        (player, solid_block) => {
+          player.shape.style["background-color"] = "rgb(0,255,0)";
+        
+        },
+        (solid = false)
+      );
+    },
+    red_ball: (self,c) => {
+      collisionDetection(
+        self,
+        c,
+        (player, solid_block) => {
+          player.shape.style["background-color"] = "rgb(255,0,0)";
+        },
+        (solid = false)
+      );
+    },
+    blue_ball: (self,c) => {
+      collisionDetection(
+        self,
+        c,
+        (player, solid_block) => {
+          
+        },
+        (solid = true)
+        
+      );
+    },
+    
+  };
+  for (let i = 0; i < colliders.length; i++) {
+    let c = colliders[i];
+    ifs[c.shape.id](self,c)
+  }
+
+  if (self.down) {
+    self.speedy = self.speedy + self.dt * 10;
+  }
+  if (self.right) {
+    self.speedx = self.speedx + self.dt*10 ;
+  }
+  if (self.left) {
+    self.speedx =
+      self.speedx + self.dt * (-10);
+  }
+  //on the air (gravity)
+  if (self.up) {
+    self.speedy = self.speedy + self.dt * -10;
+  } 
+
+  //console.log(self.speedy)
+
+  self.move(self.x + self.dt * self.speedx, self.y + self.dt * self.speedy);
+  
+  //self.move(new_x,new_y)
+});
+
+
 
 function touchEnd(e) {
   mouse_obj.destroy();
@@ -261,7 +358,7 @@ function handleMapCreation() {
     },
     blue_ball: (x, y) => {
       block = createBlueBall(x, y);
-
+      
     }
   };
   for (key in map) {
@@ -291,17 +388,16 @@ function init() {
     createSquare(offset + 10000, offset + 1000, length, length, "rgb(0,0,0,1)")
   );
   c.shape.style.border = "2px solid white";
-  colliders.push(c);
 }
 
 function main() {
   dt = (new Date().getTime() - time) * 1e-3;
   real_time += dt;
-  // window.scroll({
-  //   top: player.y - window.innerHeight / 2,
-  //   left: player.x - window.innerWidth / 2,
-  // });
-  // player.play();
+  window.scroll({
+    top: player.y - window.innerHeight / 2,
+    left: player.x - window.innerWidth / 2,
+  });
+  player.play();
 
   time = new Date().getTime();
   requestAnimationFrame(main);
