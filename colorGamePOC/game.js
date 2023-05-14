@@ -12,8 +12,10 @@ let up = false,
   down = false,
   right = false,
   left = false,
-  jump = false;
-
+  jump = false,
+  red_key=false,
+  green_key=false,
+  blue_key=false;
 
 document.body.addEventListener("touchmove", touchMove, false);
 document.body.addEventListener("touchstart", touchStart, false);
@@ -46,7 +48,17 @@ player.appendAnimation((self) => {
   }
   if (left) {
     self.left = true;
-    
+  }
+  if(red_key){
+    let b=new Object().append(createCircle(player.x,player.y,25,"rgb(255,0,0)","contact_ball"))
+    b.appendAnimation((self)=>{
+      let new_x=self.x+100
+      self.move(new_x,self.y)
+
+      //on contact....
+
+    })
+    colliders.push(b)
   }
   let ifs = {
     green_ball: (self,c) => {
@@ -267,14 +279,14 @@ function press(e) {
       dodge = false;
     }, 100);
   }
-  if (e.keyCode === 38 /* up */) {
-    projectile_up = true;
+  if (e.keyCode === 82 /* r */) {
+    red_key = true;
   }
-  if (e.keyCode === 39 /* right */) {
-    projectile_right = true;
+  if (e.keyCode === 71 /* g */) {
+    green_key = true;
   }
-  if (e.keyCode === 40 /* down */) {
-    projectile_down = true;
+  if (e.keyCode === 66 /* b */) {
+    blue_key = true;
   }
   if (e.keyCode === 37 /* left */) {
     projectile_left = true;
@@ -297,14 +309,14 @@ function release(e) {
   if (e.keyCode === 75 /*k key*/) {
     dodge = false;
   }
-  if (e.keyCode === 38 /* up */) {
-    projectile_up = false;
+  if (e.keyCode === 82 /* r */) {
+    red_key = false;
   }
-  if (e.keyCode === 39 /* right */) {
-    projectile_right = false;
+  if (e.keyCode === 71 /* g */) {
+    green_key = false;
   }
-  if (e.keyCode === 40 /* down */) {
-    projectile_down = false;
+  if (e.keyCode === 66 /* b */) {
+    blue_key = false;
   }
   if (e.keyCode === 37 /* left */) {
     projectile_left = false;
@@ -393,12 +405,19 @@ function init() {
 function main() {
   dt = (new Date().getTime() - time) * 1e-3;
   real_time += dt;
+
   window.scroll({
     top: player.y - window.innerHeight / 2,
     left: player.x - window.innerWidth / 2,
   });
+
   player.play();
 
+  for(c in colliders){
+    colliders[c].play()
+  }
+
+  cleanUnusedProjectiles()
   time = new Date().getTime();
   requestAnimationFrame(main);
 }
