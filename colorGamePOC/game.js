@@ -48,15 +48,18 @@ player.appendAnimation((self) => {
   }
   if (red_key) {
 
-    for(let i=0;i<100;i++){
+    for(let i=0;i<50;i++){
       let b = new Object().append(
         createCircle(player.x, player.y, 25, "rgb(255,0,0)", "contact_ball")
       );
+      // b.real_time=0
       b.appendAnimation((self) => {
-        let new_x = self.x+200*self.dt*Math.cos(i*0.1) ;
-        let new_y = self.y+200*self.dt*Math.sin(i*0.1) ;
+        let new_x = self.x+200*self.dt*Math.cos(i) ;
+        let new_y = self.y+200*self.dt*Math.sin(i) ;
         self.move(new_x, new_y);
-  
+        if(self.real_time>=1){
+          self.destroy()
+        }
         //on contact....
       });
       colliders.push(b);
@@ -412,7 +415,7 @@ function main() {
     colliders[c].play();
   }
 
-  cleanUnusedProjectiles();
+  colliders=cleanUnusedProjectiles();
   time = new Date().getTime();
   requestAnimationFrame(main);
 }
