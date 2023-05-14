@@ -4,7 +4,7 @@ let dt = 0;
 let offset = 100000;
 let player = new Object();
 let speed = 4;
-let ball_size=33
+let ball_size = 33;
 let colliders = [];
 let mouse = [0, 0];
 let mouse_obj = new Object();
@@ -13,28 +13,26 @@ let up = false,
   right = false,
   left = false,
   jump = false,
-  red_key=false,
-  green_key=false,
-  blue_key=false;
+  red_key = false,
+  green_key = false,
+  blue_key = false;
 
 document.body.addEventListener("touchmove", touchMove, false);
 document.body.addEventListener("touchstart", touchStart, false);
 document.body.addEventListener("touchend", touchEnd, false);
 
-player.append(createCircle(offset,offset,33,"rgb(0,0,0)","player"))
+player.append(createCircle(offset, offset, 33, "rgb(0,0,0)", "player"));
 player.appendAnimation((self) => {
-  
-
   self.up = false;
   self.down = false;
   self.left = false;
   self.right = false;
   self.options.on_ground = false;
-  self.gravity =300
-  self.jump_force=-15000
-  self.ground_speed=900
-  self.air_speed=150
-  self.friction=0.07 
+  self.gravity = 300;
+  self.jump_force = -15000;
+  self.ground_speed = 900;
+  self.air_speed = 150;
+  self.friction = 0.07;
 
   if (up) {
     self.up = true;
@@ -44,35 +42,38 @@ player.appendAnimation((self) => {
   }
   if (right) {
     self.right = true;
-    
   }
   if (left) {
     self.left = true;
   }
-  if(red_key){
-    let b=new Object().append(createCircle(player.x,player.y,25,"rgb(255,0,0)","contact_ball"))
-    b.appendAnimation((self)=>{
-      let new_x=self.x+100
-      self.move(new_x,self.y)
+  if (red_key) {
 
-      //on contact....
-
-    })
-    colliders.push(b)
+    for(let i=0;i<100;i++){
+      let b = new Object().append(
+        createCircle(player.x, player.y, 25, "rgb(255,0,0)", "contact_ball")
+      );
+      b.appendAnimation((self) => {
+        let new_x = self.x+200*self.dt*Math.cos(i*0.1) ;
+        let new_y = self.y+200*self.dt*Math.sin(i*0.1) ;
+        self.move(new_x, new_y);
+  
+        //on contact....
+      });
+      colliders.push(b);
+    }
   }
   let ifs = {
-    green_ball: (self,c) => {
+    green_ball: (self, c) => {
       collisionDetection(
         self,
         c,
         (player, solid_block) => {
           player.shape.style["background-color"] = "rgb(0,255,0)";
-        
         },
         (solid = false)
       );
     },
-    red_ball: (self,c) => {
+    red_ball: (self, c) => {
       collisionDetection(
         self,
         c,
@@ -82,47 +83,37 @@ player.appendAnimation((self) => {
         (solid = false)
       );
     },
-    blue_ball: (self,c) => {
-      collisionDetection(
-        self,
-        c,
-        (player, solid_block) => {
-          
-        },
-        (solid = true)
-        
-      );
+    blue_ball: (self, c) => {
+      collisionDetection(self, c, (player, solid_block) => {}, (solid = true));
     },
-    
   };
   for (let i = 0; i < colliders.length; i++) {
     let c = colliders[i];
-    ifs[c.shape.id](self,c)
+    if (c.shape.id != "contact_ball") {
+      ifs[c.shape.id](self, c);
+    }
   }
 
   if (self.down) {
     self.speedy = self.speedy + self.dt * 10;
   }
   if (self.right) {
-    self.speedx = self.speedx + self.dt*10 ;
+    self.speedx = self.speedx + self.dt * 10;
   }
   if (self.left) {
-    self.speedx =
-      self.speedx + self.dt * (-10);
+    self.speedx = self.speedx + self.dt * -10;
   }
   //on the air (gravity)
   if (self.up) {
     self.speedy = self.speedy + self.dt * -10;
-  } 
+  }
 
   //console.log(self.speedy)
 
   self.move(self.x + self.dt * self.speedx, self.y + self.dt * self.speedy);
-  
+
   //self.move(new_x,new_y)
 });
-
-
 
 function touchEnd(e) {
   mouse_obj.destroy();
@@ -258,7 +249,6 @@ function collisionDetection(
   }
 }
 
-
 document.addEventListener("keydown", press);
 function press(e) {
   if (e.keyCode === 87 /* w */) {
@@ -325,7 +315,7 @@ function release(e) {
 
 function cleanUnusedProjectiles() {
   let new_projectiles_array = [];
-  projectiles.forEach((p) => {
+  colliders.forEach((p) => {
     if (p.is_destroyed == false) {
       new_projectiles_array.push(p);
     }
@@ -336,22 +326,31 @@ function cleanUnusedProjectiles() {
 //color balls------------
 function createRedBall(x, y) {
   let ball = new Object().append(
-    createCircle(x, y,  ball_size, "rgb(255,0,0,1)", "red_ball")
+    createCircle(x, y, ball_size, "rgb(255,0,0,1)", "red_ball")
   );
+  ball.appendAnimation((self) => {
+    //nothing
+  });
   colliders.push(ball);
   return ball;
 }
 function createGreenBall(x, y) {
   let ball = new Object().append(
-    createCircle(x, y,  ball_size, "rgb(0,255,0,1)", "green_ball")
+    createCircle(x, y, ball_size, "rgb(0,255,0,1)", "green_ball")
   );
+  ball.appendAnimation((self) => {
+    //nothing
+  });
   colliders.push(ball);
   return ball;
 }
 function createBlueBall(x, y) {
   let ball = new Object().append(
-    createCircle(x, y,  ball_size, "rgb(0,50,255,1)", "blue_ball")
+    createCircle(x, y, ball_size, "rgb(0,50,255,1)", "blue_ball")
   );
+  ball.appendAnimation((self) => {
+    //nothing
+  });
   colliders.push(ball);
   return ball;
 }
@@ -362,23 +361,19 @@ function handleMapCreation() {
   let ifs = {
     red_ball: (x, y) => {
       block = createRedBall(x, y);
-      
     },
     green_ball: (x, y) => {
       block = createGreenBall(x, y);
-      
     },
     blue_ball: (x, y) => {
       block = createBlueBall(x, y);
-      
-    }
+    },
   };
   for (key in map) {
     ifs[map[key].object_code](map[key].x, map[key].y);
   }
 }
 function init() {
-
   document.body.style.overflow = "hidden";
   document.body.style.height = "200000px";
   document.body.style.width = "2000000px";
@@ -392,9 +387,9 @@ function init() {
       left: offset,
     });
   }, 1000);
-  
-  if(localStorage["color game"]!=undefined){
-    handleMapCreation()
+
+  if (localStorage["color game"] != undefined) {
+    handleMapCreation();
   }
   c = new Object().append(
     createSquare(offset + 10000, offset + 1000, length, length, "rgb(0,0,0,1)")
@@ -413,11 +408,11 @@ function main() {
 
   player.play();
 
-  for(c in colliders){
-    colliders[c].play()
+  for (c in colliders) {
+    colliders[c].play();
   }
 
-  cleanUnusedProjectiles()
+  cleanUnusedProjectiles();
   time = new Date().getTime();
   requestAnimationFrame(main);
 }
