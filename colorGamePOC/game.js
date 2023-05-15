@@ -61,6 +61,23 @@ player.appendAnimation((self) => {
           self.destroy()
         }
         //on contact....
+        for (let i = 0; i < colliders.length; i++) {
+          let c = colliders[i];
+          if (c.shape.id != "contact_ball") {
+            collisionDetection(
+              self,
+              c,
+              (self, other_ball) => {
+                let x_direction=other_ball.x-player.x
+                let y_direction=other_ball.y-player.y
+                for(let i=0;i<3;i++){
+                  new Object().append(createCircle(player.x+x_direction/(8-i*2),player.y+y_direction/(8-i*2),20,"rgb(255,0,255)","contact_ball"))
+                }
+              },
+              (solid = false)
+            );
+          }
+        }
       });
       colliders.push(b);
     }
