@@ -47,7 +47,7 @@ player.appendAnimation((self) => {
     self.left = true;
   }
   if (red_key) {
-
+    
     for(let i=0;i<80;i++){
       let b = new Object().append(
         createCircle(player.x, player.y, 25, "rgb(255,0,0)", "contact_ball")
@@ -57,7 +57,7 @@ player.appendAnimation((self) => {
         let new_x = self.x+200*self.dt*Math.cos(20*i) ;
         let new_y = self.y+200*self.dt*Math.sin(20*i) ;
         self.move(new_x, new_y);
-        if(self.real_time>=1.5){
+        if(self.real_time>=0.5){
           self.destroy()
         }
         //on contact....
@@ -70,9 +70,22 @@ player.appendAnimation((self) => {
               (self, other_ball) => {
                 let x_direction=other_ball.x-player.x
                 let y_direction=other_ball.y-player.y
+                //poiting vector.......
                 for(let i=0;i<3;i++){
-                  new Object().append(createCircle(player.x+x_direction/(8-i*2),player.y+y_direction/(8-i*2),20,"rgb(255,0,255)","contact_ball"))
+                  let b_tmp=new Object().append(createCircle(player.x+x_direction/(8-i*2),player.y+y_direction/(8-i*2),20,"rgb(255,0,255)","contact_ball"))
+                  setTimeout(()=>{
+                    b_tmp.destroy()
+                  })
                 }
+                if(other_ball.shape.id=="red_ball"){
+                  player.speedx=(x_direction/Math.abs(x_direction))*100
+                  player.speedy=(y_direction/Math.abs(y_direction))*100
+                }
+                else{
+                  player.speedx=-(x_direction/Math.abs(x_direction))*100
+                  player.speedy=-(y_direction/Math.abs(y_direction))*100
+                }
+                self.destroy()
               },
               (solid = false)
             );
