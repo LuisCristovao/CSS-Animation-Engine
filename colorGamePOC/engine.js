@@ -136,6 +136,9 @@ class Object {
       this.speedy=0
       this.dt=0
       this.options={}
+      this.anchor_ballx=0
+      this.anchor_bally=0
+      this.attraction=0
       
   }
   getElement(){
