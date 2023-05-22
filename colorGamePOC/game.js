@@ -5,6 +5,7 @@ let offset = 100000;
 let player = new Object();
 let speed = 4;
 let ball_size = 33;
+let contact_balls = [];
 let colliders = [];
 let mouse = [0, 0];
 let mouse_obj = new Object();
@@ -56,49 +57,51 @@ player.appendAnimation((self) => {
         let new_x = self.x + 200 * self.dt * Math.cos(20 * i);
         let new_y = self.y + 200 * self.dt * Math.sin(20 * i);
         self.move(new_x, new_y);
-        if (self.real_time >= 0.5) {
+        if (self.real_time >= 1) {
           self.destroy();
         }
         //on contact....
         for (let i = 0; i < colliders.length; i++) {
           let c = colliders[i];
-          if (c.shape.id != "contact_ball") {
-            collisionDetection(
-              self,
-              c,
-              (self, other_ball) => {
-                let x_direction = other_ball.x - player.x;
-                let y_direction = other_ball.y - player.y;
-                //poiting vector.......
-                for (let i = 0; i < 3; i++) {
-                  let b_tmp = new Object().append(
-                    createCircle(
-                      player.x + x_direction / (8 - i * 2),
-                      player.y + y_direction / (8 - i * 2),
-                      20,
-                      "rgb(255,0,255)",
-                      "contact_ball"
-                    )
-                  );
-                  setTimeout(() => {
-                    b_tmp.destroy();
-                  });
-                }
-                if (other_ball.shape.id == "red_ball") {
-                  player.speedx = (x_direction / Math.abs(x_direction)) * 100;
-                  player.speedy = (y_direction / Math.abs(y_direction)) * 100;
-                } else {
-                  player.speedx = -(x_direction / Math.abs(x_direction)) * 100;
-                  player.speedy = -(y_direction / Math.abs(y_direction)) * 100;
-                }
-                self.destroy();
-              },
-              (solid = false)
-            );
-          }
+
+          collisionDetection(
+            self,
+            c,
+            (self, other_ball) => {
+              let x_direction = other_ball.x - player.x;
+              let y_direction = other_ball.y - player.y;
+              //poiting vector.......
+              for (let i = 0; i < 3; i++) {
+                let b_tmp = new Object().append(
+                  createCircle(
+                    player.x + x_direction / (8 - i * 2),
+                    player.y + y_direction / (8 - i * 2),
+                    20,
+                    "rgb(255,0,255)",
+                    "contact_ball"
+                  )
+                );
+                setTimeout(() => {
+                  b_tmp.destroy();
+                });
+              }
+              if (other_ball.shape.id == "red_ball") {
+                player.speedx = (x_direction / Math.abs(x_direction)) * 100;
+                player.speedy = (y_direction / Math.abs(y_direction)) * 100;
+              } else {
+                player.speedx = -(x_direction / Math.abs(x_direction)) * 100;
+                player.speedy = -(y_direction / Math.abs(y_direction)) * 100;
+              }
+              
+              for (let j = 0; j < contact_balls.length; j++) {
+                contact_balls[j].destroy();
+              }
+            },
+            (solid = false)
+          );
         }
       });
-      colliders.push(b);
+      contact_balls.push(b);
     }
   }
   if (green_key) {
@@ -111,51 +114,50 @@ player.appendAnimation((self) => {
         let new_x = self.x + 200 * self.dt * Math.cos(20 * i);
         let new_y = self.y + 200 * self.dt * Math.sin(20 * i);
         self.move(new_x, new_y);
-        if (self.real_time >= 0.5) {
+        if (self.real_time >= 1) {
           self.destroy();
         }
         //on contact....
         for (let i = 0; i < colliders.length; i++) {
           let c = colliders[i];
-          if (c.shape.id != "contact_ball") {
-            collisionDetection(
-              self,
-              c,
-              (self, other_ball) => {
-                let x_direction = other_ball.x - player.x;
-                let y_direction = other_ball.y - player.y;
-                //poiting vector.......
-                for (let i = 0; i < 3; i++) {
-                  let b_tmp = new Object().append(
-                    createCircle(
-                      player.x + x_direction / (8 - i * 2),
-                      player.y + y_direction / (8 - i * 2),
-                      20,
-                      "rgb(255,0,255)",
-                      "contact_ball"
-                    )
-                  );
-                  setTimeout(() => {
-                    b_tmp.destroy();
-                  });
-                }
-                if (other_ball.shape.id == "green_ball") {
-                  player.speedx = (x_direction / Math.abs(x_direction)) * 100;
-                  player.speedy = (y_direction / Math.abs(y_direction)) * 100;
-                  
-                } else {
-                  player.speedx = -(x_direction / Math.abs(x_direction)) * 100;
-                  player.speedy = -(y_direction / Math.abs(y_direction)) * 100;
-                  
-                }
-                self.destroy();
-              },
-              (solid = false)
-            );
-          }
+
+          collisionDetection(
+            self,
+            c,
+            (self, other_ball) => {
+              let x_direction = other_ball.x - player.x;
+              let y_direction = other_ball.y - player.y;
+              //poiting vector.......
+              for (let i = 0; i < 3; i++) {
+                let b_tmp = new Object().append(
+                  createCircle(
+                    player.x + x_direction / (8 - i * 2),
+                    player.y + y_direction / (8 - i * 2),
+                    20,
+                    "rgb(255,0,255)",
+                    "contact_ball"
+                  )
+                );
+                setTimeout(() => {
+                  b_tmp.destroy();
+                });
+              }
+              if (other_ball.shape.id == "green_ball") {
+                player.speedx = (x_direction / Math.abs(x_direction)) * 100;
+                player.speedy = (y_direction / Math.abs(y_direction)) * 100;
+              } else {
+                player.speedx = -(x_direction / Math.abs(x_direction)) * 100;
+                player.speedy = -(y_direction / Math.abs(y_direction)) * 100;
+              }
+              for (let j = 0; j < contact_balls.length; j++) {
+                contact_balls[j].destroy();
+              }
+            },
+            (solid = false)
+          );
         }
       });
-      colliders.push(b);
+      contact_balls.push(b);
     }
   }
   let ifs = {
@@ -182,21 +184,12 @@ player.appendAnimation((self) => {
       );
     },
     blue_ball: (self, c) => {
-      collisionDetection(
-        self,
-        c,
-        (player, solid_block) => {
-          
-        },
-        (solid = true)
-      );
+      collisionDetection(self, c, (player, solid_block) => {}, (solid = true));
     },
   };
   for (let i = 0; i < colliders.length; i++) {
     let c = colliders[i];
-    if (c.shape.id != "contact_ball") {
-      ifs[c.shape.id](self, c);
-    }
+    ifs[c.shape.id](self, c);
   }
 
   if (self.down) {
@@ -425,7 +418,14 @@ function cleanUnusedProjectiles() {
       new_projectiles_array.push(p);
     }
   });
-  return new_projectiles_array;
+  colliders = new_projectiles_array;
+  let new_projectiles_array2 = [];
+  contact_balls.forEach((p) => {
+    if (p.is_destroyed == false) {
+      new_projectiles_array2.push(p);
+    }
+  });
+  contact_balls = new_projectiles_array2;
 }
 //blocks------------
 //color balls------------
@@ -516,8 +516,12 @@ function main() {
   for (c in colliders) {
     colliders[c].play();
   }
+  for (c in contact_balls) {
+    contact_balls[c].play();
+  }
+  
 
-  colliders = cleanUnusedProjectiles();
+  cleanUnusedProjectiles();
   time = new Date().getTime();
   requestAnimationFrame(main);
 }
