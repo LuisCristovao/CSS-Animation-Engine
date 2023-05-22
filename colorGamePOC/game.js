@@ -57,7 +57,7 @@ player.appendAnimation((self) => {
         let new_x = self.x + 200 * self.dt * Math.cos(20 * i);
         let new_y = self.y + 200 * self.dt * Math.sin(20 * i);
         self.move(new_x, new_y);
-        if (self.real_time >= 1) {
+        if (self.real_time >= 1.5) {
           self.destroy();
         }
         //on contact....
@@ -70,6 +70,7 @@ player.appendAnimation((self) => {
             (self, other_ball) => {
               let x_direction = other_ball.x - player.x;
               let y_direction = other_ball.y - player.y;
+
               //poiting vector.......
               for (let i = 0; i < 3; i++) {
                 let b_tmp = new Object().append(
@@ -88,11 +89,17 @@ player.appendAnimation((self) => {
               if (other_ball.shape.id == "red_ball") {
                 player.speedx = (x_direction / Math.abs(x_direction)) * 100;
                 player.speedy = (y_direction / Math.abs(y_direction)) * 100;
+                player.anchor_ballx = other_ball.x;
+                player.anchor_bally = other_ball.y;
+                player.attraction = 1;
               } else {
                 player.speedx = -(x_direction / Math.abs(x_direction)) * 100;
                 player.speedy = -(y_direction / Math.abs(y_direction)) * 100;
+                player.anchor_ballx = other_ball.x;
+                player.anchor_bally = other_ball.y;
+                player.attraction = -1;
               }
-              
+
               for (let j = 0; j < contact_balls.length; j++) {
                 contact_balls[j].destroy();
               }
@@ -114,7 +121,7 @@ player.appendAnimation((self) => {
         let new_x = self.x + 200 * self.dt * Math.cos(20 * i);
         let new_y = self.y + 200 * self.dt * Math.sin(20 * i);
         self.move(new_x, new_y);
-        if (self.real_time >= 1) {
+        if (self.real_time >= 1.5) {
           self.destroy();
         }
         //on contact....
@@ -179,6 +186,9 @@ player.appendAnimation((self) => {
         (player, solid_block) => {
           player.shape.style["background-color"] = "rgb(255,0,0)";
           solid_block.destroy();
+          player.anchor_ballx = 0;
+          player.anchor_bally = 0;
+          player.attraction = 0;
         },
         (solid = false)
       );
@@ -207,7 +217,12 @@ player.appendAnimation((self) => {
   }
 
   //console.log(self.speedy)
-
+  let x_direction = self.anchor_ballx - self.x;
+  let y_direction = self.anchor_bally - self.y;
+  self.speedx =
+    self.speedx + self.attraction * (x_direction / Math.abs(x_direction)) * 1;
+  self.speedy =
+    self.speedy + self.attraction * (y_direction / Math.abs(y_direction)) * 1;
   self.move(self.x + self.dt * self.speedx, self.y + self.dt * self.speedy);
 
   //self.move(new_x,new_y)
@@ -519,7 +534,6 @@ function main() {
   for (c in contact_balls) {
     contact_balls[c].play();
   }
-  
 
   cleanUnusedProjectiles();
   time = new Date().getTime();
