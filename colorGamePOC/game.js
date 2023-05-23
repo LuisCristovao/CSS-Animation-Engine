@@ -48,6 +48,9 @@ player.appendAnimation((self) => {
     self.left = true;
   }
   if (red_key) {
+    player.anchor_ballx = 0;
+    player.anchor_bally = 0;
+    player.attraction = 0;
     for (let i = 0; i < 80; i++) {
       let b = new Object().append(
         createCircle(player.x, player.y, 25, "rgb(255,0,0)", "contact_ball")
@@ -95,9 +98,9 @@ player.appendAnimation((self) => {
               } else {
                 player.speedx = -(x_direction / Math.abs(x_direction)) * 100;
                 player.speedy = -(y_direction / Math.abs(y_direction)) * 100;
-                player.anchor_ballx = other_ball.x;
-                player.anchor_bally = other_ball.y;
-                player.attraction = -1;
+                // player.anchor_ballx = other_ball.x;
+                // player.anchor_bally = other_ball.y;
+                // player.attraction = -1;
               }
 
               for (let j = 0; j < contact_balls.length; j++) {
@@ -112,6 +115,9 @@ player.appendAnimation((self) => {
     }
   }
   if (green_key) {
+    player.anchor_ballx = 0;
+    player.anchor_bally = 0;
+    player.attraction = 0;
     for (let i = 0; i < 80; i++) {
       let b = new Object().append(
         createCircle(player.x, player.y, 25, "rgb(0,255,0)", "contact_ball")
@@ -152,9 +158,15 @@ player.appendAnimation((self) => {
               if (other_ball.shape.id == "green_ball") {
                 player.speedx = (x_direction / Math.abs(x_direction)) * 100;
                 player.speedy = (y_direction / Math.abs(y_direction)) * 100;
+                player.anchor_ballx = other_ball.x;
+                player.anchor_bally = other_ball.y;
+                player.attraction = 1;
               } else {
                 player.speedx = -(x_direction / Math.abs(x_direction)) * 100;
                 player.speedy = -(y_direction / Math.abs(y_direction)) * 100;
+                // player.anchor_ballx = other_ball.x;
+                // player.anchor_bally = other_ball.y;
+                // player.attraction = -1;
               }
               for (let j = 0; j < contact_balls.length; j++) {
                 contact_balls[j].destroy();
