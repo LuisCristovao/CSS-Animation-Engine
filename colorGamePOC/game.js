@@ -71,9 +71,6 @@ player.appendAnimation((self) => {
             self,
             c,
             (self, other_ball) => {
-              let x_direction = other_ball.x - player.x;
-              let y_direction = other_ball.y - player.y;
-
               //poiting vector.......
               for (let i = 0; i < 3; i++) {
                 let b_tmp = new Object().append(
@@ -90,12 +87,16 @@ player.appendAnimation((self) => {
                 });
               }
               if (other_ball.shape.id == "red_ball") {
+                let x_direction = other_ball.x - player.x;
+                let y_direction = other_ball.y - player.y;
                 player.speedx = (x_direction / Math.abs(x_direction)) * 100;
                 player.speedy = (y_direction / Math.abs(y_direction)) * 100;
                 player.anchor_ballx = other_ball.x;
                 player.anchor_bally = other_ball.y;
                 player.attraction = 1;
               } else {
+                let x_direction = other_ball.x - self.x;
+                let y_direction = other_ball.y - self.y;
                 player.speedx = -(x_direction / Math.abs(x_direction)) * 100;
                 player.speedy = -(y_direction / Math.abs(y_direction)) * 100;
                 // player.anchor_ballx = other_ball.x;
@@ -187,6 +188,9 @@ player.appendAnimation((self) => {
         (player, solid_block) => {
           player.shape.style["background-color"] = "rgb(0,255,0)";
           solid_block.destroy();
+          player.anchor_ballx = 0;
+          player.anchor_bally = 0;
+          player.attraction = 0;
         },
         (solid = false)
       );
