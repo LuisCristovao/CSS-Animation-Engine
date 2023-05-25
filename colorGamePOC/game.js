@@ -186,9 +186,12 @@ player.appendAnimation((self) => {
         (player, solid_block) => {
           player.shape.style["background-color"] = "rgb(0,255,0)";
           solid_block.destroy();
-          player.anchor_ballx = 0;
-          player.anchor_bally = 0;
-          player.attraction = 0;
+          if(player.anchor_ballx==solid_block.x && player.anchor_bally==solid_block.y){
+
+            player.anchor_ballx = 0;
+            player.anchor_bally = 0;
+            player.attraction = 0;
+          }
         },
         (solid = false)
       );
@@ -200,9 +203,12 @@ player.appendAnimation((self) => {
         (player, solid_block) => {
           player.shape.style["background-color"] = "rgb(255,0,0)";
           solid_block.destroy();
-          player.anchor_ballx = 0;
-          player.anchor_bally = 0;
-          player.attraction = 0;
+          if(player.anchor_ballx==solid_block.x && player.anchor_bally==solid_block.y){
+
+            player.anchor_ballx = 0;
+            player.anchor_bally = 0;
+            player.attraction = 0;
+          }
         },
         (solid = false)
       );
