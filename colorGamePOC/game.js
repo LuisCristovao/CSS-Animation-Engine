@@ -7,6 +7,7 @@ let speed = 4;
 let ball_size = 33;
 let contact_balls = [];
 let colliders = [];
+let point_vectores = [];
 let mouse = [0, 0];
 let mouse_obj = new Object();
 let up = false,
@@ -57,10 +58,18 @@ player.appendAnimation((self) => {
       );
       // b.real_time=0
       b.appendAnimation((self) => {
-        let new_x = self.x + (200+Math.abs(Math.max(player.speedx,player.speedy))) * self.dt * Math.cos(20 * i);
-        let new_y = self.y + (200+Math.abs(Math.max(player.speedx,player.speedy))) * self.dt * Math.sin(20 * i);
+        let new_x =
+          self.x +
+          (200 + Math.abs(Math.max(player.speedx, player.speedy))) *
+            self.dt *
+            Math.cos(20 * i);
+        let new_y =
+          self.y +
+          (200 + Math.abs(Math.max(player.speedx, player.speedy))) *
+            self.dt *
+            Math.sin(20 * i);
         self.move(new_x, new_y);
-        if (self.real_time >= .7) {
+        if (self.real_time >= 0.7) {
           self.destroy();
         }
         //on contact....
@@ -71,22 +80,36 @@ player.appendAnimation((self) => {
             self,
             c,
             (self, other_ball) => {
+              //on collision delete previouse« connection
+              for (c in point_vectores) {
+                point_vectores[c].destroy();
+              }
               let x_direction = other_ball.x - player.x;
               let y_direction = other_ball.y - player.y;
               //poiting vector.......
-              for (let i = 0; i < 3; i++) {
+              for (let i = 0; i < 10; i++) {
                 let b_tmp = new Object().append(
                   createCircle(
-                    player.x + x_direction / (8 - i * 2),
-                    player.y + y_direction / (8 - i * 2),
+                    player.x + x_direction / (10 - i),
+                    player.y + y_direction / (10 - i),
                     20,
-                    "rgb(255,0,255)",
+                    "rgb(100,100 ,100)",
                     "contact_ball"
                   )
                 );
-                setTimeout(() => {
-                  b_tmp.destroy();
+                
+                b_tmp.appendAnimation((self) => {
+                  let x_direction = other_ball.x - player.x;
+                  let y_direction = other_ball.y - player.y;
+                  self.move(
+                    player.x + (x_direction / 10) * i,
+                    player.y + (y_direction / 10) * i
+                  );
                 });
+                point_vectores.push(b_tmp);
+                // setTimeout(() => {
+                //   b_tmp.destroy();
+                // });
               }
               if (other_ball.shape.id == "red_ball") {
                 player.speedx = (x_direction / Math.abs(x_direction)) * 100;
@@ -123,10 +146,18 @@ player.appendAnimation((self) => {
       );
       // b.real_time=0
       b.appendAnimation((self) => {
-        let new_x = self.x + (200+Math.abs(Math.max(player.speedx,player.speedy))) * self.dt * Math.cos(20 * i);
-        let new_y = self.y + (200+Math.abs(Math.max(player.speedx,player.speedy))) * self.dt * Math.sin(20 * i);
+        let new_x =
+          self.x +
+          (200 + Math.abs(Math.max(player.speedx, player.speedy))) *
+            self.dt *
+            Math.cos(20 * i);
+        let new_y =
+          self.y +
+          (200 + Math.abs(Math.max(player.speedx, player.speedy))) *
+            self.dt *
+            Math.sin(20 * i);
         self.move(new_x, new_y);
-        if (self.real_time >= .7) {
+        if (self.real_time >= 0.7) {
           self.destroy();
         }
         //on contact....
@@ -161,8 +192,8 @@ player.appendAnimation((self) => {
                 player.anchor_bally = other_ball.y;
                 player.attraction = 1;
               } else {
-                player.speedx =  -(x_direction / Math.abs(x_direction)) * 100;
-                player.speedy =  -(y_direction / Math.abs(y_direction)) * 100;
+                player.speedx = -(x_direction / Math.abs(x_direction)) * 100;
+                player.speedy = -(y_direction / Math.abs(y_direction)) * 100;
                 player.anchor_ballx = other_ball.x;
                 player.anchor_bally = other_ball.y;
                 player.attraction = -1;
@@ -186,8 +217,10 @@ player.appendAnimation((self) => {
         (player, solid_block) => {
           player.shape.style["background-color"] = "rgb(0,255,0)";
           solid_block.destroy();
-          if(player.anchor_ballx==solid_block.x && player.anchor_bally==solid_block.y){
-
+          if (
+            player.anchor_ballx == solid_block.x &&
+            player.anchor_bally == solid_block.y
+          ) {
             player.anchor_ballx = 0;
             player.anchor_bally = 0;
             player.attraction = 0;
@@ -203,11 +236,17 @@ player.appendAnimation((self) => {
         (player, solid_block) => {
           player.shape.style["background-color"] = "rgb(255,0,0)";
           solid_block.destroy();
-          if(player.anchor_ballx==solid_block.x && player.anchor_bally==solid_block.y){
-
+          //break ball conection
+          if (
+            player.anchor_ballx == solid_block.x &&
+            player.anchor_bally == solid_block.y
+          ) {
             player.anchor_ballx = 0;
             player.anchor_bally = 0;
             player.attraction = 0;
+            for (c in point_vectores) {
+              point_vectores[c].destroy();
+            }
           }
         },
         (solid = false)
@@ -236,12 +275,10 @@ player.appendAnimation((self) => {
     self.speedy = self.speedy + self.dt * -10;
   }
 
-  
-  
   let x_direction = self.anchor_ballx - self.x;
   let y_direction = self.anchor_bally - self.y;
-  let prev_speedx=self.speedx
-  let prev_speedy=self.speedy
+  let prev_speedx = self.speedx;
+  let prev_speedy = self.speedy;
 
   //if player is too far away from connected ball break connection
   // if(Math.abs(self.anchor_ballx - self.x)>=800){
@@ -250,15 +287,17 @@ player.appendAnimation((self) => {
   // if(Math.abs(self.anchor_bally - self.y)>=800){
   //   self.attraction=0
   // }
-  self.speedx =prev_speedx + self.attraction * (x_direction / Math.abs(x_direction)) * 1;
-  self.speedy =prev_speedy + self.attraction * (y_direction / Math.abs(y_direction)) * 1;
+  self.speedx =
+    prev_speedx + self.attraction * (x_direction / Math.abs(x_direction)) * 1;
+  self.speedy =
+    prev_speedy + self.attraction * (y_direction / Math.abs(y_direction)) * 1;
   //limit spped
-  let speed_limit=200
-  if(Math.abs(self.speedx)>speed_limit){
-    self.speedx=(self.speedx<0)?-speed_limit:speed_limit
+  let speed_limit = 200;
+  if (Math.abs(self.speedx) > speed_limit) {
+    self.speedx = self.speedx < 0 ? -speed_limit : speed_limit;
   }
-  if(Math.abs(self.speedy)>speed_limit){
-    self.speedy=(self.speedy<0)?-speed_limit:speed_limit
+  if (Math.abs(self.speedy) > speed_limit) {
+    self.speedy = self.speedy < 0 ? -speed_limit : speed_limit;
   }
   self.move(self.x + self.dt * self.speedx, self.y + self.dt * self.speedy);
 
@@ -478,6 +517,13 @@ function cleanUnusedProjectiles() {
     }
   });
   contact_balls = new_projectiles_array2;
+  let new_projectiles_array3 = [];
+  point_vectores.forEach((p) => {
+    if (p.is_destroyed == false) {
+      new_projectiles_array3.push(p);
+    }
+  });
+  point_vectores = new_projectiles_array3;
 }
 //blocks------------
 //color balls------------
@@ -570,6 +616,9 @@ function main() {
   }
   for (c in contact_balls) {
     contact_balls[c].play();
+  }
+  for (c in point_vectores) {
+    point_vectores[c].play();
   }
 
   cleanUnusedProjectiles();
