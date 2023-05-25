@@ -71,6 +71,8 @@ player.appendAnimation((self) => {
             self,
             c,
             (self, other_ball) => {
+              let x_direction = other_ball.x - player.x;
+              let y_direction = other_ball.y - player.y;
               //poiting vector.......
               for (let i = 0; i < 3; i++) {
                 let b_tmp = new Object().append(
@@ -87,21 +89,17 @@ player.appendAnimation((self) => {
                 });
               }
               if (other_ball.shape.id == "red_ball") {
-                let x_direction = other_ball.x - player.x;
-                let y_direction = other_ball.y - player.y;
                 player.speedx = (x_direction / Math.abs(x_direction)) * 100;
                 player.speedy = (y_direction / Math.abs(y_direction)) * 100;
                 player.anchor_ballx = other_ball.x;
                 player.anchor_bally = other_ball.y;
                 player.attraction = 1;
               } else {
-                let x_direction = other_ball.x - self.x;
-                let y_direction = other_ball.y - self.y;
                 player.speedx = -(x_direction / Math.abs(x_direction)) * 100;
                 player.speedy = -(y_direction / Math.abs(y_direction)) * 100;
-                // player.anchor_ballx = other_ball.x;
-                // player.anchor_bally = other_ball.y;
-                // player.attraction = -1;
+                player.anchor_ballx = other_ball.x;
+                player.anchor_bally = other_ball.y;
+                player.attraction = -1;
               }
 
               for (let j = 0; j < contact_balls.length; j++) {
@@ -232,13 +230,23 @@ player.appendAnimation((self) => {
     self.speedy = self.speedy + self.dt * -10;
   }
 
-  //console.log(self.speedy)
+  
+  
   let x_direction = self.anchor_ballx - self.x;
   let y_direction = self.anchor_bally - self.y;
-  self.speedx =
-    self.speedx + self.attraction * (x_direction / Math.abs(x_direction)) * 1;
-  self.speedy =
-    self.speedy + self.attraction * (y_direction / Math.abs(y_direction)) * 1;
+  let prev_speedx=self.speedx
+  let prev_speedy=self.speedy
+
+  self.speedx =prev_speedx + self.attraction * (x_direction / Math.abs(x_direction)) * 1;
+  self.speedy =prev_speedy + self.attraction * (y_direction / Math.abs(y_direction)) * 1;
+  
+  //if player is too far away from connected ball break connection
+  // if(Math.abs(self.anchor_ballx - self.x)>=200){
+  //   self.speedx=prev_speedx
+  // }
+  // if(Math.abs(self.anchor_bally - self.y)>=200){
+  //   self.speedy=prev_speedy
+  // }
   self.move(self.x + self.dt * self.speedx, self.y + self.dt * self.speedy);
 
   //self.move(new_x,new_y)
