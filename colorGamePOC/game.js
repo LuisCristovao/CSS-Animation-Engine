@@ -252,7 +252,14 @@ player.appendAnimation((self) => {
   // }
   self.speedx =prev_speedx + self.attraction * (x_direction / Math.abs(x_direction)) * 1;
   self.speedy =prev_speedy + self.attraction * (y_direction / Math.abs(y_direction)) * 1;
-  
+  //limit spped
+  let speed_limit=200
+  if(Math.abs(self.speedx)>speed_limit){
+    self.speedx=(self.speedx<0)?-speed_limit:speed_limit
+  }
+  if(Math.abs(self.speedy)>speed_limit){
+    self.speedy=(self.speedy<0)?-speed_limit:speed_limit
+  }
   self.move(self.x + self.dt * self.speedx, self.y + self.dt * self.speedy);
 
   //self.move(new_x,new_y)
