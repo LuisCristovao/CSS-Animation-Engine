@@ -300,12 +300,21 @@ player.appendAnimation((self) => {
   let prev_speedy = self.speedy;
 
   //if player is too far away from connected ball break connection
-  // if(Math.abs(self.anchor_ballx - self.x)>=800){
-  //   self.attraction=0
-  // }
-  // if(Math.abs(self.anchor_bally - self.y)>=800){
-  //   self.attraction=0
-  // }
+  let connection_length=300
+  if(Math.abs(self.anchor_ballx - self.x)>=connection_length){
+    self.attraction=0
+    //break connection
+    for (c in point_vectores) {
+      point_vectores[c].destroy();
+    }
+  }
+  if(Math.abs(self.anchor_bally - self.y)>=connection_length){
+    //break connection
+    for (c in point_vectores) {
+      point_vectores[c].destroy();
+    }
+    self.attraction=0
+  }
   self.speedx =
     prev_speedx + self.attraction * (x_direction / Math.abs(x_direction)) * 1;
   self.speedy =
