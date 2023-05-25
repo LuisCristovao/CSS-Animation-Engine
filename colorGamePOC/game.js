@@ -57,10 +57,10 @@ player.appendAnimation((self) => {
       );
       // b.real_time=0
       b.appendAnimation((self) => {
-        let new_x = self.x + 200 * self.dt * Math.cos(20 * i);
-        let new_y = self.y + 200 * self.dt * Math.sin(20 * i);
+        let new_x = self.x + (200+Math.abs(Math.max(player.speedx,player.speedy))) * self.dt * Math.cos(20 * i);
+        let new_y = self.y + (200+Math.abs(Math.max(player.speedx,player.speedy))) * self.dt * Math.sin(20 * i);
         self.move(new_x, new_y);
-        if (self.real_time >= 1.5) {
+        if (self.real_time >= .7) {
           self.destroy();
         }
         //on contact....
@@ -123,10 +123,10 @@ player.appendAnimation((self) => {
       );
       // b.real_time=0
       b.appendAnimation((self) => {
-        let new_x = self.x + 200 * self.dt * Math.cos(20 * i);
-        let new_y = self.y + 200 * self.dt * Math.sin(20 * i);
+        let new_x = self.x + (200+Math.abs(Math.max(player.speedx,player.speedy))) * self.dt * Math.cos(20 * i);
+        let new_y = self.y + (200+Math.abs(Math.max(player.speedx,player.speedy))) * self.dt * Math.sin(20 * i);
         self.move(new_x, new_y);
-        if (self.real_time >= 1.5) {
+        if (self.real_time >= .7) {
           self.destroy();
         }
         //on contact....
@@ -161,11 +161,11 @@ player.appendAnimation((self) => {
                 player.anchor_bally = other_ball.y;
                 player.attraction = 1;
               } else {
-                player.speedx = -(x_direction / Math.abs(x_direction)) * 100;
-                player.speedy = -(y_direction / Math.abs(y_direction)) * 100;
-                // player.anchor_ballx = other_ball.x;
-                // player.anchor_bally = other_ball.y;
-                // player.attraction = -1;
+                player.speedx =  -(x_direction / Math.abs(x_direction)) * 100;
+                player.speedy =  -(y_direction / Math.abs(y_direction)) * 100;
+                player.anchor_ballx = other_ball.x;
+                player.anchor_bally = other_ball.y;
+                player.attraction = -1;
               }
               for (let j = 0; j < contact_balls.length; j++) {
                 contact_balls[j].destroy();
@@ -237,16 +237,16 @@ player.appendAnimation((self) => {
   let prev_speedx=self.speedx
   let prev_speedy=self.speedy
 
+  //if player is too far away from connected ball break connection
+  // if(Math.abs(self.anchor_ballx - self.x)>=800){
+  //   self.attraction=0
+  // }
+  // if(Math.abs(self.anchor_bally - self.y)>=800){
+  //   self.attraction=0
+  // }
   self.speedx =prev_speedx + self.attraction * (x_direction / Math.abs(x_direction)) * 1;
   self.speedy =prev_speedy + self.attraction * (y_direction / Math.abs(y_direction)) * 1;
   
-  //if player is too far away from connected ball break connection
-  // if(Math.abs(self.anchor_ballx - self.x)>=200){
-  //   self.speedx=prev_speedx
-  // }
-  // if(Math.abs(self.anchor_bally - self.y)>=200){
-  //   self.speedy=prev_speedy
-  // }
   self.move(self.x + self.dt * self.speedx, self.y + self.dt * self.speedy);
 
   //self.move(new_x,new_y)
