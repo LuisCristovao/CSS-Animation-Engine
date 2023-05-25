@@ -90,8 +90,8 @@ player.appendAnimation((self) => {
               for (let i = 0; i < 10; i++) {
                 let b_tmp = new Object().append(
                   createCircle(
-                    player.x + x_direction / (10 - i),
-                    player.y + y_direction / (10 - i),
+                    player.x + x_direction ,
+                    player.y + y_direction ,
                     20,
                     "rgb(100,100 ,100)",
                     "contact_ball"
@@ -168,22 +168,36 @@ player.appendAnimation((self) => {
             self,
             c,
             (self, other_ball) => {
+              //on collision delete previouse« connection
+              for (c in point_vectores) {
+                point_vectores[c].destroy();
+              }
               let x_direction = other_ball.x - player.x;
               let y_direction = other_ball.y - player.y;
               //poiting vector.......
-              for (let i = 0; i < 3; i++) {
+              for (let i = 0; i < 10; i++) {
                 let b_tmp = new Object().append(
                   createCircle(
-                    player.x + x_direction / (8 - i * 2),
-                    player.y + y_direction / (8 - i * 2),
+                    player.x + x_direction ,
+                    player.y + y_direction ,
                     20,
-                    "rgb(255,0,255)",
+                    "rgb(100,100 ,100)",
                     "contact_ball"
                   )
                 );
-                setTimeout(() => {
-                  b_tmp.destroy();
+                
+                b_tmp.appendAnimation((self) => {
+                  let x_direction = other_ball.x - player.x;
+                  let y_direction = other_ball.y - player.y;
+                  self.move(
+                    player.x + (x_direction / 10) * i,
+                    player.y + (y_direction / 10) * i
+                  );
                 });
+                point_vectores.push(b_tmp);
+                // setTimeout(() => {
+                //   b_tmp.destroy();
+                // });
               }
               if (other_ball.shape.id == "green_ball") {
                 player.speedx = (x_direction / Math.abs(x_direction)) * 100;
@@ -217,6 +231,7 @@ player.appendAnimation((self) => {
         (player, solid_block) => {
           player.shape.style["background-color"] = "rgb(0,255,0)";
           solid_block.destroy();
+          //break ball conection......
           if (
             player.anchor_ballx == solid_block.x &&
             player.anchor_bally == solid_block.y
@@ -224,6 +239,10 @@ player.appendAnimation((self) => {
             player.anchor_ballx = 0;
             player.anchor_bally = 0;
             player.attraction = 0;
+            
+            for (c in point_vectores) {
+              point_vectores[c].destroy();
+            }
           }
         },
         (solid = false)
@@ -236,7 +255,7 @@ player.appendAnimation((self) => {
         (player, solid_block) => {
           player.shape.style["background-color"] = "rgb(255,0,0)";
           solid_block.destroy();
-          //break ball conection
+          //break ball conection......
           if (
             player.anchor_ballx == solid_block.x &&
             player.anchor_bally == solid_block.y
