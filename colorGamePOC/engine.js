@@ -211,7 +211,7 @@ class Object {
   }
   setColor(hsla){
      this.updateRealTime()
-      let shape=this.getElement()
+      let shape=this.shape
       this.color=hsla
       shape.style.backgroundColor=`hsla(${this.color[0]},${this.color[1]}%,${this.color[2]}%,${this.color[3]})`
       this.updateStartTime()
