@@ -93,7 +93,7 @@ player.appendAnimation((self) => {
                     player.x + x_direction ,
                     player.y + y_direction ,
                     20,
-                    "hsl(0, 100%, 50%)",
+                    "rgb(255,0,0)",
                     "contact_ball"
                   )
                 );
@@ -105,22 +105,23 @@ player.appendAnimation((self) => {
                     player.x + (x_direction / 10) * i,
                     player.y + (y_direction / 10) * i
                   );
-                  self.setColor(self.getColor()[0],self.getColor()[1],Math.sin(self.real_time)*100,1)
+                  self.setColor([self.getColor()[0],self.getColor()[1],(Math.abs(Math.cos(3*self.real_time-i*1))*40+30),1])
                 });
                 point_vectores.push(b_tmp);
                 // setTimeout(() => {
                 //   b_tmp.destroy();
                 // });
               }
+              let grip_force=10
               if (other_ball.shape.id == "red_ball") {
-                player.speedx = player.speedx +(x_direction / Math.abs(x_direction)) * 100;
-                player.speedy = player.speedy +(y_direction / Math.abs(y_direction)) * 100;
+                player.speedx = player.speedx +(x_direction / Math.abs(x_direction)) * grip_force;
+                player.speedy = player.speedy +(y_direction / Math.abs(y_direction)) * grip_force;
                 player.anchor_ballx = other_ball.x;
                 player.anchor_bally = other_ball.y;
                 player.attraction = 1;
               } else {
-                player.speedx = player.speedx -(x_direction / Math.abs(x_direction)) * 100;
-                player.speedy = player.speedy -(y_direction / Math.abs(y_direction)) * 100;
+                player.speedx = player.speedx -(x_direction / Math.abs(x_direction)) * grip_force;
+                player.speedy = player.speedy -(y_direction / Math.abs(y_direction)) * grip_force;
                 player.anchor_ballx = other_ball.x;
                 player.anchor_bally = other_ball.y;
                 player.attraction = -1;
@@ -182,7 +183,7 @@ player.appendAnimation((self) => {
                     player.x + x_direction ,
                     player.y + y_direction ,
                     20,
-                    "rgb(100,100 ,100)",
+                    "rgb(0,255,0)",
                     "contact_ball"
                   )
                 );
@@ -194,21 +195,23 @@ player.appendAnimation((self) => {
                     player.x + (x_direction / 10) * i,
                     player.y + (y_direction / 10) * i
                   );
+                  self.setColor([self.getColor()[0],self.getColor()[1],(Math.abs(Math.cos(3*self.real_time-i*1))*40+30),1])
                 });
                 point_vectores.push(b_tmp);
                 // setTimeout(() => {
                 //   b_tmp.destroy();
                 // });
               }
+              let grip_force=10
               if (other_ball.shape.id == "green_ball") {
-                player.speedx = player.speedx +(x_direction / Math.abs(x_direction)) * 100;
-                player.speedy = player.speedy +(y_direction / Math.abs(y_direction)) * 100;
+                player.speedx = player.speedx +(x_direction / Math.abs(x_direction)) * grip_force;
+                player.speedy = player.speedy +(y_direction / Math.abs(y_direction)) * grip_force;
                 player.anchor_ballx = other_ball.x;
                 player.anchor_bally = other_ball.y;
                 player.attraction = 1;
               } else {
-                player.speedx = player.speedx -(x_direction / Math.abs(x_direction)) * 100;
-                player.speedy = player.speedy -(y_direction / Math.abs(y_direction)) * 100;
+                player.speedx = player.speedx -(x_direction / Math.abs(x_direction)) * grip_force;
+                player.speedy = player.speedy -(y_direction / Math.abs(y_direction)) * grip_force;
                 player.anchor_ballx = other_ball.x;
                 player.anchor_bally = other_ball.y;
                 player.attraction = -1;
