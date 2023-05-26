@@ -112,8 +112,8 @@ player.appendAnimation((self) => {
                 // });
               }
               if (other_ball.shape.id == "red_ball") {
-                player.speedx = (x_direction / Math.abs(x_direction)) * 100;
-                player.speedy = (y_direction / Math.abs(y_direction)) * 100;
+                player.speedx = player.speedx +(x_direction / Math.abs(x_direction)) * 100;
+                player.speedy = player.speedy +(y_direction / Math.abs(y_direction)) * 100;
                 player.anchor_ballx = other_ball.x;
                 player.anchor_bally = other_ball.y;
                 player.attraction = 1;
@@ -315,10 +315,8 @@ player.appendAnimation((self) => {
     }
     self.attraction=0
   }
-  self.speedx =
-    prev_speedx + self.attraction * (x_direction / Math.abs(x_direction)) * 1;
-  self.speedy =
-    prev_speedy + self.attraction * (y_direction / Math.abs(y_direction)) * 1;
+  self.speedx = prev_speedx + self.attraction * (x_direction / Math.abs(x_direction)) * 1;
+  self.speedy = prev_speedy + self.attraction * (y_direction / Math.abs(y_direction)) * 1;
   //limit spped
   let speed_limit = 200;
   if (Math.abs(self.speedx) > speed_limit) {
