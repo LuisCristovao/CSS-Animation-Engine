@@ -93,7 +93,7 @@ player.appendAnimation((self) => {
                     player.x + x_direction ,
                     player.y + y_direction ,
                     20,
-                    "rgb(100,100 ,100)",
+                    "hsl(0, 100%, 50%)",
                     "contact_ball"
                   )
                 );
@@ -105,6 +105,7 @@ player.appendAnimation((self) => {
                     player.x + (x_direction / 10) * i,
                     player.y + (y_direction / 10) * i
                   );
+                  self.setColor(self.getColor()[0],self.getColor()[1],Math.sin(self.real_time)*100,1)
                 });
                 point_vectores.push(b_tmp);
                 // setTimeout(() => {
@@ -118,8 +119,8 @@ player.appendAnimation((self) => {
                 player.anchor_bally = other_ball.y;
                 player.attraction = 1;
               } else {
-                player.speedx = -(x_direction / Math.abs(x_direction)) * 100;
-                player.speedy = -(y_direction / Math.abs(y_direction)) * 100;
+                player.speedx = player.speedx -(x_direction / Math.abs(x_direction)) * 100;
+                player.speedy = player.speedy -(y_direction / Math.abs(y_direction)) * 100;
                 player.anchor_ballx = other_ball.x;
                 player.anchor_bally = other_ball.y;
                 player.attraction = -1;
@@ -200,14 +201,14 @@ player.appendAnimation((self) => {
                 // });
               }
               if (other_ball.shape.id == "green_ball") {
-                player.speedx = (x_direction / Math.abs(x_direction)) * 100;
-                player.speedy = (y_direction / Math.abs(y_direction)) * 100;
+                player.speedx = player.speedx +(x_direction / Math.abs(x_direction)) * 100;
+                player.speedy = player.speedy +(y_direction / Math.abs(y_direction)) * 100;
                 player.anchor_ballx = other_ball.x;
                 player.anchor_bally = other_ball.y;
                 player.attraction = 1;
               } else {
-                player.speedx = -(x_direction / Math.abs(x_direction)) * 100;
-                player.speedy = -(y_direction / Math.abs(y_direction)) * 100;
+                player.speedx = player.speedx -(x_direction / Math.abs(x_direction)) * 100;
+                player.speedy = player.speedy -(y_direction / Math.abs(y_direction)) * 100;
                 player.anchor_ballx = other_ball.x;
                 player.anchor_bally = other_ball.y;
                 player.attraction = -1;
