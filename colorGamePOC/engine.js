@@ -205,6 +205,10 @@ class Object {
       
       return new_pos
   }
+  getColor(){
+    let rgb=parseRgb(this.shape)
+    return rgbToHsl(rgb[0],rgb[1],rgb[2])
+  }
   setColor(hsla){
      this.updateRealTime()
       let shape=this.getElement()
